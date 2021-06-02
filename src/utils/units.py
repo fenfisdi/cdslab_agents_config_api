@@ -8,6 +8,13 @@ class Units:
             "ft": "feet",
             "mi": "international mile",
             "yd": "international yard"}
+    
+    units_time = {
+        "min": "minutes",
+        "h": "hours",
+        "d": "day"
+    }
+
 
     @classmethod
     def distance(cls):
