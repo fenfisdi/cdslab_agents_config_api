@@ -1,6 +1,5 @@
 from os import environ
 from mongoengine import connect
-from uuid import uuid1
 
 from src.models.db.Distribution import Distribution
 
@@ -17,7 +16,7 @@ if __name__ == "__main__":
                           {"Parameter": "metric", "Type": "str", "Field": ["euclidean"]},
                           {"Parameter": "atol", "Type": "float", "Field": None},
                           {"Parameter": "rtol", "Type": "float", "Field": None},
-                          {"Parameter": "breadth first", "Type": "boolena", "Field": ["True", "False"]},
+                          {"Parameter": "breadth first", "Type": "boolean", "Field": ["True", "False"]},
                           {"Parameter": "leaf size", "Type": "int", "Field": None},
                           {"Parameter": "metric params", "Type": "dict", "Field": None} ],
                 "Constant": [{"Parameter": "Type constant", "Type": "int", "Field": None}],
@@ -59,7 +58,6 @@ if __name__ == "__main__":
     for name in distributions:
         try:
             distribution = Distribution()
-            distribution.identifer = uuid1().hex
             distribution.name = name
             distribution.type = parameters[name]
 
