@@ -5,10 +5,12 @@ from starlette.status import (
     HTTP_404_NOT_FOUND
 )
 
-from src.utils.encoder import BsonObject
-from src.utils.response import UJSONResponse
-from src.interfaces.distribution_interface import DistributionInterface
-from src.utils.messages import DistributionMessage
+from src.utils import (
+        BsonObject,
+        UJSONResponse
+        ,DistributionMessage)
+
+from src.interfaces import DistributionInterface
 
 distributions_routes = APIRouter(tags=["distributions"])
 
@@ -37,7 +39,7 @@ def list_distributions():
 @distributions_routes.get("/distributions/parameters/{name}")
 def parameters(name: str):
     '''
-        Get  parameters for  distribution name
+        Get  parameters for distribution name
     '''
     parameters = DistributionInterface.find_parameters(name)
 
@@ -46,9 +48,6 @@ def parameters(name: str):
         DistributionMessage.not_exist, 
         HTTP_400_BAD_REQUEST
         )  
-      
-    # distributions_names = [data["name"] \
-    #             for data in BsonObject.dict(distributions)]
 
     return UJSONResponse(
         DistributionMessage.found, 
