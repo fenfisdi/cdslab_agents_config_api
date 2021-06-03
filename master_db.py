@@ -1,0 +1,71 @@
+from os import environ
+from mongoengine import connect
+from uuid import uuid1
+
+from src.models.db.Distribution import Distribution
+
+if __name__ == "__main__":
+
+    mongo_uri = environ.get('MONGO_URI')
+    connect(host=mongo_uri)
+
+    distributions =["Constant", "Empirical", "Weigths", "Numpy"]
+    parameters = { 
+                "Empirical": [{"Parameter": "bandwidth", "Type": "float", "Field": None},
+                          {"Parameter": "algorithm", "Type": None, "Field": ["auto"]},
+                          {"Parameter": "kernel", "Type": None, "Field": ["gaussian"]},
+                          {"Parameter": "metric", "Type": "str", "Field": ["euclidean"]},
+                          {"Parameter": "atol", "Type": "float", "Field": None},
+                          {"Parameter": "rtol", "Type": "float", "Field": None},
+                          {"Parameter": "breadth first", "Type": "boolena", "Field": ["True", "False"]},
+                          {"Parameter": "leaf size", "Type": "int", "Field": None},
+                          {"Parameter": "metric params", "Type": "dict", "Field": None} ],
+                "Constant": [{"Parameter": "Type constant", "Type": "int", "Field": None}],
+                "Weigths": [{"Parameter": "bandwidth", "Type": "float", "Field": None},
+                          {"Parameter": "algorithm", "Type": None, "Field": ["auto"]},
+                          {"Parameter": "kernel", "Type": None, "Field": ["gaussian"]},
+                          {"Parameter": "metric", "Type": "str", "Field": ["euclidean"]},
+                          {"Parameter": "atol", "Type": "float", "Field": None},
+                          {"Parameter": "rtol", "Type": "float", "Field": None},
+                          {"Parameter": "breadth first", "Type": "boolena", "Field": ["True", "False"]},
+                          {"Parameter": "leaf size", "Type": "int", "Field": None},
+                          {"Parameter": "metric params", "Type": "dict", "Field": None} ],
+                "Numpy": [{"Parameter": "normal", "Type": "numpy", "Field": {
+                                        "name": "loc", "type":["float", "List[float]"], 
+                                        "name": "scale", "type":["float", "List[float]"]}},
+                          {"Parameter": "lognormal", "Type": "numpy", "Field": {
+                                        "name": "mean", "type":["float", "List[float]"],
+                                        "name": "sigma", "type":["float", "List[float]"],}},
+                          {"Parameter": "weibull", "Type": "numpy", "Field": {
+                                        "name": "a", "type":["float", "List[float]"]}},
+                          {"Parameter": "gamma", "Type": "numpy", "Field": {
+                                        "name": "shape", "type":["float", "List[float]"],
+                                        "name": "scale", "type":["float", "List[float]"]}},
+                          {"Parameter": "logistic", "Type": "numpy", "Field": {
+                                        "name": "loc", "type":["float", "List[float]"], 
+                                        "name": "scale", "type":["float", "List[float]"]}},
+                          {"Parameter": "poisson", "Type": "numpy", "Field": {
+                                        "name": "Iam", "type":["float", "List[float]"]}},
+                          {"Parameter": "logseries", "Type": "numpy", "Field": {
+                                        "name": "P", "type":["float", "List[float]"]}},
+                          {"Parameter": "geometric", "Type": "numpy", "Field": {
+                                        "name": "P", "type":["float", "List[float]"]}},
+                          {"Parameter": "hypergeometric", "Type": "numpy", "Field": {
+                                        "name": "ngoodint", "type":["int", "List[int]"],
+                                        "name": "nbad", "type":["int", "List[int]"],
+                                        "name": "nsample", "type":["int", "List[int]"]}}]  
+                }
+
+    for name in distributions:
+        try:
+            distribution = Distribution()
+            distribution.identifer = uuid1().hex
+            distribution.name = name
+            distribution.type = parameters[name]
+
+            distribution.save()
+
+            print(f"{name} insertada correctamente")
+        except Exception as error:
+            print(f"No fue posible insertar {name}")
+            print(error)
