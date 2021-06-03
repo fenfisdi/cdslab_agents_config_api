@@ -1,31 +1,26 @@
 from fastapi import APIRouter
-from starlette.status import (
-    HTTP_200_OK,
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND
-)
+from starlette.status import HTTP_200_OK, \
+    HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
-from src.utils import (
-        BsonObject,
-        UJSONResponse,
-        DistributionMessage
-        )
+from src.utils import BsonObject, \
+    UJSONResponse, DistributionMessage
+from src.interfaces.distribution_interface import DistributionInterface
 
-from src.interfaces import DistributionInterface
 
 distributions_routes = APIRouter(tags=["distributions"])
 
+
 @distributions_routes.get("/distributions")
 def list_distributions():
-    '''
+    """
         Get  all distributions
-    '''
+    """
     distributions = DistributionInterface.find_all()
 
     if not distributions:
         return UJSONResponse(
-        DistributionMessage.not_found, 
-        HTTP_404_NOT_FOUND
+            DistributionMessage.not_found,
+            HTTP_404_NOT_FOUND
         )  
       
     distributions_names = [data["name"] \
@@ -37,17 +32,18 @@ def list_distributions():
         distributions_names
     )
 
+
 @distributions_routes.get("/distributions/parameters/{name}")
 def parameters(name: str):
-    '''
-        Get  parameters for distribution name
-    '''
+    """
+        Get  parameters for  distribution name
+    """
     parameters = DistributionInterface.find_parameters(name)
 
     if not parameters:
         return UJSONResponse(
-        DistributionMessage.not_exist, 
-        HTTP_400_BAD_REQUEST
+            DistributionMessage.not_exist,
+            HTTP_400_BAD_REQUEST
         )  
 
     return UJSONResponse(
@@ -55,4 +51,3 @@ def parameters(name: str):
         HTTP_200_OK,
         BsonObject.dict(parameters)
     )
-    
