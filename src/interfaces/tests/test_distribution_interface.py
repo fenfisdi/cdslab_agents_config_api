@@ -3,7 +3,7 @@ from unittest import TestCase
 from mongoengine import connect, disconnect
 
 from src.interfaces import DistributionInterface
-from src.models.db import Distribution
+from src.models.db.Distribution import Distribution
 
 
 class DistributionInterfaceTestCase(TestCase):
@@ -12,10 +12,11 @@ class DistributionInterfaceTestCase(TestCase):
         connect('mongoenginetest', host='mongomock://localhost', alias="DistributionInterfaceTestCase")
 
         self.distribution_not_found = "NotFound"
-        self.distribution = "Constant"
+        self.distribution_name = "Constant"
         self.params_distribution = {"Parameter": "Type constant", "Type": "int", "Field": None}
-        Distribution(
-            name=self.distribution,
+        
+        self.distribution = Distribution(
+            name=self.distribution_name,
             type=[self.params_distribution]
         ).save()
 
@@ -23,7 +24,7 @@ class DistributionInterfaceTestCase(TestCase):
         disconnect()
 
     def test_find_parameters_successful(self):
-        distribution = DistributionInterface.find_parameters(self.distribution)
+        distribution = DistributionInterface.find_parameters(self.distribution_name)
 
         self.assertIsNotNone(distribution)
         self.assertDictEqual(distribution.type[0], self.params_distribution)

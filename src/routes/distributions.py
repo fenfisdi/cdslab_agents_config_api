@@ -22,7 +22,6 @@ def list_distributions():
             DistributionMessage.not_found,
             HTTP_404_NOT_FOUND
         )  
-      
     distributions_names = [data["name"] \
                 for data in BsonObject.dict(distributions)]
 
