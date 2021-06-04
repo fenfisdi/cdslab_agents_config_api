@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from fastapi.testclient import TestClient
 
+
 def solve_path(path: str):
     source = 'src.routes.units'
     return ".".join([source, path])
