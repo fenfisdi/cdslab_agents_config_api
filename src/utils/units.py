@@ -2,9 +2,12 @@ class Units:
 
     #TODO:
 
-    units_length = {"Km": "Kilometres",
-            "M":"Meter",
-            "c":"Centimeter"}
+    units_length = {"km": "kilometers",
+            "m":"meters",
+            "cm":"centimeters",
+            "ft": "feet",
+            "mi": "international mile",
+            "yd": "international yard"}
 
     @classmethod
     def distance(cls):
