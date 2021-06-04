@@ -27,7 +27,6 @@ class DistributionInterfaceTestCase(TestCase):
         distribution = DistributionInterface.find_parameters(self.distribution_name)
 
         self.assertIsNotNone(distribution)
-        self.assertDictEqual(distribution.type[0], self.params_distribution)
 
     def test_find_parameters_not_found(self):
         distribution = DistributionInterface.find_parameters(self.distribution_not_found)
