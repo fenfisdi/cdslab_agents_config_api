@@ -12,7 +12,7 @@ class Units:
     units_time = {
         "min": "minutes",
         "h": "hours",
-        "d": "day"
+        "d": "days"
     }
 
 
