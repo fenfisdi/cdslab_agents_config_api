@@ -1,4 +1,4 @@
-from src.models.db.Distribution import Distribution
+from src.models.db.distribution import Distribution
 
 class DistributionInterface:
     '''
