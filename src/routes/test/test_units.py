@@ -1,6 +1,5 @@
-from unittest import TestCase
-
 from fastapi.testclient import TestClient
+from unittest import TestCase
 
 
 def solve_path(path: str):
