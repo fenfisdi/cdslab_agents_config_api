@@ -1,15 +1,18 @@
 from os import environ
 from mongoengine import connect
+from uuid import uuid1
 
-from src.models.db.Distribution import Distribution
+from src.models.db.master.distribution import MasterDistribution
+from src.models.db.master.disease_states import MasterDiseaseStates
 
 if __name__ == "__main__":
 
     mongo_uri = environ.get('MONGO_URI')
     connect(host=mongo_uri)
 
-    distributions =["Constant", "Empirical", "Weigths", "Numpy"]
-    parameters = { 
+    disease_status = ["diagnosis", "quarantine_postdiagnosis", "hospitalization_prob", "ICU_prob"]
+
+    distributions = { 
                 "Empirical": [{"Parameter": "bandwidth", "Type": "float", "Field": [1.0]},
                           {"Parameter": "algorithm", "Type": None, "Field": ["auto", "kd_tree", "ball_tree"]},
                           {"Parameter": "kernel", "Type": None, "Field": ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]},
@@ -54,16 +57,28 @@ if __name__ == "__main__":
                                         "name": "nsample", "type":["int", "List[int]"]}}]  
                 }
 
-    for name in distributions:
+    print("Insertando distribuciones...")
+    for name, parameters in distributions.items():
         try:
-            distribution = Distribution()
-            distribution.name = name
-            distribution.type = parameters[name]
+            distribution = MasterDistribution(
+                name=name,
+                type=parameters).save()
 
-            distribution.save()
-
-            print(f"{name} insertada correctamente")
+            print(f"distribución {name} insertada correctamente")
         except Exception as error:
-            print(f"No fue posible insertar {name}")
+            print(f"No fue posible insertar la distribución {name}")
             print(error)
+    
+
+    print("/n Insertando estados de enfermedad...")
+    for name in disease_status:
+        try:
+            MasterDiseaseStates(
+                identifer=uuid1().hex, 
+                name=name
+            ).save()
             
+            print(f"Estado {name} insertado correctamente")
+        except Exception as error:
+            print(f"No fue posible insertar el estado {name}")
+            print(error)
