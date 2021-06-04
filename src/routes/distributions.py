@@ -7,8 +7,9 @@ from starlette.status import (
 
 from src.utils import (
         BsonObject,
-        UJSONResponse
-        ,DistributionMessage)
+        UJSONResponse,
+        DistributionMessage
+        )
 
 from src.interfaces import DistributionInterface
 
@@ -54,3 +55,4 @@ def parameters(name: str):
         HTTP_200_OK,
         BsonObject.dict(parameters)
     )
+    

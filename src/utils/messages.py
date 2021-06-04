@@ -15,3 +15,4 @@ class DistributionMessage:
     found: str = 'Found distributions'
     not_found: str = 'Distributions not found'
     not_exist: str = 'Distribution does not exist'
+    
