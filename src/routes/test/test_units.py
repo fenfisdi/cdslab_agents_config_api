@@ -6,6 +6,7 @@ def solve_path(path: str):
     source = 'src.routes.units'
     return ".".join([source, path])
 
+
 class GetUnitsRouteTestCase(TestCase):
     def setUp(self) -> None:
         from src.api import app

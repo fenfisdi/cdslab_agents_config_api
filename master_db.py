@@ -66,3 +66,4 @@ if __name__ == "__main__":
         except Exception as error:
             print(f"No fue posible insertar {name}")
             print(error)
+            

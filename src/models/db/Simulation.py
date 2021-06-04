@@ -25,6 +25,6 @@ class Configuration(BaseDocument):
     is_delete = BooleanField(default=False)
 
 class Simulation(BaseDocument):
-    identifer = UUIDField(unique=True)
+    identifer = UUIDField(binary=False, unique=True, required=True)
     configuration = ReferenceField(Configuration, dbref=True)
     executed_at = DateField(required=True)
