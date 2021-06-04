@@ -4,7 +4,10 @@ class Units:
 
     units_length = {"km": "kilometers",
             "m":"meters",
-            "cm":"centimeters"}
+            "cm":"centimeters",
+            "ft": "feet",
+            "mi": "international mile",
+            "yd": "international yard"}
 
     @classmethod
     def distance(cls):
