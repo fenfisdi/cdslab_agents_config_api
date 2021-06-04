@@ -16,3 +16,10 @@ def units_distance():
         Get allowed distance units 
     '''
     return UJSONResponse(UnitsMessage.distance, HTTP_200_OK, Units.distance())
+
+@units_routes.get("/units/time")
+def units_time():
+    '''
+        Get allowed time units
+    '''
+    return UJSONResponse(UnitsMessage.time, HTTP_200_OK, Units.time())
