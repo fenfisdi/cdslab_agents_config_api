@@ -13,7 +13,7 @@ from src.utils import (
 
 disease_states_routes = APIRouter(tags=["DiseaseStates"])
 
-@disease_states_routes.get("/DiseaseStates")
+@disease_states_routes.get("/diseaseStates")
 def list_disease_states():
     
     states = DiseaseStatesInterface.fin_all()
