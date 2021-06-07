@@ -31,6 +31,7 @@ def list_distributions():
         distributions_names
     )
 
+
 @distributions_routes.get("/distributions/parameters/{name}")
 def parameters(name: str):
     """
@@ -48,4 +49,24 @@ def parameters(name: str):
         DistributionMessage.found, 
         HTTP_200_OK,
         BsonObject.dict(parameters)
+    )
+
+
+@distributions_routes.get("/distributions/disease_state")
+def list_disease_state_distribution():
+    '''
+        Get disease states distribution list
+    '''
+    disease_states_distribution = DistributionInterface.get_disease_states_distribution()
+
+    if not disease_states_distribution:
+        return UJSONResponse(
+            DistributionMessage.not_exist,
+            HTTP_400_BAD_REQUEST
+        )
+
+    return UJSONResponse(
+        DistributionMessage.disease_states_distribution_found,
+        HTTP_200_OK,
+        BsonObject.dict(disease_states_distribution)
     )
