@@ -31,7 +31,6 @@ def list_distributions():
         distributions_names
     )
 
-
 @distributions_routes.get("/distributions/parameters/{name}")
 def parameters(name: str):
     """
