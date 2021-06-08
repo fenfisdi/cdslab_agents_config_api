@@ -22,4 +22,3 @@ class DiseaseStates(BaseDocument):
     spread_radius = FloatField(default=2.5)
     spread_probability = FloatField(default=0.1)
     distributions = ListField(ReferenceField(Distribution))
-    
