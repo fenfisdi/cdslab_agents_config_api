@@ -21,3 +21,23 @@ class DistributionMessage:
     not_found: str = 'Distributions not found'
     not_exist: str = 'Distribution does not exist'
     disease_states_distribution_found = 'Found disease states distribution'
+
+
+@dataclass
+class DiseaseStatesMessage:
+    """
+        Messages used in endpoint responses for distributions
+    """
+    found: str = 'Found states'
+    not_found: str = 'States not found'
+
+
+@dataclass
+class ConfigurationMessage:
+    """
+        Messages used in endpoint responses for configuration
+    """
+    found: str = "Configuration found"
+    not_found: str = "Configuration not found"
+    created: str = "Configuration has been created"
+    updated: str = "Configuration updated"

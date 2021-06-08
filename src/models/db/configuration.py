@@ -1,21 +1,16 @@
-from mongoengine import (
-    StringField,
-    UUIDField,
-    IntField,
-    ListField,
-    BooleanField
-)
+from mongoengine import StringField, UUIDField, \
+    IntField, BooleanField, DictField
 
 from .base import BaseDocument
 
 
 class Configuration(BaseDocument):
-    identifer = UUIDField(binary=False, unique=True, required=True)
+    identifier = UUIDField(binary=False, unique=True, required=True)
     name = StringField()
     population_number = IntField()
-    interval_date = ListField()
+    interval_date = DictField()
     iteration_time_units = StringField()
     iteration_number = IntField()
-    box_size = ListField()
+    box_size = DictField()
     distance_units = StringField()
     is_delete = BooleanField(default=False)
