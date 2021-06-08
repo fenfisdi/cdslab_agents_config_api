@@ -8,6 +8,8 @@ class UnitsMessage:
     """
     distance: str = "Units distance"
     time: str = "Time units"
+    distance_not_found = "Distance units not found"
+    time_not_found: str = "Time units not found"
 
 
 @dataclass
