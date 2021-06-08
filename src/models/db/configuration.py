@@ -1,4 +1,4 @@
-from mongoengine import(
+from mongoengine import (
     StringField,
     UUIDField,
     IntField,
@@ -6,8 +6,8 @@ from mongoengine import(
     BooleanField
 )
 
-
 from .base import BaseDocument
+
 
 class Configuration(BaseDocument):
     identifer = UUIDField(binary=False, unique=True, required=True)
@@ -19,4 +19,3 @@ class Configuration(BaseDocument):
     box_size = ListField()
     distance_units = StringField()
     is_delete = BooleanField(default=False)
-    

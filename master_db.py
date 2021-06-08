@@ -7,7 +7,7 @@ from src.models.db.master.disease_states import MasterDiseaseStates
 
 if __name__ == "__main__":
 
-    mongo_uri = environ.get('MONGO_URI')
+    mongo_uri = environ.get("MONGO_URI")
     connect(host=mongo_uri)
 
     disease_status = ["diagnosis", "quarantine_postdiagnosis", "hospitalization_prob", "ICU_prob"]
@@ -64,7 +64,7 @@ if __name__ == "__main__":
                 type=parameters).save()
 
         except Exception as error:
-            raise RuntimeError(f"No fue posible insertar la distribución {name}, {error}") from error
+            raise Exception(error)
 
     for name in disease_status:
         try:
@@ -74,4 +74,4 @@ if __name__ == "__main__":
             ).save()
             
         except Exception as error:
-            raise RuntimeError(f"No fue posible insertar el estado {name}, {error}") from error
+            raise Exception(error)

@@ -9,8 +9,8 @@ from src.models.db.disease_states import DiseaseStates
 class DiseaseStatesTestCase(TestCase):
     def setUp(self) -> None:
         connect(
-            'mongoenginetest',
-            host='mongomock://localhost',
+            "mongoenginetest",
+            host="mongomock://localhost",
             alias="DiseaseStatesInterfaceTestCase"
         )
         

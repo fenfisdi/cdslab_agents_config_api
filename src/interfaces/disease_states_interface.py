@@ -6,7 +6,7 @@ class DiseaseStatesInterface:
     Interface to consult disease states in DB
     """
     @staticmethod
-    def fin_all():
+    def find_all():
         """
         Find all disease states
 
