@@ -8,10 +8,14 @@ from src.models.db.disease_states import DiseaseStates
 
 class DiseaseStatesTestCase(TestCase):
     def setUp(self) -> None:
-        connect('mongoenginetest', host='mongomock://localhost', alias="DiseaseStatesInterfaceTestCase")
+        connect(
+            'mongoenginetest',
+            host='mongomock://localhost',
+            alias="DiseaseStatesInterfaceTestCase"
+        )
         
-        self.disease_states = Distribution(
-            name="",
+        self.disease_states = DiseaseStates(
+            name="Unit Test",
             can_get_infected=False,
             is_infected=False,
             can_spread=False,

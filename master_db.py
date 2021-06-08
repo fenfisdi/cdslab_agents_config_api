@@ -57,20 +57,15 @@ if __name__ == "__main__":
                                         "name": "nsample", "type":["int", "List[int]"]}}]  
                 }
 
-    print("Insertando distribuciones...")
     for name, parameters in distributions.items():
         try:
             distribution = MasterDistribution(
                 name=name,
                 type=parameters).save()
 
-            print(f"distribución {name} insertada correctamente")
         except Exception as error:
-            print(f"No fue posible insertar la distribución {name}")
-            print(error)
-    
+            raise RuntimeError(f"No fue posible insertar la distribución {name}, {error}") from error
 
-    print("/n Insertando estados de enfermedad...")
     for name in disease_status:
         try:
             MasterDiseaseStates(
@@ -78,7 +73,5 @@ if __name__ == "__main__":
                 name=name
             ).save()
             
-            print(f"Estado {name} insertado correctamente")
         except Exception as error:
-            print(f"No fue posible insertar el estado {name}")
-            print(error)
+            raise RuntimeError(f"No fue posible insertar el estado {name}, {error}") from error
