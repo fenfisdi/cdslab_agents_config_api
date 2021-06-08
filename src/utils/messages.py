@@ -39,5 +39,6 @@ class ConfigurationMessage:
     """
     found: str = "Configuration found"
     not_found: str = "Configuration not found"
+    exist: str = 'Configuration exist'
     created: str = "Configuration has been created"
     updated: str = "Configuration updated"
