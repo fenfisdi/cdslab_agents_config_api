@@ -4,6 +4,9 @@ from unittest.mock import patch, Mock
 from fastapi.testclient import TestClient
 
 
+route = "/configuration"
+
+
 def solve_path(path: str):
     source = "src.routes.configuration"
     return ".".join([source, path])
@@ -14,7 +17,6 @@ class CreateConfigurationRouteTestCase(TestCase):
         from src.api import app
         self.client = TestClient(app)
 
-        self.route = "/configuration"
         self.name = "Configuration Unit Test"
 
         self.new_configuration = dict(
@@ -42,7 +44,7 @@ class CreateConfigurationRouteTestCase(TestCase):
         configuration_interface.find_by_name.return_value = None
 
         response = self.client.post(
-            url=self.url,
+            url=route,
             json=self.new_configuration
         )
 
@@ -57,7 +59,7 @@ class CreateConfigurationRouteTestCase(TestCase):
         configuration_interface.find_by_name.return_value = Mock()
 
         response = self.client.post(
-            url=self.url,
+            url=route,
             json=self.new_configuration
         )
 
@@ -114,8 +116,6 @@ class FindConfigurationRouteTestCase(TestCase):
         from src.api import app
         self.client = TestClient(app)
 
-        self.route = "/configuration"
-
     @patch(solve_path("ConfigurationInterface"))
     def test_find_all_successful(
             self,
@@ -125,7 +125,7 @@ class FindConfigurationRouteTestCase(TestCase):
             to_mongo=Mock(return_value={})
         )
 
-        response = self.client.get(self.route)
+        response = self.client.get(route)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, 200)
@@ -137,7 +137,7 @@ class FindConfigurationRouteTestCase(TestCase):
     ):
         configuration_interface.find_all.return_value = None
 
-        response = self.client.get(self.route)
+        response = self.client.get(route)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, 404)
