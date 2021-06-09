@@ -1,11 +1,10 @@
 import uuid
 
+from mongoengine import connect, disconnect
 from unittest import TestCase
 
-from mongoengine import connect, disconnect
-
-from src.interfaces import ConfigurationInterface
 from src.models import Configuration
+from src.interfaces import ConfigurationInterface
 
 
 class ConfigurationInterfaceTestCase(TestCase):

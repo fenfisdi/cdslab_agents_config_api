@@ -1,11 +1,13 @@
 from .db.configuration import Configuration
 from .db.disease_states import DiseaseStates
-from .db.Distribution import Distribution
-from .db.Simulation import Simulation
+from .db.distribution import Distribution
+from .db.simulation import Simulation
+from .route_models.configuration import NewConfiguration
 
 __all__ = [
     "Configuration", 
     "DiseaseStates", 
     "Distribution", 
-    "Simulation"
+    "Simulation",
+    "NewConfiguration"
 ]
