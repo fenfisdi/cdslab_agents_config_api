@@ -22,91 +22,63 @@ if __name__ == "__main__":
         "List[float]"
     ]
 
+    type_int_list = [
+        "int",
+        "List[int]"
+    ]
+
     numpy_normal_field_loc = {
         "name": "loc",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
     numpy_normal_field_scale = {
         "name": "scale",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
 
     numpy_log_normal_field_mean = {
         "name": "mean",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
 
     numpy_log_normal_field_sigma = {
         "name": "sigma",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
 
     numpy_gamma_field_shape = {
         "name": "shape",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
 
     numpy_gamma_field_scale = {
         "name": "scale",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
 
     numpy_logistic_field_loc = {
         "name": "loc",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
 
     numpy_logistic_field_scale = {
         "name": "scale",
-        "type": [
-            "float",
-            "List[float]"
-        ]
+        "type": type_float_list
     }
 
     numpy_hyper_geometric_field_n_good_int = {
         "name": "ngoodint",
-        "type": [
-            "int",
-            "List[int]"
-        ]
+        "type": type_float_list
     }
 
     numpy_hyper_geometric_field_n_bad = {
         "name": "nbad",
-        "type": [
-            "int",
-            "List[int]"
-        ]
+        "type": type_int_list
     }
 
     numpy_hyper_geometric_field_n_sample = {
         "name": "nsample",
-        "type": [
-            "int",
-            "List[int]"
-        ]
+        "type": type_int_list
     }
 
     distributions = {
