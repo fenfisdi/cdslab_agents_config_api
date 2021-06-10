@@ -7,7 +7,7 @@ from src.models.db.master.disease_states import MasterDiseaseStates
 
 
 def raise_exception(message: str, error):
-    raise BaseException(message)
+    raise KeyError(message)
 
 
 if __name__ == "__main__":
