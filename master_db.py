@@ -17,6 +17,11 @@ if __name__ == "__main__":
         "ICU_prob"
     ]
 
+    type_float_list = [
+        "float",
+        "List[float]"
+    ]
+
     numpy_normal_field_loc = {
         "name": "loc",
         "type": [
@@ -113,7 +118,11 @@ if __name__ == "__main__":
             {
                 "Parameter": "algorithm",
                 "Type": None,
-                "Field": ["auto", "kd_tree", "ball_tree"]
+                "Field": [
+                    "auto",
+                    "kd_tree",
+                    "ball_tree"
+                ]
             },
             {
                 "Parameter": "kernel",
@@ -174,7 +183,11 @@ if __name__ == "__main__":
             {
                 "Parameter": "algorithm",
                 "Type": None,
-                "Field": ["auto", "kd_tree", "ball_tree"]
+                "Field": [
+                    "auto",
+                    "kd_tree",
+                    "ball_tree"
+                ]
             },
             {
                 "Parameter": "kernel",
@@ -236,10 +249,7 @@ if __name__ == "__main__":
                 "Type": "numpy",
                 "Field": {
                     "name": "a",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    "type": type_float_list
                 }
             },
             {
@@ -263,10 +273,7 @@ if __name__ == "__main__":
                 "Type": "numpy",
                 "Field": {
                     "name": "Iam",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    "type": type_float_list
                 }
             },
             {
@@ -274,10 +281,7 @@ if __name__ == "__main__":
                 "Type": "numpy",
                 "Field": {
                     "name": "P",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    "type": type_float_list
                 }
             },
             {
@@ -285,10 +289,7 @@ if __name__ == "__main__":
                 "Type": "numpy",
                 "Field": {
                     "name": "P",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    "type": type_float_list
                 }
             },
             {
