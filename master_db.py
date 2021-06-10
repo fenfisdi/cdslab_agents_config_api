@@ -283,7 +283,7 @@ if __name__ == "__main__":
                 type=parameters).save()
 
         except Exception as error:
-            raise Exception(f"An error has been occurred while MasterDistribution saved: {error}")
+            raise Exception(f"An error has been occurred while MasterDistribution saved")
 
     for name in disease_status:
         try:
@@ -293,4 +293,4 @@ if __name__ == "__main__":
             ).save()
 
         except Exception as error:
-            raise Exception(f"An error has been occurred while MasterDiseaseStates saved: {error}")
+            raise Exception(f"An error has been occurred while MasterDiseaseStates saved")
