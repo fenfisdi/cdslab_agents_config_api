@@ -1,11 +1,6 @@
-from mongoengine import(
-    UUIDField,
-    ReferenceField,
-    StringField,
-    BooleanField,
-    FloatField,
-    ListField
-)
+from mongoengine import UUIDField, ReferenceField, \
+    StringField, BooleanField, FloatField, ListField
+
 
 from .distribution import Distribution
 from .configuration import Configuration
@@ -13,12 +8,20 @@ from .base import BaseDocument
 
 
 class DiseaseStates(BaseDocument):
-    identifer = UUIDField(binary=False, unique=True, required=True)
-    configuration = ReferenceField(Configuration, dbref=True)
+    identifier = UUIDField(
+        binary=False,
+        unique=True,
+        required=True
+    )
+    configuration = ReferenceField(
+        Configuration,
+        dbref=True,
+        required=True
+    )
     name = StringField()
-    can_get_infected = BooleanField(default=True)
-    is_infected = BooleanField(default=False)
-    can_spread = BooleanField(default=False)
-    spread_radius = FloatField(default=2.5)
-    spread_probability = FloatField(default=0.1)
+    can_get_infected = BooleanField(required=True)
+    is_infected = BooleanField(required=True)
+    can_spread = BooleanField(required=True)
+    spread_radius = FloatField(required=True)
+    spread_probability = FloatField(required=True)
     distributions = ListField(ReferenceField(Distribution))
