@@ -5,6 +5,11 @@ from uuid import uuid1
 from src.models.db.master.distribution import MasterDistribution
 from src.models.db.master.disease_states import MasterDiseaseStates
 
+
+def raise_exception(message: str, error):
+    raise BaseException(message)
+
+
 if __name__ == "__main__":
 
     mongo_uri = environ.get("MONGO_URI")
@@ -31,6 +36,7 @@ if __name__ == "__main__":
         "name": "loc",
         "type": type_float_list
     }
+
     numpy_normal_field_scale = {
         "name": "scale",
         "type": type_float_list
@@ -283,7 +289,8 @@ if __name__ == "__main__":
                 type=parameters).save()
 
         except Exception as error:
-            raise Exception(f"An error has been occurred while MasterDistribution saved")
+            msg = f"An error has been occurred while MasterDistribution saved"
+            raise_exception(msg, error)
 
     for name in disease_status:
         try:
@@ -293,4 +300,5 @@ if __name__ == "__main__":
             ).save()
 
         except Exception as error:
-            raise Exception(f"An error has been occurred while MasterDiseaseStates saved")
+            msg = f"An error has been occurred while MasterDiseaseStates saved"
+            raise_exception(msg, error)
