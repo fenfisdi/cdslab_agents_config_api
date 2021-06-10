@@ -1,4 +1,4 @@
-from src.models.db.distribution import Distribution
+from src.models.db.master.distribution import MasterDistribution
 
 class DistributionInterface:
     '''
@@ -12,7 +12,7 @@ class DistributionInterface:
         Returns:
             Names Distributions in BD
         '''
-        return Distribution.objects().only("name").all()
+        return MasterDistribution.objects().only("name").all()
 
     @staticmethod
     def find_parameters(name: str):
@@ -26,6 +26,6 @@ class DistributionInterface:
         filters = dict(
             name=name
         )
-        return Distribution.objects(
+        return MasterDistribution.objects(
             **filters
         ).first()

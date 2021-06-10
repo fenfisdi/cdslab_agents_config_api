@@ -1,10 +1,16 @@
-from mongoengine import (
-    Document,
+from mongoengine import(
+    UUIDField,
     StringField,
-    ListField
+    DictField
 )
 
-class Distribution(Document):
+from .base import BaseDocument
+
+
+class Distribution(BaseDocument):
+    identifer = UUIDField(binary=False, unique=True, required=True)
     name = StringField(required=True)
-    type = ListField(required=True)
+    distribution_type = StringField()
+    filename = StringField()
+    extra_arguments = DictField()
     
