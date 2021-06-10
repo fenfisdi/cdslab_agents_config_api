@@ -17,6 +17,93 @@ if __name__ == "__main__":
         "ICU_prob"
     ]
 
+    numpy_normal_field_loc = {
+        "name": "loc",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+    numpy_normal_field_scale = {
+        "name": "scale",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+
+    numpy_log_normal_field_mean = {
+        "name": "mean",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+
+    numpy_log_normal_field_sigma = {
+        "name": "sigma",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+
+    numpy_gamma_field_shape = {
+        "name": "shape",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+
+    numpy_gamma_field_scale = {
+        "name": "scale",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+
+    numpy_logistic_field_loc = {
+        "name": "loc",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+
+    numpy_logistic_field_scale = {
+        "name": "scale",
+        "type": [
+            "float",
+            "List[float]"
+        ]
+    }
+
+    numpy_hyper_geometric_field_n_good_int = {
+        "name": "ngoodint",
+        "type": [
+            "int",
+            "List[int]"
+        ]
+    }
+
+    numpy_hyper_geometric_field_n_bad = {
+        "name": "nbad",
+        "type": [
+            "int",
+            "List[int]"
+        ]
+    }
+
+    numpy_hyper_geometric_field_n_sample = {
+        "name": "nsample",
+        "type": [
+            "int",
+            "List[int]"
+        ]
+    }
+
     distributions = {
         "Empirical": [
             {
@@ -132,32 +219,16 @@ if __name__ == "__main__":
                 "Parameter": "normal",
                 "Type": "numpy",
                 "Field": {
-                    "name": "loc",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ],
-                    "name": "scale",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    numpy_normal_field_loc,
+                    numpy_normal_field_scale
                 }
             },
             {
                 "Parameter": "lognormal",
                 "Type": "numpy",
                 "Field": {
-                    "name": "mean",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ],
-                    "name": "sigma",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    numpy_log_normal_field_mean,
+                    numpy_log_normal_field_sigma
                 }
             },
             {
@@ -175,32 +246,16 @@ if __name__ == "__main__":
                 "Parameter": "gamma",
                 "Type": "numpy",
                 "Field": {
-                    "name": "shape",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ],
-                    "name": "scale",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    numpy_gamma_field_shape,
+                    numpy_gamma_field_scale
                 }
             },
             {
                 "Parameter": "logistic",
                 "Type": "numpy",
                 "Field": {
-                    "name": "loc",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ],
-                    "name": "scale",
-                    "type": [
-                        "float",
-                        "List[float]"
-                    ]
+                    numpy_logistic_field_loc,
+                    numpy_logistic_field_scale
                 }
             },
             {
@@ -240,21 +295,9 @@ if __name__ == "__main__":
                 "Parameter": "hypergeometric",
                 "Type": "numpy",
                 "Field": {
-                    "name": "ngoodint",
-                    "type": [
-                        "int",
-                        "List[int]"
-                    ],
-                    "name": "nbad",
-                    "type": [
-                        "int",
-                        "List[int]"
-                    ],
-                    "name": "nsample",
-                    "type": [
-                        "int",
-                        "List[int]"
-                    ]
+                    numpy_hyper_geometric_field_n_good_int,
+                    numpy_hyper_geometric_field_n_bad,
+                    numpy_hyper_geometric_field_n_sample
                 }
             }
         ]
