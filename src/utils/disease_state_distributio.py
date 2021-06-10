@@ -1,8 +1,8 @@
 class DiseaseStatesDistribution:
     
     disease_states_distribution = [
-        "Daignosis",
-        "Quarentine",
+        "Diagnosis",
+        "Quarantine",
         "Hospitalization",
         "ICU"
     ]

@@ -19,7 +19,7 @@ class Units:
     @classmethod
     def distance(cls):
         """
-        Get units distance
+        Get distance units
 
         Return:
             List: Distance units list
@@ -29,7 +29,7 @@ class Units:
     @classmethod
     def time(cls):
         """
-            Get units of time
+            Get time units
         Return:
             List: Time units list
         """

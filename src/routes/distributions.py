@@ -82,7 +82,7 @@ def list_disease_state_distribution():
     Get disease states distribution list
 
     Return:
-        Disease state distributions object list
+        Disease states distributions object list
 
     """
     try:
