@@ -6,8 +6,8 @@ from src.models.db.master.distribution import MasterDistribution
 from src.models.db.master.disease_states import MasterDiseaseStates
 
 
-def raise_exception(message: str, error):
-    raise KeyError(message)
+def raise_exception(message: str, err: str):
+    raise KeyError(f"{message}. Error type: {err}")
 
 
 if __name__ == "__main__":
