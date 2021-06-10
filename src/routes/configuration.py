@@ -1,10 +1,7 @@
 from fastapi import APIRouter
-from starlette.status import (
-    HTTP_200_OK,
-    HTTP_201_CREATED,
-    HTTP_400_BAD_REQUEST,
+from starlette.status import HTTP_200_OK, \
+    HTTP_201_CREATED, HTTP_400_BAD_REQUEST, \
     HTTP_404_NOT_FOUND
-)
 
 from src.interfaces import ConfigurationInterface
 from src.models import Configuration, NewConfiguration
@@ -20,8 +17,10 @@ configuration_routes = APIRouter(tags=["Configuration"])
 def find_all():
     """
     Get all configuration exist in db
+
     Return:
           Configuration objects as json list
+
     """
     try:
         configuration = ConfigurationInterface.find_all()
@@ -47,12 +46,15 @@ def find_all():
 @configuration_routes.post("/configuration")
 def create_configuration(configuration: NewConfiguration):
     """
-    Create a new configuration in database
+    Create a new configuration in db
+
     Parameter:
         configuration (NewConfiguration): Configuration
             object to insert in bd
+
     Return:
         Configuration object as json
+
     """
     try:
         configuration_found = ConfigurationInterface.find_by_name(configuration.name)
@@ -79,6 +81,17 @@ def create_configuration(configuration: NewConfiguration):
 
 @configuration_routes.put("/configuration")
 def updated_configuration(configuration: NewConfiguration):
+    """
+     Update a configuration in db
+
+     Parameter:
+        configuration (NewConfiguration): Configuration
+            object to insert in bd
+
+    Return:
+        Configuration object as json
+
+    """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(configuration.identifier)
         if not configuration_found:
