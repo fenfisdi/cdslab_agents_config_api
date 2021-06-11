@@ -16,10 +16,6 @@ distributions_routes = APIRouter(tags=["distributions"])
 def list_distributions():
     """
     Get  all distributions
-
-    Return:
-        Distribution object list
-
     """
 
     try:
@@ -51,9 +47,8 @@ def parameters(name: str):
     """
     Get  parameters for distribution name
 
-    Return:
-        Distribution parameters object
-
+    \f
+    :pram name: distribution name
     """
     try:
         parameters = DistributionInterface.find_parameters(name)
@@ -80,10 +75,6 @@ def parameters(name: str):
 def list_disease_state_distribution():
     """
     Get disease states distribution list
-
-    Return:
-        Disease states distributions object list
-
     """
     try:
         disease_states_distribution = DiseaseStatesDistribution.get_disease_states_distribution()

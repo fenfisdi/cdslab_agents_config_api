@@ -10,10 +10,6 @@ class DistributionInterface:
     def find_all():
         """
         Find all distributions in BD
-
-        Returns:
-            Names Distributions in BD
-
         """
         return MasterDistribution.objects().only("name").all()
 
@@ -22,12 +18,7 @@ class DistributionInterface:
         """
         Search for distributions that match the name
 
-        Parameter:
-            name (str): distribution name
-
-        Returns:
-            Distribution name and parameters
-
+        :param name: distribution name
         """
         filters = dict(
             name=name
