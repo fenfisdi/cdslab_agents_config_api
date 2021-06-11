@@ -16,7 +16,7 @@ configuration_routes = APIRouter(tags=["Configuration"])
 @configuration_routes.get("/configuration")
 def find_all():
     """
-    Get all configuration exist in db
+    Get all existing configurations in db
 
     Return:
           Configuration objects as json list

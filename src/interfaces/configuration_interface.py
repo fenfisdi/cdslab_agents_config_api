@@ -9,7 +9,7 @@ class ConfigurationInterface:
     @staticmethod
     def find_all():
         """
-        Get all configurations exists in db
+        Get all existing configurations in db
 
         Return:
             Configurations object list
@@ -19,7 +19,7 @@ class ConfigurationInterface:
     @staticmethod
     def find_by_identifier(identifier: str):
         """
-        Get a configuration by name
+        Get a configuration by identifier
 
         Parameter:
             identifier (str): Identifier to search the configuration
