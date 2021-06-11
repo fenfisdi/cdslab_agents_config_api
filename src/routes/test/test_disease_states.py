@@ -13,7 +13,7 @@ class ListDiseaseStatesRouteTestCase(TestCase):
         self.client = TestClient(app)
 
         self.route = "/diseaseStates"
-    
+
     def test_list_disease_states_all(self):
         response = self.client.get(self.route)
         self.assertIsNotNone(response)
