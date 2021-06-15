@@ -1,5 +1,5 @@
 from mongoengine import Document, UUIDField, \
-    ReferenceField, StringField, FloatField
+    ReferenceField, StringField
 
 from configuration import Configuration
 

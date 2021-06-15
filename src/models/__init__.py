@@ -16,6 +16,7 @@ from .route_models.immunization_group import NewImmunizationGroup
 from .route_models.mobility_group import NewMobilityGroup
 from .route_models.natural_history import NewNaturalHistory, \
     UpdateNaturalHistory
+from .route_models.quarantine_group import NewQuarantineGroup
 from .route_models.susceptibility_group import NewSusceptibilityGroup
 from .route_models.vulnerability_group import NewVulnerabilityGroup
 
@@ -28,6 +29,8 @@ __all__ = [
     "NewMobilityGroup",
     "Simulation",
     "UpdateConfiguration",
+    "QuarantineGroup",
+    "NewQuarantineGroup",
     "AgeGroup",
     "NewAgeGroup",
     "NewNaturalHistory",
@@ -41,5 +44,4 @@ __all__ = [
     "VulnerabilityGroup",
     "NewVulnerabilityGroup",
     "NaturalHistory",
-    "QuarantineGroup"
 ]

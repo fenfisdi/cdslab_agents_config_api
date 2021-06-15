@@ -59,6 +59,19 @@ class MobilityGroupsMessages:
 
 
 @dataclass
+class QuarantineGroupsMessages:
+    """
+    Messages used in endpoint responses for quarantine groups
+    """
+    found: str = "Quarantine Groups found"
+    not_found: str = "Quarantine Groups not found"
+    exist: str = 'Quarantine Groups exist'
+    created: str = "Quarantine Groups has been created"
+    updated: str = "Quarantine Groups updated"
+    not_quarantine_groups_entry: str = "Quarantine Groups not entry"
+
+
+@dataclass
 class AgeGroupsMessages:
     """
     Messages used in endpoint responses for age groups
