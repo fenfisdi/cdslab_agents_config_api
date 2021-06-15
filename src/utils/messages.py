@@ -45,6 +45,20 @@ class ConfigurationMessage:
 
 
 @dataclass
+class MobilityGroupsMessages:
+    """
+    Messages used in endpoint responses for mobility groups
+    """
+    found: str = "Mobility Groups found"
+    not_found: str = "Mobility Groups not found"
+    exist: str = 'Mobility Groups exist'
+    created: str = "Mobility Groups has been created"
+    updated: str = "Mobility Groups updated"
+    not_mobility_group_entry: str = "Mobility Groups not entry"
+    not_distribution_entry: str = "Distribution not entry"
+
+
+@dataclass
 class AgeGroupsMessages:
     """
     Messages used in endpoint responses for age groups
