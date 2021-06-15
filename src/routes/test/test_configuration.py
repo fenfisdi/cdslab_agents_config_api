@@ -111,7 +111,7 @@ class UpdateConfigurationRouteTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
-class FindConfigurationRouteTestCase(TestCase):
+class ListConfigurationRouteTestCase(TestCase):
     def setUp(self) -> None:
         from src.api import app
         self.client = TestClient(app)

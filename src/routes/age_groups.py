@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from typing import List
 from starlette.status import HTTP_200_OK, \
     HTTP_201_CREATED, HTTP_400_BAD_REQUEST, \
-    HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
+    HTTP_404_NOT_FOUND
 
 from src.interfaces import AgeGroupInterface
 from src.models import AgeGroup, NewAgeGroup
