@@ -2,6 +2,7 @@ from mongoengine import UUIDField, StringField, DictField
 
 from .base import BaseDocument
 
+
 class Distribution(BaseDocument):
     identifier = UUIDField(
         binary=False,
@@ -13,4 +14,3 @@ class Distribution(BaseDocument):
     distribution_name = StringField()
     distribution_filename = StringField()
     distribution_extra_arguments = DictField()
-    
