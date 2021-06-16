@@ -9,7 +9,7 @@ class DistributionInterface:
     @staticmethod
     def find_all():
         """
-        Find all distributions in BD
+        Find all distributions in DB
         """
         return MasterDistribution.objects().only("name").all()
 

@@ -45,7 +45,7 @@ def create_configuration(configuration: NewConfiguration):
     Create a new configuration in db
 
     \f
-    :param configuration: Configuration object to insert in bd
+    :param configuration: Configuration object to insert in db
     """
     try:
         configuration_found = ConfigurationInterface.find_by_name(configuration.name)
@@ -76,7 +76,7 @@ def updated_configuration(configuration: NewConfiguration):
     Update a configuration in db
 
     \f
-    :param configuration: Configuration object to insert in bd
+    :param configuration: Configuration object to insert in db
     """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(configuration.identifier)

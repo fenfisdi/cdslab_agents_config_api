@@ -48,7 +48,7 @@ def parameters(name: str):
     Get  parameters for distribution name
 
     \f
-    :pram name: distribution name
+    :param name: distribution name
     """
     try:
         parameters = DistributionInterface.find_parameters(name)
