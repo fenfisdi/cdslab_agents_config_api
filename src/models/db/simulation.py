@@ -1,10 +1,11 @@
 from mongoengine import Document, UUIDField, \
-    ReferenceField, StringField, FloatField
+    ReferenceField, DateTimeField, FloatField, EnumField
 
 from configuration import Configuration
+from src.models.general.simulation import SimulationStatus
 
 
-class AgeGroup(Document):
+class Simulation(Document):
     identifier = UUIDField(
         binary=False,
         unique=True,
@@ -15,5 +16,5 @@ class AgeGroup(Document):
         dbref=True,
         required=True
     )
-    name = StringField(required=True)
-    population_percentage = FloatField(required=True)
+    status = EnumField(SimulationStatus, required=True)
+    executed_at = DateTimeField()

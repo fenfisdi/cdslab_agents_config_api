@@ -42,3 +42,17 @@ class ConfigurationMessage:
     exist: str = 'Configuration exist'
     created: str = "Configuration has been created"
     updated: str = "Configuration updated"
+
+
+@dataclass
+class AgeGroupsMessages:
+    """
+    Messages used in endpoint responses for age groups
+    """
+    found: str = "Age groups found"
+    not_found: str = "Age groups not found",
+    not_age_groups_entry: str = "Not age groups entry to save",
+    created: str = "Age groups has been created"
+    updated: str = "Age groups updated"
+    deleted: str = "Age group deleted"
+    bad_deleted: str = "Age group bad deleted"
