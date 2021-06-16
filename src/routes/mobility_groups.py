@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter
 from starlette.status import HTTP_200_OK, \
     HTTP_201_CREATED, HTTP_400_BAD_REQUEST, \
@@ -78,19 +80,12 @@ def find_by_configuration(
 )
 def create_mobility_group(
         configuration_identifier: str,
-        mobility_group: NewMobilityGroup,
-        distribution: NewDistribution
+        mobility_groups: List[NewMobilityGroup]
 ):
     try:
-        if not mobility_group:
+        if not mobility_groups:
             return UJSONResponse(
                 MobilityGroupsMessages.not_mobility_group_entry,
-                HTTP_400_BAD_REQUEST
-            )
-
-        if not distribution:
-            return UJSONResponse(
-                MobilityGroupsMessages.not_distribution_entry,
                 HTTP_400_BAD_REQUEST
             )
 
@@ -99,16 +94,21 @@ def create_mobility_group(
         if mobility_groups_found:
             for mobility_group in mobility_groups_found:
                 distribution_found = DistributionInterface. \
-                    find_one(mobility_group.distribution)
+                    find_one(mobility_group.distribution.identifier)
                 if distribution_found:
-                    distribution.delete()
+                    distribution_found.delete()
                 mobility_group.delete()
 
-        new_distribution = Distribution(**distribution)
-        new_distribution.save()
+        for mobility_group in mobility_groups:
+            new_distribution = \
+                Distribution(**mobility_group.distribution)
+            new_distribution.save()
 
-        mobility_group = MobilityGroup(**mobility_group)
-        mobility_group.save()
+            new_mobility_group = \
+                MobilityGroup(**mobility_group)
+            new_mobility_group.distribution = \
+                new_mobility_group.identifier
+            new_mobility_group.save()
     except Exception as error:
         return UJSONResponse(
             str(error),
@@ -118,5 +118,5 @@ def create_mobility_group(
     return UJSONResponse(
         MobilityGroupsMessages.created,
         HTTP_201_CREATED,
-        BsonObject.dict(mobility_group)
+        BsonObject.dict(mobility_groups)
     )
