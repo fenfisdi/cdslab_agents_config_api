@@ -30,7 +30,7 @@ __all__ = [
     "NewAgeGroup",
     "NewNaturalHistory",
     "UpdateNaturalHistory",
-    "NaturalHistory"
+    "NewConfiguration",
     "SusceptibilityGroup",
     "NewSusceptibilityGroup"
 ]
