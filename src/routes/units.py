@@ -16,10 +16,6 @@ units_routes = APIRouter(tags=["units"])
 def units_distance():
     """
     Get allowed distance units 
-    
-    Return:
-        Distance units configuration
-
     """
     try:
         distance = Units.distance()
@@ -44,10 +40,6 @@ def units_distance():
 def units_time():
     """
     Get allowed time units 
-    
-    Return:
-        Time units configuration
-
     """
     try:
         time = Units.time()

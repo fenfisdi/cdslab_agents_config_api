@@ -9,8 +9,5 @@ class DiseaseStatesInterface:
     def find_all():
         """
         Find all disease states
-
-        Return:
-            Disease States objects exist in bd as list
         """
         return MasterDiseaseStates.objects().all()

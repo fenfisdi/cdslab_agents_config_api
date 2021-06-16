@@ -20,17 +20,12 @@ class Units:
     def distance(cls):
         """
         Get distance units
-
-        Return:
-            List: Distance units list
         """
         return cls.units_length
 
     @classmethod
     def time(cls):
         """
-            Get time units
-        Return:
-            List: Time units list
+        Get time units
         """
         return cls.units_time

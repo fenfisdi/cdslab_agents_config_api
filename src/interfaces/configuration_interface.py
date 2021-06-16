@@ -10,9 +10,6 @@ class ConfigurationInterface:
     def find_all():
         """
         Get all existing configurations in db
-
-        Return:
-            Configurations object list
         """
         return Configuration.objects().all()
 
@@ -21,12 +18,7 @@ class ConfigurationInterface:
         """
         Get a configuration by identifier
 
-        Parameter:
-            identifier (str): Identifier to search the configuration
-
-        Return:
-            A configuration object
-
+        :param identifier: Identifier to search the configuration
         """
         filters = dict(
             identifier=identifier
@@ -38,12 +30,7 @@ class ConfigurationInterface:
         """
         Get a configuration by name
 
-        Parameter:
-            name (str): Name to search the configuration
-
-        Return:
-            A configuration object
-
+        :param name: Name to search the configuration
         """
         filters = dict(
             name=name

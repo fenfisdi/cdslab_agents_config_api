@@ -17,10 +17,6 @@ configuration_routes = APIRouter(tags=["Configuration"])
 def find_all():
     """
     Get all existing configurations in db
-
-    Return:
-          Configuration objects as json list
-
     """
     try:
         configuration = ConfigurationInterface.find_all()
@@ -48,13 +44,8 @@ def create_configuration(configuration: NewConfiguration):
     """
     Create a new configuration in db
 
-    Parameter:
-        configuration (NewConfiguration): Configuration
-            object to insert in bd
-
-    Return:
-        Configuration object as json
-
+    \f
+    :param configuration: Configuration object to insert in db
     """
     try:
         configuration_found = ConfigurationInterface.find_by_name(configuration.name)
@@ -82,15 +73,10 @@ def create_configuration(configuration: NewConfiguration):
 @configuration_routes.put("/configuration")
 def updated_configuration(configuration: NewConfiguration):
     """
-     Update a configuration in db
+    Update a configuration in db
 
-     Parameter:
-        configuration (NewConfiguration): Configuration
-            object to insert in bd
-
-    Return:
-        Configuration object as json
-
+    \f
+    :param configuration: Configuration object to insert in db
     """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(configuration.identifier)

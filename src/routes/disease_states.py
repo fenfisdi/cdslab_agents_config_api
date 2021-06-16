@@ -19,9 +19,6 @@ disease_states_routes = APIRouter(tags=["DiseaseStates"])
 def list_disease_states():
     """
     Get disease states in data base
-
-    Return:
-        Disease States Json list
     """
     try:
         states = DiseaseStatesInterface.fin_all()
