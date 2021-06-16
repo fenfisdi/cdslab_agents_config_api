@@ -1,10 +1,12 @@
 import uuid
 
-from typing import List
 from unittest import TestCase
 from unittest.mock import patch, Mock
-from mongoengine import connect, disconnect
-
+from mongoengine import (
+    connect,
+    disconnect
+)
+from typing import List
 from fastapi.testclient import TestClient
 
 from src.models import AgeGroup

@@ -44,8 +44,9 @@ class ConfigurationInterfaceTestCase(TestCase):
         self.assertIsNotNone(configurations)
 
     def test_find_by_identifier(self):
-        configuration = ConfigurationInterface. \
-            find_by_identifier(self.identifier)
+        configuration = ConfigurationInterface.find_by_identifier(
+            self.identifier
+        )
 
         self.assertIsNotNone(configuration)
         self.assertEqual(
@@ -54,8 +55,9 @@ class ConfigurationInterfaceTestCase(TestCase):
         )
 
     def test_find_by_name(self):
-        configuration = ConfigurationInterface. \
-            find_by_name(self.name)
+        configuration = ConfigurationInterface.find_by_name(
+            self.name
+        )
 
         self.assertIsNotNone(configuration)
         self.assertEqual(

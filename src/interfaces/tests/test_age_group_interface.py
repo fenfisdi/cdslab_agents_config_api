@@ -1,7 +1,7 @@
 import uuid
 
-from mongoengine import connect, disconnect
 from unittest import TestCase
+from mongoengine import connect, disconnect
 
 from src.models import AgeGroup
 from src.interfaces import AgeGroupInterface
@@ -35,8 +35,9 @@ class AgeGroupInterfaceTestCase(TestCase):
         self.assertIsNotNone(age_groups)
 
     def test_find_one(self):
-        age_group = AgeGroupInterface. \
-            find_one(self.identifier)
+        age_group = AgeGroupInterface.find_one(
+            self.identifier
+        )
 
         self.assertIsNotNone(age_group)
         self.assertEqual(
@@ -45,7 +46,8 @@ class AgeGroupInterfaceTestCase(TestCase):
         )
 
     def test_find_by_configuration(self):
-        age_groups = AgeGroupInterface. \
-            find_by_configuration(self.configuration_identifier)
+        age_groups = AgeGroupInterface.find_by_configuration(
+            self.configuration_identifier
+        )
 
         self.assertIsNotNone(age_groups)

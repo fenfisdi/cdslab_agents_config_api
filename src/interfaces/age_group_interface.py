@@ -1,4 +1,6 @@
-from src.models import AgeGroup
+from uuid import UUID
+
+from src.models import AgeGroup, Configuration
 
 
 class AgeGroupInterface:
@@ -24,11 +26,10 @@ class AgeGroupInterface:
         return AgeGroup.objects().all()
 
     @staticmethod
-    def find_by_configuration(configuration_identifier: str):
+    def find_by_configuration(configuration_identifier: Configuration):
         """
         Get all existing age groups in db relation to a configuration
 
-        \f
         :param configuration_identifier: Identifier from a configuration
         """
         filters = dict(

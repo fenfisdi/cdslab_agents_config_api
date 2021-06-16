@@ -5,6 +5,7 @@ from typing import Union
 from bson import ObjectId
 from mongoengine import Document, QuerySet
 from ujson import loads
+from bson import DBRef
 
 
 class BsonEncoder(JSONEncoder):
@@ -16,6 +17,8 @@ class BsonEncoder(JSONEncoder):
             return str(o)
         if isinstance(o, datetime):
             return o.isoformat()
+        if isinstance(o, DBRef):
+            return str(o.id)
         return JSONEncoder.default(self, o)
 
 
