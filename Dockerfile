@@ -3,6 +3,9 @@ EXPOSE 8080
 
 ENV PYTHONUNBUFFERED 1
 ENV APP_HOME /app
+ENV VIRTUAL_ENV /app/.venv
+RUN python -m venv ${VIRTUAL_ENV}
+ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 
 COPY requirements.txt .
 
