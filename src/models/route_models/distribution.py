@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field
 
 
 class NewDistribution(BaseModel):
-    identifier: str = Field(...)
     name: str = Field(...)
     distribution_type: str = Field(...)
     distribution_name: str = Field(...)

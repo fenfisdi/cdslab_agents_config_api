@@ -1,10 +1,8 @@
-from typing import Dict
-
 from pydantic import BaseModel, Field
+
+from .distribution import NewDistribution
 
 
 class NewMobilityGroup(BaseModel):
-    identifier: str = Field(...)
-    configuration: str = Field(...)
-    distribution: Dict = Field(...)
+    distribution: NewDistribution = Field(...)
     name: str = Field(...)

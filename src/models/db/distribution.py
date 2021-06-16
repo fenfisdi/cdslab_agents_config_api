@@ -7,8 +7,7 @@ from .base import BaseDocument
 class Distribution(BaseDocument):
     identifier = UUIDField(
         binary=False,
-        unique=True,
-        required=True
+        unique=True
     )
     name = StringField(required=True)
     distribution_type = StringField(required=True)

@@ -2,15 +2,14 @@ from mongoengine import UUIDField, \
     ReferenceField, StringField
 
 from .base import BaseDocument
-from configuration import Configuration
-from distribution import Distribution
+from .configuration import Configuration
+from .distribution import Distribution
 
 
 class MobilityGroup(BaseDocument):
     identifier = UUIDField(
         binary=False,
-        unique=True,
-        required=True
+        unique=True
     )
     configuration = ReferenceField(
         Configuration,

@@ -1,4 +1,7 @@
-from src.models import MobilityGroup
+from src.models import (
+    MobilityGroup,
+    Configuration
+)
 
 
 class MobilityGroupInterface:
@@ -29,10 +32,15 @@ class MobilityGroupInterface:
 
     @staticmethod
     def find_by_configuration(
-            configuration_identifier: str
+            configuration: Configuration
     ):
+        """
+        Find all existing mobility groups by configuration in db
+
+        :param configuration: Configuration object
+        """
         filters = dict(
-            configuration=configuration_identifier
+            configuration=configuration
         )
         return MobilityGroup.objects(
             **filters

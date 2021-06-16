@@ -9,6 +9,7 @@ from src.db import MongoEngine
 from src.routes import (
     disease_states_routes,
     distributions_routes,
+    mobility_group_routes,
     units_routes,
     configuration_routes,
     age_group_routes
@@ -33,5 +34,6 @@ app.add_middleware(
 app.include_router(units_routes)
 app.include_router(distributions_routes)
 app.include_router(disease_states_routes)
+app.include_router(mobility_group_routes)
 app.include_router(configuration_routes)
 app.include_router(age_group_routes)

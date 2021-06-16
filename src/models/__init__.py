@@ -1,7 +1,7 @@
 from .db.configuration import Configuration
 from .db.disease_states import DiseaseStates
 from .db.distribution import Distribution
-from .db.simulation import Simulation
+# from .db.simulation import Simulation
 from .db.mobility_group import MobilityGroup
 from .route_models.configuration import NewConfiguration
 from .route_models.mobility_group import NewMobilityGroup
@@ -18,7 +18,7 @@ __all__ = [
     "Configuration", 
     "DiseaseStates", 
     "Distribution", 
-    "Simulation",
+    # "Simulation",
     "NewConfiguration",
     "MobilityGroup",
     "NewMobilityGroup",

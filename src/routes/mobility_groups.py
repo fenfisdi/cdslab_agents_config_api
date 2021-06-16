@@ -1,15 +1,29 @@
+import uuid
 from typing import List
 
 from fastapi import APIRouter
-from starlette.status import HTTP_200_OK, \
-    HTTP_201_CREATED, HTTP_400_BAD_REQUEST, \
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND
+)
 
-from src.interfaces import MobilityGroupInterface, \
-    DistributionInterface
-from src.models import MobilityGroup, Distribution, \
-    NewMobilityGroup, NewDistribution
-from src.utils.messages import MobilityGroupsMessages
+from src.interfaces import (
+    MobilityGroupInterface,
+    DistributionInterface,
+    ConfigurationInterface
+)
+from src.models import (
+    MobilityGroup,
+    Distribution,
+    NewMobilityGroup,
+    NewDistribution
+)
+from src.utils.messages import (
+    MobilityGroupsMessages,
+    ConfigurationMessage
+)
 from src.utils.encoder import BsonObject
 from src.utils.response import UJSONResponse
 
@@ -55,8 +69,19 @@ def find_by_configuration(
     :param configuration_identifier: Configuration identifier
     """
     try:
+        configuration = ConfigurationInterface.find_by_identifier(
+            configuration_identifier
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
         mobility_groups = MobilityGroupInterface. \
-            find_by_configuration(configuration_identifier)
+            find_by_configuration(configuration)
+
         if not mobility_groups:
             return UJSONResponse(
                 MobilityGroupsMessages.not_found,
@@ -82,32 +107,57 @@ def create_mobility_group(
         configuration_identifier: str,
         mobility_groups: List[NewMobilityGroup]
 ):
+    """
+    Create a mobility group in db
+
+    :param configuration_identifier: Configuration identifier
+    :param mobility_groups: Mobility groups list to insert in db
+    """
     try:
+        configuration = ConfigurationInterface.find_by_identifier(
+            configuration_identifier
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
         if not mobility_groups:
             return UJSONResponse(
                 MobilityGroupsMessages.not_mobility_group_entry,
                 HTTP_400_BAD_REQUEST
             )
 
-        mobility_groups_found = MobilityGroupInterface. \
-            find_by_configuration(configuration_identifier)
+        mobility_groups_found = MobilityGroupInterface.find_by_configuration(
+            configuration
+        )
+
         if mobility_groups_found:
             for mobility_group in mobility_groups_found:
-                distribution_found = DistributionInterface. \
-                    find_one(mobility_group.distribution.identifier)
+                print("---- mobility_group ----", mobility_group)
+                distribution_found = DistributionInterface.find_one(
+                    mobility_group.distribution.identifier
+                )
                 if distribution_found:
                     distribution_found.delete()
                 mobility_group.delete()
 
         for mobility_group in mobility_groups:
-            new_distribution = \
-                Distribution(**mobility_group.distribution)
-            new_distribution.save()
+            new_distribution = Distribution(
+                **mobility_group.distribution.dict()
+            )
+            new_mobility_group = MobilityGroup(
+                **mobility_group.dict()
+            )
+            new_distribution.identifier = uuid.uuid1()
+            new_distribution.save().reload()
+            print("DISTRIBUTION SAVE --- ", new_distribution)
 
-            new_mobility_group = \
-                MobilityGroup(**mobility_group)
-            new_mobility_group.distribution = \
-                new_mobility_group.identifier
+            new_mobility_group.identifier = uuid.uuid1()
+            new_mobility_group.configuration = configuration
+            new_mobility_group.distribution = new_distribution
             new_mobility_group.save()
     except Exception as error:
         return UJSONResponse(
@@ -117,6 +167,5 @@ def create_mobility_group(
 
     return UJSONResponse(
         MobilityGroupsMessages.created,
-        HTTP_201_CREATED,
-        BsonObject.dict(mobility_groups)
+        HTTP_201_CREATED
     )
