@@ -1,10 +1,19 @@
+import uuid
+
 from fastapi import APIRouter
-from starlette.status import HTTP_200_OK, \
-    HTTP_201_CREATED, HTTP_400_BAD_REQUEST, \
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND
+)
 
 from src.interfaces import ConfigurationInterface
-from src.models import Configuration, NewConfiguration
+from src.models import (
+    Configuration,
+    NewConfiguration,
+    UpdateConfiguration
+)
 from src.utils.messages import ConfigurationMessage
 from src.utils.encoder import BsonObject
 from src.utils.response import UJSONResponse
@@ -48,14 +57,20 @@ def create_configuration(configuration: NewConfiguration):
     :param configuration: Configuration object to insert in db
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_name(configuration.name)
+        configuration_found = ConfigurationInterface.find_by_name(
+            configuration.name
+        )
         if configuration_found:
             return UJSONResponse(
                 ConfigurationMessage.exist,
                 HTTP_400_BAD_REQUEST
             )
 
-        new_configuration = Configuration(**configuration)
+        new_configuration = Configuration(
+            **configuration.dict()
+        )
+        new_configuration.is_delete = False
+        new_configuration.identifier = uuid.uuid1()
         new_configuration.save()
     except Exception as error:
         return UJSONResponse(
@@ -71,7 +86,7 @@ def create_configuration(configuration: NewConfiguration):
 
 
 @configuration_routes.put("/configuration")
-def updated_configuration(configuration: NewConfiguration):
+def updated_configuration(configuration: UpdateConfiguration):
     """
     Update a configuration in db
 
@@ -79,7 +94,9 @@ def updated_configuration(configuration: NewConfiguration):
     :param configuration: Configuration object to insert in db
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(configuration.identifier)
+        configuration_found = ConfigurationInterface.find_by_identifier(
+            configuration.identifier
+        )
         if not configuration_found:
             return UJSONResponse(
                 ConfigurationMessage.not_found,

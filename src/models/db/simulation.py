@@ -1,7 +1,7 @@
 from mongoengine import Document, UUIDField, \
     ReferenceField, DateTimeField, FloatField, EnumField
 
-from configuration import Configuration
+from .configuration import Configuration
 from src.models.general.simulation import SimulationStatus
 
 

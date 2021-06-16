@@ -1,7 +1,12 @@
-from mongoengine import Document, UUIDField, \
-    ReferenceField, StringField, FloatField
+from mongoengine import (
+    Document,
+    UUIDField,
+    ReferenceField,
+    StringField,
+    FloatField
+)
 
-from configuration import Configuration
+from .configuration import Configuration
 
 
 class AgeGroup(Document):

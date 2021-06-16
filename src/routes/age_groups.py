@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter
 from typing import List
 from starlette.status import HTTP_200_OK, \
@@ -44,7 +46,6 @@ def find_by_configuration(configuration_identifier: str):
     """
     Get existing age groups by configuration identifier
 
-    \f
     :param configuration_identifier: Configuration identifier
     """
     try:
@@ -54,7 +55,7 @@ def find_by_configuration(configuration_identifier: str):
         if not age_groups:
             return UJSONResponse(
                 AgeGroupsMessages.not_exist,
-                HTTP_400_BAD_REQUEST
+                HTTP_404_NOT_FOUND
             )
 
     except Exception as error:
@@ -83,6 +84,7 @@ def create_age_groups(
     :param age_groups: List of age groups to save in db
     """
     try:
+        print("IDENTIFIER ------", configuration_identifier)
         if not age_groups:
             return UJSONResponse(
                 AgeGroupsMessages.not_age_groups_entry,
@@ -96,7 +98,8 @@ def create_age_groups(
                 age_group.delete()
 
         for age_group in age_groups:
-            new_age_group = AgeGroup(**age_group)
+            new_age_group = AgeGroup(**age_group.dict())
+            new_age_group.identifier = uuid.uuid1().hex
             new_age_group.save()
 
     except Exception as error:

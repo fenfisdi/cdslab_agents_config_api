@@ -4,7 +4,6 @@ from pydantic import BaseModel, Field
 
 
 class NewConfiguration(BaseModel):
-    identifier: str = Field(...)
     name: str = Field(...)
     population_number: int = Field(...)
     interval_date: Dict = Field(...)
@@ -12,4 +11,9 @@ class NewConfiguration(BaseModel):
     iteration_number: int = Field(...)
     box_size: Dict = Field(...)
     distance_units: str = Field(...)
+
+
+class UpdateConfiguration(NewConfiguration):
+    identifier: str = Field(...)
     is_delete: bool = Field(...)
+
