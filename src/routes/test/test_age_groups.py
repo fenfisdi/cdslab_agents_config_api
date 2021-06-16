@@ -26,7 +26,7 @@ class ListAgeGroupRouteTestCase(TestCase):
         self.identifier_second = uuid.uuid1().hex
         self.configuration_identifier = uuid.uuid1().hex
         self.name_first = "Age Group Unit Test"
-        self.name_second = "Age Group Unit Test"
+        self.name_second = "2Age Group Unit Test"
         self.population_percentage = 23.5
         self.age_group_first = AgeGroup(
             identifier=self.identifier_first,
@@ -88,6 +88,7 @@ class ListAgeGroupRouteTestCase(TestCase):
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, 200)
 
+    @patch(solve_path("AgeGroupInterface"))
     def test_find_by_configuration_not_found(
             self,
             age_group_interface: Mock
