@@ -11,7 +11,10 @@ class ConfigurationInterface:
         """
         Get all existing configurations in db
         """
-        return Configuration.objects().all()
+        filters = dict(
+            is_delete=False
+        )
+        return Configuration.objects(**filters).all()
 
     @staticmethod
     def find_by_identifier(identifier: str):

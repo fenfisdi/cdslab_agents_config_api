@@ -5,7 +5,7 @@ from .base import BaseDocument
 
 
 class Configuration(BaseDocument):
-    identifier = UUIDField(binary=False, unique=True, required=True)
+    identifier = UUIDField(binary=False, unique=True)
     name = StringField()
     population_number = IntField()
     interval_date = DictField()

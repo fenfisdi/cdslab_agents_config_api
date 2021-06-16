@@ -10,8 +10,8 @@ from src.interfaces import ConfigurationInterface
 class ConfigurationInterfaceTestCase(TestCase):
     def setUp(self) -> None:
         connect(
-            'mongoenginetest',
-            host='mongomock://localhost',
+            "mongoenginetest",
+            host="mongomock://localhost",
             alias="ConfigurationInterfaceTestCase"
         )
 
@@ -33,7 +33,7 @@ class ConfigurationInterfaceTestCase(TestCase):
             ),
             distance_units="ft",
             is_delete=False
-        )
+        ).save()
 
     def tearDown(self):
         disconnect()
@@ -44,13 +44,23 @@ class ConfigurationInterfaceTestCase(TestCase):
         self.assertIsNotNone(configurations)
 
     def test_find_by_identifier(self):
-        configuration = ConfigurationInterface.find_by_identifier(self.identifier)
+        configuration = ConfigurationInterface.find_by_identifier(
+            self.identifier
+        )
 
         self.assertIsNotNone(configuration)
-        self.assertEqual(configuration.identifer, self.identifier)
+        self.assertEqual(
+            configuration.identifier,
+            self.identifier
+        )
 
     def test_find_by_name(self):
-        configuration = ConfigurationInterface.find_by_name(self.name)
+        configuration = ConfigurationInterface.find_by_name(
+            self.name
+        )
 
         self.assertIsNotNone(configuration)
-        self.assertEqual(configuration.name, self.name)
+        self.assertEqual(
+            configuration.name,
+            self.name
+        )
