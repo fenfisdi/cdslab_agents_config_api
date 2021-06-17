@@ -56,3 +56,8 @@ class AgeGroupsMessages:
     updated: str = "Age groups updated"
     deleted: str = "Age group deleted"
     bad_deleted: str = "Age group bad deleted"
+
+
+@dataclass
+class SecurityMessage:
+    invalid_token: str = "Invalid Token"
