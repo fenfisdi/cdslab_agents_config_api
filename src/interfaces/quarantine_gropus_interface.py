@@ -1,4 +1,7 @@
-from src.models import QuarantineGroup
+from src.models import (
+    QuarantineGroup,
+    Configuration
+)
 
 
 class QuarantineGroupInterface:
@@ -27,13 +30,13 @@ class QuarantineGroupInterface:
 
     @staticmethod
     def find_by_configuration(
-            configuration_identifier: str
+            configuration: Configuration
     ):
         """
         Get all existing quarantine groups by
         configuration in db
         """
         filters = dict(
-            configuration=configuration_identifier
+            configuration=configuration
         )
         return QuarantineGroup.objects(**filters).all()
