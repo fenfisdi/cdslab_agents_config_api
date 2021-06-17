@@ -62,7 +62,7 @@ def find_by_configuration(configuration_identifier: str):
     Get all existing quarantine groups by configuration in db
 
     \f
-    :param configuration_identifier: Configuration identifier to seach
+    :param configuration_identifier: Configuration identifier to search
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
@@ -81,7 +81,7 @@ def find_by_configuration(configuration_identifier: str):
 
         if not quarantine_groups:
             return UJSONResponse(
-                QuarantineGroupsMessages.not_exist,
+                QuarantineGroupsMessages.not_found,
                 HTTP_400_BAD_REQUEST
             )
 
@@ -151,6 +151,5 @@ def create_quarantine_groups(
 
     return UJSONResponse(
         QuarantineGroupsMessages.created,
-        HTTP_201_CREATED,
-        BsonObject.dict(quarantine_groups)
+        HTTP_201_CREATED
     )
