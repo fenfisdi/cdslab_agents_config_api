@@ -1,4 +1,7 @@
-from src.models import SusceptibilityGroup
+from src.models import (
+    SusceptibilityGroup,
+    Configuration
+)
 
 
 class SusceptibilityGroupInterface:
@@ -28,10 +31,10 @@ class SusceptibilityGroupInterface:
 
     @staticmethod
     def find_by_configuration(
-            configuration_identifier: str
+            configuration: Configuration
     ):
         filters = dict(
-            configuration=configuration_identifier
+            configuration=configuration
         )
         return SusceptibilityGroup.objects(
             **filters

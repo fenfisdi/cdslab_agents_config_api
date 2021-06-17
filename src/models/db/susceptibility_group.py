@@ -1,9 +1,12 @@
-from mongoengine import UUIDField, \
-    ReferenceField, StringField
+from mongoengine import (
+    UUIDField,
+    ReferenceField,
+    StringField
+)
 
 from .base import BaseDocument
-from configuration import Configuration
-from distribution import Distribution
+from .configuration import Configuration
+from .distribution import Distribution
 
 
 class SusceptibilityGroup(BaseDocument):

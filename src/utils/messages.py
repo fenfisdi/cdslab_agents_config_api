@@ -109,3 +109,4 @@ class SusceptibilityGroupsMessages:
     exist: str = 'Susceptibility groups exist'
     created: str = "Susceptibility groups has been created"
     updated: str = "Susceptibility groups updated"
+    not_susceptibility_group_entry = "Susceptibility groups not entry"

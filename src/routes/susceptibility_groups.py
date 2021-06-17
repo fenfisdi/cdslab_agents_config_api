@@ -1,19 +1,34 @@
-from fastapi import APIRouter
-from starlette.status import HTTP_200_OK, \
-    HTTP_201_CREATED, HTTP_400_BAD_REQUEST, \
-    HTTP_404_NOT_FOUND
+import uuid
+from typing import List
 
-from src.interfaces import \
-    SusceptibilityGroupInterface, DistributionInterface
-from src.models import SusceptibilityGroup, \
-    NewSusceptibilityGroup, Distribution, NewDistribution
-from src.utils.messages import SusceptibilityGroupsMessages
+from fastapi import APIRouter
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND
+)
+
+from src.interfaces import (
+    SusceptibilityGroupInterface,
+    DistributionInterface,
+    ConfigurationInterface
+)
+from src.models import (
+    SusceptibilityGroup,
+    NewSusceptibilityGroup,
+    Distribution,
+    NewDistribution
+)
+from src.utils.messages import (
+    SusceptibilityGroupsMessages,
+    ConfigurationMessage
+)
 from src.utils.encoder import BsonObject
 from src.utils.response import UJSONResponse
 
 
-susceptibility_groups_routes = \
-    APIRouter(tags=["SusceptibilityGroups"])
+susceptibility_groups_routes = APIRouter(tags=["SusceptibilityGroups"])
 
 
 @susceptibility_groups_routes.get("/susceptibility_groups")
@@ -22,8 +37,7 @@ def find_all():
     Get all existing susceptibility groups in db
     """
     try:
-        susceptibility_groups = \
-            SusceptibilityGroupInterface.find_all()
+        susceptibility_groups = SusceptibilityGroupInterface.find_all()
         if not susceptibility_groups:
             return UJSONResponse(
                 SusceptibilityGroupsMessages.not_found,
@@ -55,8 +69,19 @@ def find_by_configuration(
     :param configuration_identifier: Configuration identifier
     """
     try:
-        mobility_groups = SusceptibilityGroupInterface. \
-            find_by_configuration(configuration_identifier)
+        configuration = ConfigurationInterface.find_by_identifier(
+            configuration_identifier
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        mobility_groups = SusceptibilityGroupInterface.find_by_configuration(
+            configuration
+        )
         if not mobility_groups:
             return UJSONResponse(
                 SusceptibilityGroupsMessages.not_found,
@@ -80,37 +105,59 @@ def find_by_configuration(
 )
 def create_mobility_group(
         configuration_identifier: str,
-        mobility_group: NewSusceptibilityGroup,
-        distribution: NewDistribution
+        susceptibility_groups: List[NewSusceptibilityGroup]
 ):
+    """
+    Created a mobility group in db
+
+    \f
+    :param configuration_identifier: Configuration Identifier
+    :param susceptibility_groups: Mobility Groups list to insert in db
+    """
     try:
-        if not mobility_group:
+        configuration = ConfigurationInterface.find_by_identifier(
+            configuration_identifier
+        )
+
+        if not configuration:
             return UJSONResponse(
-                SusceptibilityGroupsMessages.not_mobility_group_entry,
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        if not susceptibility_groups:
+            return UJSONResponse(
+                SusceptibilityGroupsMessages.not_susceptibility_group_entry,
                 HTTP_400_BAD_REQUEST
             )
 
-        if not distribution:
-            return UJSONResponse(
-                SusceptibilityGroupsMessages.not_distribution_entry,
-                HTTP_400_BAD_REQUEST
-            )
-
-        mobility_groups_found = SusceptibilityGroupInterface. \
-            find_by_configuration(configuration_identifier)
-        if mobility_groups_found:
-            for mobility_group in mobility_groups_found:
-                distribution_found = DistributionInterface. \
-                    find_one(mobility_group.distribution)
+        susceptibility_groups_found = SusceptibilityGroupInterface.find_by_configuration(
+            configuration
+        )
+        if susceptibility_groups_found:
+            for susceptibility_group in susceptibility_groups_found:
+                distribution_found = DistributionInterface.find_one(
+                    susceptibility_groups_found.distribution.identifier
+                )
                 if distribution_found:
-                    distribution.delete()
-                mobility_group.delete()
+                    distribution_found.delete()
+                susceptibility_group.delete()
 
-        new_distribution = Distribution(**distribution)
-        new_distribution.save()
+        for susceptibility_group in susceptibility_groups:
+            new_distribution = Distribution(
+                **susceptibility_group.distribution.dict()
+            )
+            new_susceptibility_group = SusceptibilityGroup(
+                **susceptibility_group.dict()
+            )
+            new_distribution.identifier = uuid.uuid1()
+            new_distribution.save().reload()
 
-        mobility_group = SusceptibilityGroup(**mobility_group)
-        mobility_group.save()
+            new_susceptibility_group.identifier = uuid.uuid1()
+            new_susceptibility_group.configuration = configuration
+            new_susceptibility_group.distribution = new_distribution
+            new_susceptibility_group.save().reload()
+
     except Exception as error:
         return UJSONResponse(
             str(error),
@@ -119,6 +166,5 @@ def create_mobility_group(
 
     return UJSONResponse(
         SusceptibilityGroupsMessages.created,
-        HTTP_201_CREATED,
-        BsonObject.dict(mobility_group)
+        HTTP_201_CREATED
     )
