@@ -1,7 +1,7 @@
 from mongoengine import Document, UUIDField, \
     ReferenceField, StringField
 
-from configuration import Configuration
+from .configuration import Configuration
 
 
 class QuarantineGroup(Document):
