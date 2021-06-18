@@ -1,13 +1,9 @@
 from fastapi import APIRouter
-from starlette.status import (
-    HTTP_200_OK,
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND
-)
+from starlette.status import HTTP_200_OK
 
-from src.utils.response import UJSONResponse
-from src.utils.units import Units
+from src.models.general import UnitLength, UnitTime
 from src.utils.messages import UnitsMessage
+from src.utils.response import UJSONResponse
 
 units_routes = APIRouter(tags=["units"])
 
@@ -17,22 +13,11 @@ def units_distance():
     """
     Get allowed distance units 
     """
-    try:
-        distance = Units.distance()
-        if distance is None:
-            return UJSONResponse(
-                UnitsMessage.distance_not_found,
-                HTTP_404_NOT_FOUND
-            )
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
+
     return UJSONResponse(
         UnitsMessage.distance,
         HTTP_200_OK,
-        Units.distance()
+        {unit.name: unit.value for unit in UnitLength}
     )
 
 
@@ -41,20 +26,9 @@ def units_time():
     """
     Get allowed time units 
     """
-    try:
-        time = Units.time()
-        if time is None:
-            return UJSONResponse(
-                UnitsMessage.time_not_found,
-                HTTP_404_NOT_FOUND
-            )
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
+
     return UJSONResponse(
         UnitsMessage.time,
         HTTP_200_OK,
-        Units.time()
+        {unit.name: unit.value for unit in UnitTime}
     )
