@@ -75,3 +75,25 @@ class AgeGroupsMessages:
 @dataclass
 class SecurityMessage:
     invalid_token: str = "Invalid Token"
+
+@dataclass
+class NaturalHistoryMessage:
+    """
+    Messages used in endpoint responses for natural history
+    """
+    found: str = "Natural history found"
+    not_found: str = "Natural history not found"
+    exist: str = "Natural history exist"
+    created: str = "Natural history has been created"
+    updated: str = "Natural history updated"
+
+@dataclass
+class VulnerabilityGroupMessage:
+    """
+    Messages used in endpoint responses for vulnerability group
+    """
+    found: str = "Vulnerability group found"
+    not_found: str = "Vulnerability group not found"
+    created: str = "Vulnerability group has been created"
+    updated: str = "Vulnerability group updated"
+
