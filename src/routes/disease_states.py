@@ -21,7 +21,7 @@ def list_disease_states():
     Get disease states in data base
     """
     try:
-        states = DiseaseStatesInterface.fin_all()
+        states = DiseaseStatesInterface.find_all()
 
         if not states:
             return UJSONResponse(
