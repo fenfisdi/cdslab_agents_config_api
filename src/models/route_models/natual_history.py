@@ -13,3 +13,4 @@ class NewNaturalHistory(BaseModel):
 
 class UpdateNaturalHistory(NewNaturalHistory):
     identiffer: UUID = Field(...)
+   
