@@ -7,7 +7,7 @@ from src.models.db.master.disease_states import MasterDiseaseStates
 
 if __name__ == "__main__":
 
-    mongo_uri = environ.get('MONGO_URI')
+    mongo_uri = environ.get("MONGO_URI")
     connect(host=mongo_uri)
 
     disease_status = ["diagnosis", "quarantine_postdiagnosis", "hospitalization_prob", "ICU_prob"]
