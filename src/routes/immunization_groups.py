@@ -20,6 +20,7 @@ from src.models import (
     Distribution,
     ImmunizationGroup
 )
+from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
     ImmunizationGroupMessage,
@@ -32,16 +33,21 @@ immunization_routes = APIRouter(tags=["ImmunizationGroups"])
 
 
 @immunization_routes.get("/immunization_groups/{uuid}")
-def list_immunization_groups(uuid: UUID):
+def list_immunization_groups(
+        uuid: UUID,
+        user=Depends(SecurityUseCase.validate)
+):
     """
     Get all existing immunization groups by configuration in db.
 
     \f
     :param uuid: Configuration Identifier to find.
+    :param user: User authenticated by token.
     """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(
-            uuid
+            uuid,
+            user
         )
         if not configuration_found:
             return UJSONResponse(
@@ -74,7 +80,8 @@ def list_immunization_groups(uuid: UUID):
 @immunization_routes.post("/immunization_groups/{uuid}")
 def create_configuration(
         uuid: UUID,
-        immunization_groups: List[NewImmunizationGroup]
+        immunization_groups: List[NewImmunizationGroup],
+        user=Depends(SecurityUseCase.validate)
 ):
     """
     Create a new immunization group in db.
@@ -82,10 +89,12 @@ def create_configuration(
     \f
     :param uuid: Configuration identifier.
     :param immunization_groups: Immunization group list to insert.
+    :param user: User authenticated by token.
     """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(
-            uuid
+            uuid,
+            user
         )
         if not configuration_found:
             return UJSONResponse(

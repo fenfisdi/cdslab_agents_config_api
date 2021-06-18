@@ -82,7 +82,7 @@ def create_age_groups(
     user = Depends(SecurityUseCase.validate)
 ):
     """
-    Create age groups in db
+    Create age groups in db.
 
     \f
     :param conf_uuid: Identifier Configuration.

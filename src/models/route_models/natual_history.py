@@ -11,7 +11,7 @@ class NewNaturalHistory(BaseModel):
     disease_state: UUID = Field(...)
     configuration: UUID = Field(...)
     distribution: List[Distribution] = Field(...)
-    avodance_radius: float = Field(...)
+    avoidance_radius: float = Field(...)
     transitions: dict = Field(...)
 
 
