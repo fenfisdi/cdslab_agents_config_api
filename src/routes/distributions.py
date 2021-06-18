@@ -93,5 +93,5 @@ def list_disease_state_distribution():
     return UJSONResponse(
         DistributionMessage.disease_states_distribution_found,
         HTTP_200_OK,
-        BsonObject.dict(disease_states_distribution)
+        disease_states_distribution
     )

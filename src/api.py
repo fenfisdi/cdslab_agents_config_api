@@ -12,7 +12,8 @@ from src.routes import (
     mobility_group_routes,
     units_routes,
     configuration_routes,
-    age_group_routes
+    age_group_routes,
+    natural_history_routes
 )
 
 app = FastAPI(**fastApiConfig)
@@ -37,3 +38,4 @@ app.include_router(disease_states_routes)
 app.include_router(mobility_group_routes)
 app.include_router(configuration_routes)
 app.include_router(age_group_routes)
+app.include_router(natural_history_routes)
