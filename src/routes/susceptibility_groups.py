@@ -127,7 +127,7 @@ def create_mobility_group(
 
         if not susceptibility_groups:
             return UJSONResponse(
-                SusceptibilityGroupsMessages.not_susceptibility_group_entry,
+                SusceptibilityGroupsMessages.not_susceptibility_group_entered,
                 HTTP_400_BAD_REQUEST
             )
 
