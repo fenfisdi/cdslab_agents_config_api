@@ -91,7 +91,7 @@ def list_disease_state_distribution():
         )
 
     return UJSONResponse(
-        DistributionMessage.disease_states_distribution_found,
+        DistributionMessage.found,
         HTTP_200_OK,
         disease_states_distribution
     )
