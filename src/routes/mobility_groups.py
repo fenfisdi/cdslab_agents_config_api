@@ -126,7 +126,7 @@ def create_mobility_group(
 
         if not mobility_groups:
             return UJSONResponse(
-                MobilityGroupsMessages.not_mobility_group_entry,
+                MobilityGroupsMessages.not_distribution_entered,
                 HTTP_400_BAD_REQUEST
             )
 
@@ -136,7 +136,6 @@ def create_mobility_group(
 
         if mobility_groups_found:
             for mobility_group in mobility_groups_found:
-                print("---- mobility_group ----", mobility_group)
                 distribution_found = DistributionInterface.find_one(
                     mobility_group.distribution.identifier
                 )
@@ -153,7 +152,6 @@ def create_mobility_group(
             )
             new_distribution.identifier = uuid.uuid1()
             new_distribution.save().reload()
-            print("DISTRIBUTION SAVE --- ", new_distribution)
 
             new_mobility_group.identifier = uuid.uuid1()
             new_mobility_group.configuration = configuration
