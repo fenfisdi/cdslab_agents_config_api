@@ -110,3 +110,14 @@ class SusceptibilityGroupsMessages:
     created: str = "Susceptibility groups has been created"
     updated: str = "Susceptibility groups updated"
     not_susceptibility_group_entered = "Susceptibility groups not entered"
+
+
+@dataclass
+class ImmunizationGroupMessage:
+    found: str = "Age groups found"
+    not_found: str = "Age groups not found"
+    not_age_immunization_entered: str = "Not immunization groups entered to save"
+    created: str = "Age groups has been created"
+    updated: str = "Age groups updated"
+    deleted: str = "Age group deleted"
+    bad_deleted: str = "Age group bad deleted"

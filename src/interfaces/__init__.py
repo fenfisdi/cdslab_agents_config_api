@@ -2,6 +2,7 @@ from .age_group_interface import AgeGroupInterface
 from .configuration_interface import ConfigurationInterface
 from .disease_states_interface import DiseaseStatesInterface
 from .distribution_interface import DistributionInterface
+from .immunization_group_interface import ImmunizationGroupInterface
 from .mobility_groups_interface import MobilityGroupInterface
 from .natural_history_interface import NaturalHistoryInterface
 from .susceptibility_group_interface import SusceptibilityGroupInterface
@@ -16,5 +17,7 @@ __all__ = [
     'UserInterface',
     "MobilityGroupInterface",
     'VulnerabilityGroupInterface',
-    "SusceptibilityGroupInterface"
+    "SusceptibilityGroupInterface",
+    'NaturalHistoryInterface',
+    'ImmunizationGroupInterface'
 ]

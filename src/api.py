@@ -14,7 +14,8 @@ from src.routes import (
     configuration_routes,
     age_group_routes,
     natural_history_routes,
-    susceptibility_groups_routes
+    susceptibility_groups_routes,
+    immunization_routes
 )
 
 app = FastAPI(**fastApiConfig)
@@ -41,3 +42,4 @@ app.include_router(configuration_routes)
 app.include_router(age_group_routes)
 app.include_router(natural_history_routes)
 app.include_router(susceptibility_groups_routes)
+app.include_router(immunization_routes)
