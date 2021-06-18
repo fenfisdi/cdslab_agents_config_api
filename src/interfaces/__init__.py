@@ -15,10 +15,7 @@ __all__ = [
     'ConfigurationInterface',
     'AgeGroupInterface',
     'UserInterface',
-<<<<<<< HEAD
     "MobilityGroupInterface",
-=======
     'VulnerabilityGroupInterface',
     'NaturalHistoryInterface'
->>>>>>> d91fc5a... save, get and update natural history
 ]

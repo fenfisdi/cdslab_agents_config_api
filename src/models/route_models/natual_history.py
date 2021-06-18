@@ -12,4 +12,4 @@ class NewNaturalHistory(BaseModel):
     transitions: dict = Field(...)
 
 class UpdateNaturalHistory(NewNaturalHistory):
-    identiffer: UUID = Field(...)
+    identiffer: UUID = Field(...)   
