@@ -1,5 +1,8 @@
-from mongoengine import UUIDField, \
-    StringField, DictField
+from mongoengine import (
+    UUIDField, 
+    StringField, 
+    DictField
+)
 
 from .base import BaseDocument
 

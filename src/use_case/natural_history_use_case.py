@@ -1,7 +1,7 @@
 from uuid import UUID
+
 from src.interfaces import VulnerabilityGroupInterface, \
     DiseaseStatesInterface,ConfigurationInterface
-
 from src.utils import ConfigurationMessage, VulnerabilityGroupMessage, \
     DiseaseStatesMessage
 
