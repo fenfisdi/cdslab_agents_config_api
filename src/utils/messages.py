@@ -36,9 +36,10 @@ class ConfigurationMessage:
     """
     Messages used in endpoint responses for configuration
     """
+    deleted: str = "Configuration has been deleted"
     found: str = "Configuration found"
     not_found: str = "Configuration not found"
-    exist: str = 'Configuration exist'
+    exist: str = "Configuration exist"
     created: str = "Configuration has been created"
     updated: str = "Configuration updated"
 

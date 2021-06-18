@@ -1,4 +1,6 @@
-from src.models.db.configuration import Configuration
+from uuid import UUID
+
+from src.models.db import Configuration, User
 
 
 class ConfigurationInterface:
@@ -7,35 +9,44 @@ class ConfigurationInterface:
     """
 
     @staticmethod
-    def find_all():
+    def find_all(user: User):
         """
-        Get all existing configurations in db
+        Find all configurations from a user.
+
+        :param user: User authenticated
         """
         filters = dict(
-            is_delete=False
+            user=user,
+            is_deleted=False,
         )
         return Configuration.objects(**filters).all()
 
     @staticmethod
-    def find_by_identifier(identifier: str):
+    def find_by_identifier(identifier: UUID, user: User) -> Configuration:
         """
-        Get a configuration by identifier
+        Find configuration by identifier and user
 
         :param identifier: Identifier to search the configuration
+        :param user: User authenticated.
         """
         filters = dict(
-            identifier=identifier
+            identifier=identifier,
+            user=user,
+            is_deleted=False,
         )
         return Configuration.objects(**filters).first()
 
     @staticmethod
-    def find_by_name(name: str):
+    def find_by_name(name: str, user: User) -> Configuration:
         """
-        Get a configuration by name
+        Find configuration by name, and user
 
         :param name: Name to search the configuration
+        :param user: User authenticated
         """
         filters = dict(
-            name=name
+            name=name,
+            user=user,
+            is_deleted=False,
         )
         return Configuration.objects(**filters).first()

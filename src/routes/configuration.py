@@ -1,6 +1,6 @@
-import uuid
+from uuid import UUID, uuid1
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -14,21 +14,24 @@ from src.models import (
     NewConfiguration,
     UpdateConfiguration
 )
-from src.utils.messages import ConfigurationMessage
+from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
+from src.utils.messages import ConfigurationMessage
 from src.utils.response import UJSONResponse
-
 
 configuration_routes = APIRouter(tags=["Configuration"])
 
 
 @configuration_routes.get("/configuration")
-def find_all():
+def list_configurations(user = Depends(SecurityUseCase.validate)):
     """
-    Get all existing configurations in db
+    Get all existing configurations in db.
+
+    \f
+    :param user: User authenticated by token.
     """
     try:
-        configuration = ConfigurationInterface.find_all()
+        configuration = ConfigurationInterface.find_all(user)
 
         if not configuration:
             return UJSONResponse(
@@ -48,17 +51,42 @@ def find_all():
     )
 
 
-@configuration_routes.post("/configuration")
-def create_configuration(configuration: NewConfiguration):
+@configuration_routes.get("/configuration/{uuid}")
+def find_configuration(uuid: UUID, user = Depends(SecurityUseCase.validate)):
     """
-    Create a new configuration in db
+    Find simulation configuration by its uuid.
 
     \f
-    :param configuration: Configuration object to insert in db
+    :param uuid: Identifier of simulation.
+    :param user: User authenticated by token.
+    """
+    configuration_found = ConfigurationInterface.find_by_identifier(uuid, user)
+    if not configuration_found:
+        return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    return UJSONResponse(
+        ConfigurationMessage.found,
+        HTTP_200_OK,
+        BsonObject.dict(configuration_found)
+    )
+
+
+@configuration_routes.post("/configuration")
+def create_configuration(
+    configuration: NewConfiguration,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Create a new configuration in db.
+
+    \f
+    :param configuration: Configuration object to insert in db.
+    :param user: User authenticated by token.
     """
     try:
         configuration_found = ConfigurationInterface.find_by_name(
-            configuration.name
+            configuration.name,
+            user
         )
         if configuration_found:
             return UJSONResponse(
@@ -67,10 +95,10 @@ def create_configuration(configuration: NewConfiguration):
             )
 
         new_configuration = Configuration(
-            **configuration.dict()
+            **configuration.dict(),
+            identifier=uuid1(),
+            user=user
         )
-        new_configuration.is_delete = False
-        new_configuration.identifier = uuid.uuid1()
         new_configuration.save()
     except Exception as error:
         return UJSONResponse(
@@ -85,17 +113,24 @@ def create_configuration(configuration: NewConfiguration):
     )
 
 
-@configuration_routes.put("/configuration")
-def updated_configuration(configuration: UpdateConfiguration):
+@configuration_routes.put("/configuration/{uuid}")
+def updated_configuration(
+    uuid: UUID,
+    configuration: UpdateConfiguration,
+    user = Depends(SecurityUseCase.validate)
+):
     """
-    Update a configuration in db
+    Update a configuration in db.
 
     \f
+    :param uuid: Identifier of simulation.
     :param configuration: Configuration object to insert in db
+    :param user: User authenticated by token.
     """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(
-            configuration.identifier
+            uuid,
+            user
         )
         if not configuration_found:
             return UJSONResponse(
@@ -116,3 +151,27 @@ def updated_configuration(configuration: UpdateConfiguration):
         HTTP_200_OK,
         BsonObject.dict(configuration_found)
     )
+
+
+@configuration_routes.delete("/configuration/{uuid}")
+def delete_configuration(
+    uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Delete simulation.
+
+    \f
+    :param uuid: Identifier of simulation.
+    :param user: User authenticated by token.
+    """
+    configuration_found = ConfigurationInterface.find_by_identifier(uuid, user)
+    if not configuration_found:
+        return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    try:
+        configuration_found.update(is_deleted=True)
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
+
+    return UJSONResponse(ConfigurationMessage.deleted, HTTP_200_OK)
