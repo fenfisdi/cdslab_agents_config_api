@@ -124,7 +124,7 @@ def create_quarantine_groups(
 
         if not quarantine_groups:
             return UJSONResponse(
-                QuarantineGroupsMessages.not_quarantine_groups_entry,
+                QuarantineGroupsMessages.not_quarantine_groups_entered,
                 HTTP_400_BAD_REQUEST
             )
 

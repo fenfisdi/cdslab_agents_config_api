@@ -68,7 +68,7 @@ class QuarantineGroupsMessages:
     exist: str = 'Quarantine Groups exist'
     created: str = "Quarantine Groups has been created"
     updated: str = "Quarantine Groups updated"
-    not_quarantine_groups_entry: str = "Quarantine Groups not entry"
+    not_quarantine_groups_entered: str = "Quarantine Groups not entered"
 
 
 @dataclass
