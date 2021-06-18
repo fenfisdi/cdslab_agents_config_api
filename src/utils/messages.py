@@ -54,8 +54,8 @@ class MobilityGroupsMessages:
     exist: str = 'Mobility Groups exist'
     created: str = "Mobility Groups has been created"
     updated: str = "Mobility Groups updated"
-    not_mobility_group_entry: str = "Mobility Groups not entry"
-    not_distribution_entry: str = "Distribution not entry"
+    not_mobility_group_entered: str = "Mobility Groups not entered"
+    not_distribution_entered: str = "Distribution not entered"
 
 
 @dataclass
@@ -65,7 +65,7 @@ class AgeGroupsMessages:
     """
     found: str = "Age groups found"
     not_found: str = "Age groups not found"
-    not_age_groups_entry: str = "Not age groups entry to save"
+    not_age_groups_entry: str = "Not age groups entered to save"
     created: str = "Age groups has been created"
     updated: str = "Age groups updated"
     deleted: str = "Age group deleted"
