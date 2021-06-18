@@ -1,19 +1,16 @@
-from typing import Dict
-
 from pydantic import BaseModel, Field
 
 
-class NewConfiguration(BaseModel):
+class UpdateConfiguration(BaseModel):
+    name: str = Field(None)
+    population_number: int = Field(None)
+
+
+class NewConfiguration(UpdateConfiguration):
     name: str = Field(...)
     population_number: int = Field(...)
-    interval_date: Dict = Field(...)
+    interval_date: dict = Field(...)
     iteration_time_units: str = Field(...)
     iteration_number: int = Field(...)
-    box_size: Dict = Field(...)
+    box_size: dict = Field(...)
     distance_units: str = Field(...)
-
-
-class UpdateConfiguration(NewConfiguration):
-    identifier: str = Field(...)
-    is_delete: bool = Field(...)
-
