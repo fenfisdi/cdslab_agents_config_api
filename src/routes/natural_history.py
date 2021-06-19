@@ -1,15 +1,14 @@
-from uuid import UUID,uuid1
+from uuid import UUID, uuid1
 
 from fastapi import APIRouter
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, \
     HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
+from src.interfaces import NaturalHistoryInterface
+from src.models import NaturalHistory, NewNaturalHistory, UpdateNaturalHistory
+from src.use_case import NaturalHistoryUseCase
 from src.utils import BsonObject, UJSONResponse
 from src.utils import NaturalHistoryMessage
-from src.models import NewNaturalHistory, NaturalHistory, \
-    UpdateNaturalHistory
-from src.use_case import NaturalHistoryUseCase
-from src.interfaces import NaturalHistoryInterface
 
 natural_history_routes = APIRouter(tags=["NaturalHistory"])
 
@@ -92,7 +91,7 @@ def update_configurate(natural_history: UpdateNaturalHistory):
 
     try:
         natural_history_found = NaturalHistoryInterface.find_by_identifier(
-            natural_history.identiffer
+            natural_history.identifier
         )
 
         if not natural_history_found:
