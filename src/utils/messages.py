@@ -76,6 +76,7 @@ class AgeGroupsMessages:
 class SecurityMessage:
     invalid_token: str = "Invalid Token"
 
+
 @dataclass
 class NaturalHistoryMessage:
     """
@@ -87,6 +88,7 @@ class NaturalHistoryMessage:
     created: str = "Natural history has been created"
     updated: str = "Natural history updated"
 
+
 @dataclass
 class VulnerabilityGroupMessage:
     """
@@ -96,4 +98,3 @@ class VulnerabilityGroupMessage:
     not_found: str = "Vulnerability group not found"
     created: str = "Vulnerability group has been created"
     updated: str = "Vulnerability group updated"
-

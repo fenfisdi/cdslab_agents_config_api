@@ -2,16 +2,16 @@ from datetime import datetime
 from json import JSONEncoder
 from typing import Union
 
-from bson import ObjectId
+from bson import DBRef, ObjectId
 from mongoengine import Document, QuerySet
 from ujson import loads
-from bson import DBRef
 
 
 class BsonEncoder(JSONEncoder):
     """
     Class that allows conversion to JSON
     """
+
     def default(self, o):
         if isinstance(o, ObjectId):
             return str(o)
@@ -26,6 +26,7 @@ class BsonObject:
     """
         Transform a mongodb document into a dictionary
     """
+
     @classmethod
     def dict(cls, document: Union[Document, Document]):
         """

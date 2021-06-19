@@ -1,20 +1,26 @@
 from uuid import UUID
 
-from src.interfaces import VulnerabilityGroupInterface, \
-    DiseaseStatesInterface,ConfigurationInterface
-from src.utils import ConfigurationMessage, VulnerabilityGroupMessage, \
-    DiseaseStatesMessage
+from src.interfaces import (
+    ConfigurationInterface,
+    DiseaseStatesInterface,
+    VulnerabilityGroupInterface
+)
+from src.utils import (
+    ConfigurationMessage,
+    DiseaseStatesMessage,
+    VulnerabilityGroupMessage
+)
+
 
 class NaturalHistoryUseCase:
 
     @classmethod
     def validate_parameters(
-        cls, 
+        cls,
         config: UUID,
         vulnerability_group: UUID,
         disease_state: UUID
     ):
-
         config_found = ConfigurationInterface.find_by_identifier(config)
         group_found = VulnerabilityGroupInterface.find_by_identifier(
             vulnerability_group

@@ -2,12 +2,9 @@ from fastapi import APIRouter
 from starlette.status import HTTP_200_OK, \
     HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
-from src.utils import BsonObject, \
-    UJSONResponse, DistributionMessage
-from src.interfaces.distribution_interface import DistributionInterface
-
 from src.interfaces import DistributionInterface
-from src.utils.disease_state_distributio import DiseaseStatesDistribution
+from src.utils import BsonObject, DistributionMessage, UJSONResponse
+from src.utils.disease_state_distribution import DiseaseStatesDistribution
 
 distributions_routes = APIRouter(tags=["distributions"])
 
