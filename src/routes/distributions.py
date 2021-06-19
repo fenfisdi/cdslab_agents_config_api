@@ -6,8 +6,8 @@ from starlette.status import (
 )
 
 from src.interfaces import DistributionInterface
+from src.models.general import DiseaseState
 from src.utils import BsonObject, DistributionMessage, UJSONResponse
-from src.utils.disease_state_distribution import DiseaseStatesDistribution
 
 distributions_routes = APIRouter(tags=["distributions"])
 
@@ -43,8 +43,8 @@ def list_distributions():
     )
 
 
-@distributions_routes.get("/distributions/parameters/{name}")
-def parameters(name: str):
+@distributions_routes.get("/distributions/{name}/parameters")
+def list_parameters(name: str):
     """
     Get  parameters for distribution name
 
@@ -74,25 +74,10 @@ def parameters(name: str):
 
 @distributions_routes.get("/distributions/disease_state")
 def list_disease_state_distribution():
-    """
-    Get disease states distribution list
-    """
-    try:
-        disease_states_distribution = DiseaseStatesDistribution.get_disease_states_distribution()
-
-        if not disease_states_distribution:
-            return UJSONResponse(
-                DistributionMessage.not_exist,
-                HTTP_400_BAD_REQUEST
-            )
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
+    """Find disease state distribution"""
 
     return UJSONResponse(
         DistributionMessage.found,
         HTTP_200_OK,
-        disease_states_distribution
+        {state.name: state.value for state in DiseaseState}
     )
