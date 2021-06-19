@@ -1,6 +1,9 @@
 from fastapi import APIRouter
-from starlette.status import HTTP_200_OK, \
-    HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND
+)
 
 from src.interfaces import DistributionInterface
 from src.utils import BsonObject, DistributionMessage, UJSONResponse
@@ -24,8 +27,9 @@ def list_distributions():
                 HTTP_404_NOT_FOUND
             )
 
-        distributions_names = [data["name"] \
-                               for data in BsonObject.dict(distributions)]
+        distributions_names = [
+            data["name"] for data in BsonObject.dict(distributions)
+        ]
     except Exception as error:
         return UJSONResponse(
             str(error),
