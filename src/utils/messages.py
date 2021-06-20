@@ -121,3 +121,14 @@ class ImmunizationGroupMessage:
     updated: str = "Age groups updated"
     deleted: str = "Age group deleted"
     bad_deleted: str = "Age group bad deleted"
+
+
+@dataclass
+class VulnerabilityGroupsMessages:
+    found: str = "Vulnerability Groups found"
+    not_found: str = "Vulnerability Groups not found"
+    not_vulnerability_entered: str = "Not Vulnerability Groups entered to save"
+    created: str = "Vulnerability Groups has been created"
+    updated: str = "Vulnerability Groups updated"
+    deleted: str = "Vulnerability Groups deleted"
+    bad_deleted: str = "Vulnerability Groups bad deleted"
