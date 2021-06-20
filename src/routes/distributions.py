@@ -1,13 +1,13 @@
 from fastapi import APIRouter
-from starlette.status import HTTP_200_OK, \
-    HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-
-from src.utils import BsonObject, \
-    UJSONResponse, DistributionMessage
-from src.interfaces.distribution_interface import DistributionInterface
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND
+)
 
 from src.interfaces import DistributionInterface
-from src.utils.disease_state_distributio import DiseaseStatesDistribution
+from src.models.general import DiseaseState
+from src.utils import BsonObject, DistributionMessage, UJSONResponse
 
 distributions_routes = APIRouter(tags=["distributions"])
 
@@ -27,8 +27,9 @@ def list_distributions():
                 HTTP_404_NOT_FOUND
             )
 
-        distributions_names = [data["name"] \
-                               for data in BsonObject.dict(distributions)]
+        distributions_names = [
+            data["name"] for data in BsonObject.dict(distributions)
+        ]
     except Exception as error:
         return UJSONResponse(
             str(error),
@@ -42,8 +43,8 @@ def list_distributions():
     )
 
 
-@distributions_routes.get("/distributions/parameters/{name}")
-def parameters(name: str):
+@distributions_routes.get("/distributions/{name}/parameters")
+def list_parameters(name: str):
     """
     Get  parameters for distribution name
 
@@ -73,25 +74,10 @@ def parameters(name: str):
 
 @distributions_routes.get("/distributions/disease_state")
 def list_disease_state_distribution():
-    """
-    Get disease states distribution list
-    """
-    try:
-        disease_states_distribution = DiseaseStatesDistribution.get_disease_states_distribution()
-
-        if not disease_states_distribution:
-            return UJSONResponse(
-                DistributionMessage.not_exist,
-                HTTP_400_BAD_REQUEST
-            )
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
+    """Find disease state distribution"""
 
     return UJSONResponse(
         DistributionMessage.found,
         HTTP_200_OK,
-        disease_states_distribution
+        {state.name: state.value for state in DiseaseState}
     )

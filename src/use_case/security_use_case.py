@@ -3,7 +3,7 @@ from typing import Optional
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 
 from src.interfaces import UserInterface
 from src.models.db import User
