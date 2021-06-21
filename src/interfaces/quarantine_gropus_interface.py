@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from src.models import (
     QuarantineGroup,
     Configuration
@@ -10,7 +12,7 @@ class QuarantineGroupInterface:
     """
 
     @staticmethod
-    def find_one(identifier: str):
+    def find_by_identifier(identifier: UUID):
         """
         Get a existing quarantine group in db
 

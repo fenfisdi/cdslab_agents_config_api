@@ -9,6 +9,7 @@ from src.db import MongoEngine
 from src.routes import (
     age_group_routes,
     configuration_routes,
+    cqr_group_info_routes,
     disease_states_routes,
     distributions_routes,
     immunization_routes,
@@ -47,3 +48,4 @@ app.include_router(vulnerability_group_routes)
 app.include_router(disease_states_routes)
 app.include_router(natural_history_routes)
 app.include_router(quarantine_group_routes)
+app.include_router(cqr_group_info_routes)

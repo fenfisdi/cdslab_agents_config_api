@@ -1,4 +1,5 @@
-import uuid
+import json
+from uuid import UUID, uuid1
 
 from fastapi import APIRouter
 from typing import List
@@ -11,7 +12,8 @@ from starlette.status import (
 
 from src.interfaces import (
     QuarantineGroupInterface,
-    ConfigurationInterface
+    ConfigurationInterface,
+    QuarantineRestrictionInterface
 )
 from src.models import (
     NewQuarantineGroup,
@@ -26,6 +28,33 @@ from src.utils.response import UJSONResponse
 
 
 quarantine_group_routes = APIRouter(tags=["QuarantineGroups"])
+
+
+@quarantine_group_routes.get("/quarantine_groups/restrictions")
+def quarantine_restrictions():
+    """
+    Get quarantine restrictions
+    """
+    try:
+        quarantine_restrictions_found = QuarantineRestrictionInterface.find_all()
+
+        if not quarantine_restrictions_found:
+            return UJSONResponse(
+                QuarantineGroupsMessages.quarantine_restriction_not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+    except Exception as error:
+        return UJSONResponse(
+            str(error),
+            HTTP_400_BAD_REQUEST
+        )
+
+    return UJSONResponse(
+        QuarantineGroupsMessages.quarantine_restriction_found,
+        HTTP_200_OK,
+        BsonObject.dict(quarantine_restrictions_found)
+    )
 
 
 @quarantine_group_routes.get("/quarantine_groups")
@@ -57,7 +86,7 @@ def find_all():
 @quarantine_group_routes.get(
     "/quarantine_groups/{configuration_identifier}"
 )
-def find_by_configuration(configuration_identifier: str):
+def find_by_configuration(configuration_identifier: UUID):
     """
     Get all existing quarantine groups by configuration in db
 
@@ -102,7 +131,7 @@ def find_by_configuration(configuration_identifier: str):
     "/quarantine_groups/{configuration_identifier}"
 )
 def create_quarantine_groups(
-        configuration_identifier: str,
+        configuration_identifier: UUID,
         quarantine_groups: List[NewQuarantineGroup]
 ):
     """
@@ -137,10 +166,10 @@ def create_quarantine_groups(
 
         for quarantine_group in quarantine_groups:
             new_quarantine_group = QuarantineGroup(
-                **quarantine_group.dict()
+                **quarantine_group.dict(),
+                identifier=uuid1(),
+                configuration=configuration
             )
-            new_quarantine_group.identifier = uuid.uuid1()
-            new_quarantine_group.configuration = configuration
             new_quarantine_group.save()
 
     except Exception as error:

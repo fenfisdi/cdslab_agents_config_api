@@ -1,5 +1,6 @@
 from .age_groups import age_group_routes
 from .configuration import configuration_routes
+from .cqr_group_info import cqr_group_info_routes
 from .disease_states import disease_states_routes
 from .distributions import distributions_routes
 from .immunization_groups import immunization_routes
@@ -22,5 +23,6 @@ __all__ = [
     "susceptibility_groups_routes",
     "immunization_routes",
     "vulnerability_group_routes",
-    "quarantine_group_routes"
+    "quarantine_group_routes",
+    "cqr_group_info_routes"
 ]

@@ -19,6 +19,16 @@ from .route_models.natural_history import NewNaturalHistory, \
 from .route_models.quarantine_group import NewQuarantineGroup
 from .route_models.susceptibility_group import NewSusceptibilityGroup
 from .route_models.vulnerability_group import NewVulnerabilityGroup
+from .db.natural_history import NaturalHistory
+from .db.quarantine_group import QuarantineGroup
+from .db.cqr_group_info import CQRGroupInfo
+from .db.cyclic_quarantine_restriction import CyclicQuarantineRestriction
+from .route_models.configuration import NewConfiguration, \
+    UpdateConfiguration
+from .route_models.quarantine_group import NewQuarantineGroup
+from .route_models.cqr_group_info import NewCQRGroupInfo
+from .route_models.cyclic_quarantine_restriction import \
+    NewCyclicQuarantineRestriction
 
 __all__ = [
     "Configuration",
@@ -44,4 +54,8 @@ __all__ = [
     "VulnerabilityGroup",
     "NewVulnerabilityGroup",
     "NaturalHistory",
+    "CQRGroupInfo",
+    "NewCQRGroupInfo",
+    "CyclicQuarantineRestriction",
+    "NewCyclicQuarantineRestriction"
 ]

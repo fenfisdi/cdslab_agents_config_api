@@ -33,7 +33,7 @@ class QuarantineGroupInterfaceTestCase(TestCase):
 
     def test_find_one(self):
         quarantine_groups = \
-            QuarantineGroupInterface.find_one(self.identifier)
+            QuarantineGroupInterface.find_by_identifier(self.identifier)
 
         self.assertIsNotNone(quarantine_groups)
         self.assertEqual(

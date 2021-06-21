@@ -39,7 +39,7 @@ class ConfigurationMessage:
     deleted: str = "Configuration has been deleted"
     found: str = "Configuration found"
     not_found: str = "Configuration not found"
-    exist: str = "Configuration exist"
+    exist: str = 'Configuration exist'
     created: str = "Configuration has been created"
     updated: str = "Configuration updated"
 
@@ -69,6 +69,8 @@ class QuarantineGroupsMessages:
     created: str = "Quarantine Groups has been created"
     updated: str = "Quarantine Groups updated"
     not_quarantine_groups_entered: str = "Quarantine Groups not entered"
+    quarantine_restriction_not_found: str = "Quarantine restrictions not found"
+    quarantine_restriction_found: str = "Quarantine restrictions found"
 
 
 @dataclass
@@ -145,3 +147,17 @@ class DiseaseGroupMessage:
     exist: str = "Disease Groups exist"
     created: str = "Disease Groups has been created"
     not_entered: str = "Disease Groups not entered to save"
+
+
+@dataclass
+class CQRGroupInfoMessages:
+    """
+    Messages used in endpoint responses for CQRGroupInfo
+    """
+    found: str = "CQRGroupInfo found"
+    not_found: str = "CQRGroupInfo not found"
+    created: str = "CQRGroupInfo has been created"
+    updated: str = "CQRGroupInfo updated"
+    deleted: str = "CQRGroupInfo deleted"
+    bad_deleted: str = "CQRGroupInfo bad deleted"
+    cqr_group_not_entered: str = "CQRGroupInfo not entered"

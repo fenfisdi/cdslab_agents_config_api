@@ -1,5 +1,9 @@
-from mongoengine import Document, UUIDField, \
-    ReferenceField, StringField
+from mongoengine import (
+    Document,
+    UUIDField,
+    ReferenceField,
+    StringField
+)
 
 from .configuration import Configuration
 
