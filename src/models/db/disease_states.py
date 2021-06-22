@@ -1,11 +1,6 @@
-from mongoengine import (
-    BooleanField,
-    EmbeddedDocumentListField,
-    FloatField,
-    ReferenceField,
-    StringField,
-    UUIDField
-)
+from mongoengine import UUIDField, ReferenceField, \
+    StringField, BooleanField, FloatField, \
+    EmbeddedDocumentListField
 
 from .base import BaseDocument
 from .configuration import Configuration

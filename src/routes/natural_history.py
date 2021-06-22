@@ -40,17 +40,12 @@ def save(
                 HTTP_404_NOT_FOUND
             )
 
-        distribution = [
-           Distribution(**dis.dict(exclude_none=None)).save() \
-                for dis in natural_history.distribution
-        ]
-
         history = NaturalHistory(
             identifier= uuid1(),
             configuration=validated["config"],
             vulnerability_group=validated["vulnerability_group"],
             disease_state=validated["disease_states"],
-            distribution=distribution,
+            distribution=natural_history.distribution,
             avoidance_radius=natural_history.avodance_radius,
             transitions=natural_history.transitions
         )

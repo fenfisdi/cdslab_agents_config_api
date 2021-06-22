@@ -1,5 +1,9 @@
 from mongoengine import (
-    DictField, EmbeddedDocumentField, FloatField, ReferenceField, UUIDField
+    UUIDField,
+    ReferenceField,
+    EmbeddedDocumentListField,
+    FloatField,
+    DictField
 )
 
 from .base import BaseDocument
@@ -14,6 +18,6 @@ class NaturalHistory(BaseDocument):
     configuration = ReferenceField(Configuration, dbref=True)
     vulnerability_group = ReferenceField(VulnerabilityGroup, dbref=True)
     disease_state = ReferenceField(DiseaseStates, dbref=True)
-    distribution = EmbeddedDocumentField(Distribution)
+    distribution = EmbeddedDocumentListField(Distribution)
     avoidance_radius = FloatField()
     transitions = DictField()
