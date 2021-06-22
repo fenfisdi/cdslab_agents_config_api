@@ -1,5 +1,6 @@
 from mongoengine import UUIDField, ReferenceField, \
-    StringField, BooleanField, FloatField, ListField
+    StringField, BooleanField, FloatField, \
+    EmbeddedDocumentListField
 
 
 from .distribution import Distribution
@@ -24,4 +25,4 @@ class DiseaseStates(BaseDocument):
     can_spread = BooleanField(required=True)
     spread_radius = FloatField(required=True)
     spread_probability = FloatField(required=True)
-    distributions = ListField(ReferenceField(Distribution))
+    distributions = EmbeddedDocumentListField(Distribution)
