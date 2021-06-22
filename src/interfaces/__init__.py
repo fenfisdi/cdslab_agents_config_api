@@ -14,6 +14,7 @@ from .user_interface import UserInterface
 from .vulnerability_group import VulnerabilityGroupInterface
 from .cqr_group_info_interface import CQRGroupInfoInterface
 from .quarantine_restrictions_interface import QuarantineRestrictionInterface
+from .quarantine_tracing_interface import QuarantineTracingInterface
 
 __all__ = [
     'DistributionInterface',
@@ -30,5 +31,6 @@ __all__ = [
     'NaturalHistoryInterface',
     "QuarantineGroupInterface",
     "CQRGroupInfoInterface",
-    "QuarantineRestrictionInterface"
+    "QuarantineRestrictionInterface",
+    "QuarantineTracingInterface"
 ]

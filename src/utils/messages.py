@@ -161,3 +161,17 @@ class CQRGroupInfoMessages:
     deleted: str = "CQRGroupInfo deleted"
     bad_deleted: str = "CQRGroupInfo bad deleted"
     cqr_group_not_entered: str = "CQRGroupInfo not entered"
+
+
+@dataclass
+class QuarantineTracingMessage:
+    """
+    Messages used in endpoint responses for QuarantineTracing
+    """
+    found: str = "QuarantineTracing found"
+    not_found: str = "QuarantineTracing not found"
+    created: str = "QuarantineTracing has been created"
+    updated: str = "QuarantineTracing updated"
+    deleted: str = "QuarantineTracing deleted"
+    bad_deleted: str = "QuarantineTracing bad deleted"
+    quarantine_tracing_not_entered: str = "QuarantineTracing not entered"

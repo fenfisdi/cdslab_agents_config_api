@@ -147,5 +147,3 @@ def create_cqr_group_info(
         CQRGroupInfoMessages.created,
         HTTP_201_CREATED
     )
-
-

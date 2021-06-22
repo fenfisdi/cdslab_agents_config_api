@@ -7,5 +7,5 @@ class NewCQRGroupInfo(BaseModel):
     delay_units: str = Field(...)
     quarantine_length: int = Field(...)
     quarantine_length_units: str = Field(...)
-    unrestricted_time: int = Field(...)
-    unrestricted_time_units: str = Field(...)
+    time_without_restrictions: int = Field(...)
+    time_without_restrictions_units: str = Field(...)

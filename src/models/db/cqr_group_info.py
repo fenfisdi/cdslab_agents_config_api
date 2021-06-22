@@ -30,5 +30,5 @@ class CQRGroupInfo(Document):
     delay_units = StringField(required=True)
     quarantine_length = IntField(required=True)
     quarantine_length_units = StringField(required=True)
-    unrestricted_time = IntField(required=True)
-    unrestricted_time_units = StringField(required=True)
+    time_without_restrictions = IntField(required=True)
+    time_without_restrictions_units = StringField(required=True)
