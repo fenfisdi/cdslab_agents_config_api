@@ -1,10 +1,7 @@
-from uuid import UUID
-
 from pydantic import BaseModel, Field
 
 
-class NewDistribution(BaseModel):
-    identifier: UUID = Field(...)
+class Distribution(BaseModel):
     name: str = Field(...)
     distribution_type: str = Field(...)
     distribution_name: str = Field(...)
