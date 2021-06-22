@@ -114,6 +114,7 @@ class SusceptibilityGroupsMessages:
 
 @dataclass
 class ImmunizationGroupMessage:
+    exist: str = "Immunization group exist"
     found: str = "Age groups found"
     not_found: str = "Age groups not found"
     not_age_immunization_entered: str = "Not immunization groups entered to save"

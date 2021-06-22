@@ -9,7 +9,7 @@ from src.interfaces import DistributionInterface
 from src.models.general import DiseaseState
 from src.utils import BsonObject, DistributionMessage, UJSONResponse
 
-distributions_routes = APIRouter(tags=["distributions"])
+distributions_routes = APIRouter(tags=["Distributions"])
 
 
 @distributions_routes.get("/distributions")

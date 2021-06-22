@@ -1,7 +1,8 @@
 from mongoengine import (
-    UUIDField,
+    EmbeddedDocumentField,
     ReferenceField,
-    StringField
+    StringField,
+    UUIDField
 )
 
 from .base import BaseDocument
@@ -10,19 +11,7 @@ from .distribution import Distribution
 
 
 class ImmunizationGroup(BaseDocument):
-    identifier = UUIDField(
-        binary=False,
-        unique=True,
-        required=True
-    )
-    configuration = ReferenceField(
-        Configuration,
-        dbref=True,
-        required=True
-    )
-    distribution = ReferenceField(
-        Distribution,
-        dbref=True,
-        required=True
-    )
+    identifier = UUIDField(binary=False, unique=True, required=True)
     name = StringField(required=True)
+    configuration = ReferenceField(Configuration, dbref=True, required=True)
+    distribution = EmbeddedDocumentField(Distribution, required=True)
