@@ -1,7 +1,4 @@
-from src.models import (
-    SusceptibilityGroup,
-    Configuration
-)
+from src.models import Configuration, SusceptibilityGroup
 
 
 class SusceptibilityGroupInterface:
@@ -12,14 +9,14 @@ class SusceptibilityGroupInterface:
     @staticmethod
     def find_all():
         """
-        Find all existing mobility groups in db
+        Find all existing susceptibility groups in db
         """
         return SusceptibilityGroup.objects().all()
 
     @staticmethod
     def find_one(identifier: str):
         """
-        Find a existing mobility group in db
+        Find a existing susceptibility group in db
         :param identifier: Identifier to search
         """
         filters = dict(
@@ -30,8 +27,8 @@ class SusceptibilityGroupInterface:
         ).first()
 
     @staticmethod
-    def find_by_configuration(
-            configuration: Configuration
+    def find_by_conf(
+        configuration: Configuration
     ):
         filters = dict(
             configuration=configuration

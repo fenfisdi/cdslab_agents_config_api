@@ -36,6 +36,7 @@ def list_age_groups(
     """
     Get existing age groups by configuration identifier.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param user: User Authenticated.
     """

@@ -1,7 +1,7 @@
-import uuid
 from typing import List
+from uuid import UUID, uuid1
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -10,34 +10,50 @@ from starlette.status import (
 )
 
 from src.interfaces import (
-    SusceptibilityGroupInterface,
-    DistributionInterface,
-    ConfigurationInterface
+    ConfigurationInterface,
+    SusceptibilityGroupInterface
 )
-from src.models import (
-    SusceptibilityGroup,
-    NewSusceptibilityGroup,
-    Distribution,
-    NewDistribution
-)
-from src.utils.messages import (
-    SusceptibilityGroupsMessages,
-    ConfigurationMessage
-)
+from src.models import NewSusceptibilityGroup, SusceptibilityGroup
+from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
+from src.utils.messages import (
+    ConfigurationMessage,
+    SusceptibilityGroupsMessages
+)
 from src.utils.response import UJSONResponse
-
 
 susceptibility_groups_routes = APIRouter(tags=["SusceptibilityGroups"])
 
 
-@susceptibility_groups_routes.get("/susceptibility_groups")
-def find_all():
+@susceptibility_groups_routes.get(
+    "/configuration/{conf_uuid}/susceptibility_groups"
+)
+def find_susceptibility_groups(
+    conf_uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
     """
-    Get all existing susceptibility groups in db
+    Get existing susceptibility groups by configuration identifier
+
+    \f
+    :param conf_uuid: Configuration identifier.
+    :param user: User authenticated.
     """
     try:
-        susceptibility_groups = SusceptibilityGroupInterface.find_all()
+        configuration = ConfigurationInterface.find_by_identifier(
+            conf_uuid,
+            user
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        susceptibility_groups = SusceptibilityGroupInterface.find_by_conf(
+            configuration
+        )
         if not susceptibility_groups:
             return UJSONResponse(
                 SusceptibilityGroupsMessages.not_found,
@@ -56,67 +72,26 @@ def find_all():
     )
 
 
-@susceptibility_groups_routes.get(
-    "/susceptibility_groups/{configuration_identifier}"
-)
-def find_by_configuration(
-        configuration_identifier: str
-):
-    """
-    Get existing susceptibility groups by configuration identifier
-
-    \f
-    :param configuration_identifier: Configuration identifier
-    """
-    try:
-        configuration = ConfigurationInterface.find_by_identifier(
-            configuration_identifier
-        )
-
-        if not configuration:
-            return UJSONResponse(
-                ConfigurationMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-        mobility_groups = SusceptibilityGroupInterface.find_by_configuration(
-            configuration
-        )
-        if not mobility_groups:
-            return UJSONResponse(
-                SusceptibilityGroupsMessages.not_found,
-                HTTP_404_NOT_FOUND
-            )
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
-
-    return UJSONResponse(
-        SusceptibilityGroupsMessages.found,
-        HTTP_200_OK,
-        BsonObject.dict(mobility_groups)
-    )
-
-
 @susceptibility_groups_routes.post(
-    "/susceptibility_groups/{configuration_identifier}"
+    "/configuration/{conf_uuid}/susceptibility_groups"
 )
-def create_mobility_group(
-        configuration_identifier: str,
-        susceptibility_groups: List[NewSusceptibilityGroup]
+def create_susceptibility_group(
+    conf_uuid: UUID,
+    susceptibility_groups: List[NewSusceptibilityGroup],
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     Created a mobility group in db
 
     \f
-    :param configuration_identifier: Configuration Identifier
+    :param conf_uuid: Configuration Identifier
     :param susceptibility_groups: Mobility Groups list to insert in db
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
-            configuration_identifier
+            conf_uuid,
+            user
         )
 
         if not configuration:
@@ -131,32 +106,21 @@ def create_mobility_group(
                 HTTP_400_BAD_REQUEST
             )
 
-        susceptibility_groups_found = SusceptibilityGroupInterface.find_by_configuration(
-            configuration
+        susceptibility_groups_found = SusceptibilityGroupInterface.find_by_conf(
+            configuration,
         )
         if susceptibility_groups_found:
-            for susceptibility_group in susceptibility_groups_found:
-                distribution_found = DistributionInterface.find_one(
-                    susceptibility_groups_found.distribution.identifier
-                )
-                if distribution_found:
-                    distribution_found.delete()
-                susceptibility_group.delete()
+            return UJSONResponse(
+                SusceptibilityGroupsMessages.exist,
+                HTTP_400_BAD_REQUEST
+            )
 
         for susceptibility_group in susceptibility_groups:
-            new_distribution = Distribution(
-                **susceptibility_group.distribution.dict()
-            )
-            new_susceptibility_group = SusceptibilityGroup(
-                **susceptibility_group.dict()
-            )
-            new_distribution.identifier = uuid.uuid1()
-            new_distribution.save().reload()
-
-            new_susceptibility_group.identifier = uuid.uuid1()
-            new_susceptibility_group.configuration = configuration
-            new_susceptibility_group.distribution = new_distribution
-            new_susceptibility_group.save().reload()
+            SusceptibilityGroup(
+                **susceptibility_group.dict(),
+                identifier=uuid1(),
+                configuration=configuration
+            ).save()
 
     except Exception as error:
         return UJSONResponse(

@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field
 
-from src.models import NewDistribution
+from src.models import Distribution
 
 
 class NewSusceptibilityGroup(BaseModel):
-    distribution: NewDistribution = Field(...)
     name: str = Field(...)
+    distribution: Distribution = Field(...)

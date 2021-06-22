@@ -14,7 +14,7 @@ __all__ = [
     "configuration_routes",
     "mobility_group_routes",
     "age_group_routes",
-    "natural_history_routes"
+    "natural_history_routes",
     "age_group_routes",
     "susceptibility_groups_routes"
 ]

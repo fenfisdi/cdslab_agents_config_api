@@ -1,10 +1,10 @@
 import uuid
-
 from unittest import TestCase
+
 from mongoengine import connect, disconnect
 
-from src.models import SusceptibilityGroup
 from src.interfaces import SusceptibilityGroupInterface
+from src.models import SusceptibilityGroup
 
 
 class SusceptibilityGroupInterfaceTestCase(TestCase):
@@ -46,7 +46,7 @@ class SusceptibilityGroupInterfaceTestCase(TestCase):
         )
 
     def test_find_by_configuration(self):
-        age_groups = SusceptibilityGroupInterface.find_by_configuration(
+        age_groups = SusceptibilityGroupInterface.find_by_conf(
             self.configuration_identifier
         )
 
