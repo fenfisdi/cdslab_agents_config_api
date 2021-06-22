@@ -99,7 +99,7 @@ class VulnerabilityGroupMessage:
     created: str = "Vulnerability group has been created"
     updated: str = "Vulnerability group updated"
 
-
+@dataclass
 class SusceptibilityGroupsMessages:
     """
     Messages used in endpoint responses for susceptibility groups
@@ -110,3 +110,12 @@ class SusceptibilityGroupsMessages:
     created: str = "Susceptibility groups has been created"
     updated: str = "Susceptibility groups updated"
     not_susceptibility_group_entered = "Susceptibility groups not entered"
+
+@dataclass
+class InitialPopulationMessage:
+    """
+    Messages used in endpoint responses for initial population
+    """
+
+    found = "Parameters found"
+    

@@ -1,7 +1,5 @@
-from uuid import UUID
-
 from src.models import AgeGroup, Configuration
-
+from src.models.db import Configuration
 
 class AgeGroupInterface:
     """

@@ -6,6 +6,7 @@ from .mobility_groups import mobility_group_routes
 from .natural_history import natural_history_routes
 from .susceptibility_groups import susceptibility_groups_routes
 from .units import units_routes
+from .intial_population import initial_population_routes
 
 __all__ = [
     "units_routes",
@@ -17,4 +18,5 @@ __all__ = [
     "natural_history_routes",
     "age_group_routes",
     "susceptibility_groups_routes"
+    "initial_population_routes"
 ]

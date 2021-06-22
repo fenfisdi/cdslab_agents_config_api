@@ -1,30 +1,37 @@
 from uuid import UUID, uuid1
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, \
     HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
 from src.interfaces import NaturalHistoryInterface
-from src.models import NaturalHistory, NewNaturalHistory, UpdateNaturalHistory
+from src.models import NaturalHistory, NewNaturalHistory, \
+    UpdateNaturalHistory, Distribution
 from src.use_case import NaturalHistoryUseCase
 from src.utils import BsonObject, UJSONResponse
 from src.utils import NaturalHistoryMessage
+from src.use_case import SecurityUseCase
 
 natural_history_routes = APIRouter(tags=["NaturalHistory"])
 
 @natural_history_routes.post("/naturalHistory")
-def save(natural_history: NewNaturalHistory):
+def save(
+    natural_history: NewNaturalHistory,
+    user=Depends(SecurityUseCase.validate)
+    ):
     """
     create a new natural history
 
     \f
     :param natural_history: natural history information
+    :param user: user information
     """
     try:    
         validated = NaturalHistoryUseCase.validate_parameters(
             config=natural_history.configuration,
             vulnerability_group=natural_history.vulnerability_group,
-            disease_state=natural_history.disease_state
+            disease_state=natural_history.disease_state,
+            user=user
         )
 
         if isinstance(validated, str):
@@ -33,12 +40,17 @@ def save(natural_history: NewNaturalHistory):
                 HTTP_404_NOT_FOUND
             )
 
+        distribution = [
+           Distribution(**dis.dict(exclude_none=None)).save() \
+                for dis in natural_history.distribution
+        ]
+
         history = NaturalHistory(
             identifier= uuid1(),
             configuration=validated["config"],
             vulnerability_group=validated["vulnerability_group"],
             disease_state=validated["disease_states"],
-            distribution=natural_history.distribution,
+            distribution=distribution,
             avoidance_radius=natural_history.avodance_radius,
             transitions=natural_history.transitions
         )
@@ -81,7 +93,7 @@ def get_natural_history(id: UUID):
     )
 
 @natural_history_routes.put("/naturalHistory")
-def update_configurate(natural_history: UpdateNaturalHistory):
+def update_natural_history(natural_history: UpdateNaturalHistory):
     """
     Update a natural history
 
