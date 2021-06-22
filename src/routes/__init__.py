@@ -17,6 +17,6 @@ __all__ = [
     "age_group_routes",
     "natural_history_routes",
     "age_group_routes",
-    "susceptibility_groups_routes"
+    "susceptibility_groups_routes",
     "initial_population_routes"
 ]

@@ -36,7 +36,7 @@ __all__ = [
     "UpdateNaturalHistory",
     "NewConfiguration",
     "SusceptibilityGroup",
-    "NewSusceptibilityGroup"
+    "NewSusceptibilityGroup",
     "NaturalHistory",
     "VulnerabilityGroup"
 ]
