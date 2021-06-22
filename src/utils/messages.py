@@ -126,6 +126,7 @@ class ImmunizationGroupMessage:
 
 @dataclass
 class VulnerabilityGroupsMessages:
+    exist: str = "Vulnerability group exist"
     found: str = "Vulnerability Groups found"
     not_found: str = "Vulnerability Groups not found"
     not_vulnerability_entered: str = "Not Vulnerability Groups entered to save"
