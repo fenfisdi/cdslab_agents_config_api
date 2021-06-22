@@ -1,7 +1,7 @@
-import uuid
-
-from fastapi import APIRouter
 from typing import List
+from uuid import UUID, uuid1
+
+from fastapi import APIRouter, Depends
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -17,52 +17,32 @@ from src.models import (
     AgeGroup,
     NewAgeGroup
 )
+from src.use_case import SecurityUseCase
+from src.utils.encoder import BsonObject
 from src.utils.messages import (
     AgeGroupsMessages,
     ConfigurationMessage
 )
-from src.utils.encoder import BsonObject
 from src.utils.response import UJSONResponse
 
-age_group_routes = APIRouter(tags=["AgeGroups"])
+age_group_routes = APIRouter(tags=["Age Groups"])
 
 
-@age_group_routes.get("/age_groups")
-def find_all():
+@age_group_routes.get("/configuration/{conf_uuid}/age_groups")
+def list_age_groups(
+    conf_uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
     """
-    Get all existing age groups in db
-    """
-    try:
-        age_groups = AgeGroupInterface.find_all()
+    Get existing age groups by configuration identifier.
 
-        if not age_groups:
-            return UJSONResponse(
-                AgeGroupsMessages.not_found,
-                HTTP_404_NOT_FOUND
-            )
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
-
-    return UJSONResponse(
-        AgeGroupsMessages.found,
-        HTTP_200_OK,
-        BsonObject.dict(age_groups)
-    )
-
-
-@age_group_routes.get("/age_groups/{configuration_identifier}")
-def find_by_configuration(configuration_identifier: str):
-    """
-    Get existing age groups by configuration identifier
-
-    :param configuration_identifier: Configuration identifier
+    :param conf_uuid: Configuration identifier.
+    :param user: User Authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
-            configuration_identifier
+            conf_uuid,
+            user
         )
 
         if not configuration:
@@ -94,21 +74,24 @@ def find_by_configuration(configuration_identifier: str):
     )
 
 
-@age_group_routes.post("/age_groups/{configuration_identifier}")
+@age_group_routes.post("/configuration/{conf_uuid}/age_groups")
 def create_age_groups(
-        configuration_identifier: str,
-        age_groups: List[NewAgeGroup]
+    conf_uuid: UUID,
+    age_groups: List[NewAgeGroup],
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     Create age groups in db
 
     \f
-    :param configuration_identifier: Identifier Configuration
-    :param age_groups: List of age groups to save in db
+    :param conf_uuid: Identifier Configuration.
+    :param age_groups: List of age groups to save in db.
+    :param user:
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
-            configuration_identifier
+            conf_uuid,
+            user
         )
 
         if not configuration:
@@ -119,7 +102,7 @@ def create_age_groups(
 
         if not age_groups:
             return UJSONResponse(
-                AgeGroupsMessages.not_age_groups_entry,
+                AgeGroupsMessages.not_age_groups_entered,
                 HTTP_404_NOT_FOUND
             )
 
@@ -132,9 +115,11 @@ def create_age_groups(
                 age_group.delete()
 
         for age_group in age_groups:
-            new_age_group = AgeGroup(**age_group.dict())
-            new_age_group.identifier = uuid.uuid1()
-            new_age_group.configuration = configuration
+            new_age_group = AgeGroup(
+                **age_group.dict(),
+                identifier=uuid1(),
+                configuration=configuration
+            )
             new_age_group.save()
 
     except Exception as error:
