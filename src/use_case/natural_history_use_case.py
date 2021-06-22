@@ -10,6 +10,7 @@ from src.utils import (
     DiseaseStatesMessage,
     VulnerabilityGroupMessage
 )
+from src.models.db import User
 
 
 class NaturalHistoryUseCase:
@@ -19,9 +20,11 @@ class NaturalHistoryUseCase:
         cls,
         config: UUID,
         vulnerability_group: UUID,
-        disease_state: UUID
+        disease_state: UUID,
+        user: User
     ):
-        config_found = ConfigurationInterface.find_by_identifier(config)
+        
+        config_found = ConfigurationInterface.find_by_identifier(config, user)
         group_found = VulnerabilityGroupInterface.find_by_identifier(
             vulnerability_group
         )

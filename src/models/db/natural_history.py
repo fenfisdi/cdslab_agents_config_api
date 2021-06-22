@@ -21,6 +21,6 @@ class NaturalHistory(BaseDocument):
     configuration = ReferenceField(Configuration, dbref=True)
     vulnerability_group = ReferenceField(VulnerabilityGroup, dbref=True)
     disease_state = ReferenceField(DiseaseStates, dbref=True)
-    distribution = ListField(ReferenceField(Distribution))
+    distribution = ListField(ReferenceField(Distribution)) #Se repite en disease_state
     avoidance_radius = FloatField()
     transitions = DictField()

@@ -4,7 +4,7 @@ from .response import UJSONResponse
 from .messages import UnitsMessage, \
     DistributionMessage, DiseaseStatesMessage, \
     ConfigurationMessage, VulnerabilityGroupMessage,\
-    NaturalHistoryMessage
+    NaturalHistoryMessage, InitialPopulationMessage
 
 __all__ = [
     "DateTime",
@@ -15,5 +15,6 @@ __all__ = [
     "DiseaseStatesMessage",
     "ConfigurationMessage",
     "VulnerabilityGroupMessage",
-    "NaturalHistoryMessage"
+    "NaturalHistoryMessage",
+    "InitialPopulationMessage"
 ]

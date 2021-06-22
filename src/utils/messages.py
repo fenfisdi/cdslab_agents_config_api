@@ -98,3 +98,12 @@ class VulnerabilityGroupMessage:
     not_found: str = "Vulnerability group not found"
     created: str = "Vulnerability group has been created"
     updated: str = "Vulnerability group updated"
+
+@dataclass
+class InitialPopulationMessage:
+    """
+    Messages used in endpoint responses for initial population
+    """
+
+    found = "Parameters found"
+    

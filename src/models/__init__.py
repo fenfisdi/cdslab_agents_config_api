@@ -11,6 +11,8 @@ from .route_models.configuration import NewConfiguration, \
     UpdateConfiguration
 from .route_models.distribution import Distribution
 from .route_models.mobility_group import NewMobilityGroup
+from .db.vulnerability_group import VulnerabilityGroup
+from .route_models.age_group import NewAgeGroup
 from .route_models.natual_history import NewNaturalHistory, \
     UpdateNaturalHistory
 
@@ -31,5 +33,6 @@ __all__ = [
     "NewAgeGroup",
     "NewNaturalHistory",
     "UpdateNaturalHistory",
-    "NaturalHistory"
+    "NaturalHistory",
+    "VulnerabilityGroup"
 ]
