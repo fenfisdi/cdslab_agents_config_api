@@ -10,35 +10,34 @@ from starlette.status import (
 )
 
 from src.interfaces import (
-    AgeGroupInterface,
-    ConfigurationInterface
+    ConfigurationInterface,
+    SusceptibilityGroupInterface
 )
-from src.models import (
-    AgeGroup,
-    NewAgeGroup
-)
+from src.models import NewSusceptibilityGroup, SusceptibilityGroup
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
-    AgeGroupsMessages,
-    ConfigurationMessage
+    ConfigurationMessage,
+    SusceptibilityGroupsMessages
 )
 from src.utils.response import UJSONResponse
 
-age_group_routes = APIRouter(tags=["Age Groups"])
+susceptibility_groups_routes = APIRouter(tags=["SusceptibilityGroups"])
 
 
-@age_group_routes.get("/configuration/{conf_uuid}/age_groups")
-def list_age_groups(
+@susceptibility_groups_routes.get(
+    "/configuration/{conf_uuid}/susceptibility_groups"
+)
+def find_susceptibility_groups(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
     """
-    Get existing age groups by configuration identifier.
+    Get existing susceptibility groups by configuration identifier
 
     \f
     :param conf_uuid: Configuration identifier.
-    :param user: User Authenticated.
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
@@ -52,16 +51,14 @@ def list_age_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        age_groups = AgeGroupInterface.find_by_configuration(
+        susceptibility_groups = SusceptibilityGroupInterface.find_by_conf(
             configuration
         )
-
-        if not age_groups:
+        if not susceptibility_groups:
             return UJSONResponse(
-                AgeGroupsMessages.not_found,
+                SusceptibilityGroupsMessages.not_found,
                 HTTP_404_NOT_FOUND
             )
-
     except Exception as error:
         return UJSONResponse(
             str(error),
@@ -69,25 +66,27 @@ def list_age_groups(
         )
 
     return UJSONResponse(
-        AgeGroupsMessages.found,
+        SusceptibilityGroupsMessages.found,
         HTTP_200_OK,
-        BsonObject.dict(age_groups)
+        BsonObject.dict(susceptibility_groups)
     )
 
 
-@age_group_routes.post("/configuration/{conf_uuid}/age_groups")
-def create_age_groups(
+@susceptibility_groups_routes.post(
+    "/configuration/{conf_uuid}/susceptibility_groups"
+)
+def create_susceptibility_group(
     conf_uuid: UUID,
-    age_groups: List[NewAgeGroup],
+    susceptibility_groups: List[NewSusceptibilityGroup],
     user = Depends(SecurityUseCase.validate)
 ):
     """
-    Create age groups in db
+    Created a mobility group in db
 
     \f
-    :param conf_uuid: Identifier Configuration.
-    :param age_groups: List of age groups to save in db.
-    :param user:
+    :param conf_uuid: Configuration Identifier
+    :param susceptibility_groups: Mobility Groups list to insert in db
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
@@ -101,27 +100,27 @@ def create_age_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        if not age_groups:
+        if not susceptibility_groups:
             return UJSONResponse(
-                AgeGroupsMessages.not_age_groups_entered,
-                HTTP_404_NOT_FOUND
+                SusceptibilityGroupsMessages.not_susceptibility_group_entered,
+                HTTP_400_BAD_REQUEST
             )
 
-        age_groups_found = AgeGroupInterface.find_by_configuration(
-            configuration
+        susceptibility_groups_found = SusceptibilityGroupInterface.find_by_conf(
+            configuration,
         )
+        if susceptibility_groups_found:
+            return UJSONResponse(
+                SusceptibilityGroupsMessages.exist,
+                HTTP_400_BAD_REQUEST
+            )
 
-        if age_groups_found:
-            for age_group in age_groups_found:
-                age_group.delete()
-
-        for age_group in age_groups:
-            new_age_group = AgeGroup(
-                **age_group.dict(),
+        for susceptibility_group in susceptibility_groups:
+            SusceptibilityGroup(
+                **susceptibility_group.dict(),
                 identifier=uuid1(),
                 configuration=configuration
-            )
-            new_age_group.save()
+            ).save()
 
     except Exception as error:
         return UJSONResponse(
@@ -130,6 +129,6 @@ def create_age_groups(
         )
 
     return UJSONResponse(
-        AgeGroupsMessages.created,
+        SusceptibilityGroupsMessages.created,
         HTTP_201_CREATED
     )

@@ -98,3 +98,15 @@ class VulnerabilityGroupMessage:
     not_found: str = "Vulnerability group not found"
     created: str = "Vulnerability group has been created"
     updated: str = "Vulnerability group updated"
+
+
+class SusceptibilityGroupsMessages:
+    """
+    Messages used in endpoint responses for susceptibility groups
+    """
+    found: str = "Susceptibility groups found"
+    not_found: str = "Susceptibility groups not found"
+    exist: str = 'Susceptibility groups exist'
+    created: str = "Susceptibility groups has been created"
+    updated: str = "Susceptibility groups updated"
+    not_susceptibility_group_entered = "Susceptibility groups not entered"
