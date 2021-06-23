@@ -13,7 +13,8 @@ from src.interfaces import (
     ConfigurationInterface,
     ImmunizationGroupInterface
 )
-from src.models import (ImmunizationGroup, NewImmunizationGroup)
+from src.models.db import ImmunizationGroup
+from src.models.route_models import NewImmunizationGroup
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, ImmunizationGroupMessage

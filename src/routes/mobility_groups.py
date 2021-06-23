@@ -46,11 +46,11 @@ def list_mobility_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        mobility_groups = MobilityGroupInterface.find_by_configuration(
+        mobility_groups_found = MobilityGroupInterface.find_by_configuration(
             configuration
         )
 
-        if not mobility_groups:
+        if not mobility_groups_found:
             return UJSONResponse(
                 MobilityGroupsMessages.not_found,
                 HTTP_404_NOT_FOUND
@@ -64,7 +64,7 @@ def list_mobility_groups(
     return UJSONResponse(
         MobilityGroupsMessages.found,
         HTTP_200_OK,
-        BsonObject.dict(mobility_groups)
+        BsonObject.dict(mobility_groups_found)
     )
 
 
