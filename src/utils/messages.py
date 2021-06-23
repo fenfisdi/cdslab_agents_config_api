@@ -110,3 +110,27 @@ class SusceptibilityGroupsMessages:
     created: str = "Susceptibility groups has been created"
     updated: str = "Susceptibility groups updated"
     not_susceptibility_group_entered = "Susceptibility groups not entered"
+
+
+@dataclass
+class ImmunizationGroupMessage:
+    exist: str = "Immunization group exist"
+    found: str = "Age groups found"
+    not_found: str = "Age groups not found"
+    not_age_immunization_entered: str = "Not immunization groups entered to save"
+    created: str = "Age groups has been created"
+    updated: str = "Age groups updated"
+    deleted: str = "Age group deleted"
+    bad_deleted: str = "Age group bad deleted"
+
+
+@dataclass
+class VulnerabilityGroupsMessages:
+    exist: str = "Vulnerability group exist"
+    found: str = "Vulnerability Groups found"
+    not_found: str = "Vulnerability Groups not found"
+    not_vulnerability_entered: str = "Not Vulnerability Groups entered to save"
+    created: str = "Vulnerability Groups has been created"
+    updated: str = "Vulnerability Groups updated"
+    deleted: str = "Vulnerability Groups deleted"
+    bad_deleted: str = "Vulnerability Groups bad deleted"

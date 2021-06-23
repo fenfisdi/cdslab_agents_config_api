@@ -13,7 +13,8 @@ from src.interfaces import (
     ConfigurationInterface,
     SusceptibilityGroupInterface
 )
-from src.models import NewSusceptibilityGroup, SusceptibilityGroup
+from src.models.db import SusceptibilityGroup
+from src.models.route_models import NewSusceptibilityGroup
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
@@ -22,7 +23,7 @@ from src.utils.messages import (
 )
 from src.utils.response import UJSONResponse
 
-susceptibility_groups_routes = APIRouter(tags=["SusceptibilityGroups"])
+susceptibility_groups_routes = APIRouter(tags=["Susceptibility Groups"])
 
 
 @susceptibility_groups_routes.get(

@@ -13,10 +13,8 @@ from src.interfaces import (
     AgeGroupInterface,
     ConfigurationInterface
 )
-from src.models import (
-    AgeGroup,
-    NewAgeGroup
-)
+from src.models.db import AgeGroup
+from src.models.route_models import NewAgeGroup
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
@@ -82,7 +80,7 @@ def create_age_groups(
     user = Depends(SecurityUseCase.validate)
 ):
     """
-    Create age groups in db
+    Create age groups in db.
 
     \f
     :param conf_uuid: Identifier Configuration.

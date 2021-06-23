@@ -5,7 +5,7 @@ from src.models.general import UnitLength, UnitTime
 from src.utils.messages import UnitsMessage
 from src.utils.response import UJSONResponse
 
-units_routes = APIRouter(tags=["units"])
+units_routes = APIRouter(tags=["Units"])
 
 
 @units_routes.get("/units/distance")

@@ -9,11 +9,8 @@ from starlette.status import (
 )
 
 from src.interfaces import ConfigurationInterface
-from src.models import (
-    Configuration,
-    NewConfiguration,
-    UpdateConfiguration
-)
+from src.models.db import Configuration
+from src.models.route_models import NewConfiguration, UpdateConfiguration
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage

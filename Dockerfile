@@ -17,6 +17,7 @@ WORKDIR ${APP_HOME}
 COPY src src
 COPY main.py .
 COPY docker-entrypoint.sh .
+COPY master_db.py .
 
 ENTRYPOINT ["/bin/bash"]
 CMD ["./docker-entrypoint.sh"]
