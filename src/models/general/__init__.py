@@ -1,5 +1,9 @@
-from .disease import DiseaseState
-from .distribution import DistributionType
+from .distribution import DistributionDiseaseType, DistributionType
 from .units import UnitLength, UnitTime
 
-__all__ = ['UnitLength', 'UnitTime', 'DiseaseState', 'DistributionType']
+__all__ = [
+    'UnitLength',
+    'UnitTime',
+    'DistributionDiseaseType',
+    'DistributionType'
+]

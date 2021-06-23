@@ -1,5 +1,6 @@
 from .age_group import NewAgeGroup
 from .configuration import NewConfiguration, UpdateConfiguration
+from .disease_group import NewDiseaseGroup
 from .distribution import Distribution
 from .immunization_group import NewImmunizationGroup
 from .mobility_group import NewMobilityGroup
@@ -16,5 +17,6 @@ __all__ = [
     'NewNaturalHistory',
     'UpdateNaturalHistory',
     'NewSusceptibilityGroup',
-    'NewVulnerabilityGroup'
+    'NewVulnerabilityGroup',
+    'NewDiseaseGroup',
 ]

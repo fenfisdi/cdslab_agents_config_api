@@ -1,6 +1,6 @@
 from .db.age_group import AgeGroup
 from .db.configuration import Configuration
-from .db.disease_states import DiseaseStates
+from .db.disease_states import DiseaseGroups
 from .db.distribution import Distribution
 from .db.immunization_group import ImmunizationGroup
 from .db.mobility_group import MobilityGroup
@@ -19,7 +19,7 @@ from .route_models.vulnerability_group import NewVulnerabilityGroup
 
 __all__ = [
     "Configuration",
-    "DiseaseStates",
+    "DiseaseGroups",
     "Distribution",
     "Simulation",
     "NewConfiguration",

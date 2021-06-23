@@ -1,9 +1,8 @@
 from unittest import TestCase
 
-from mongoengine import connect, disconnect
+from mongoengine import connect
 
-from src.interfaces import DistributionInterface
-from src.models.db.disease_states import DiseaseStates
+from src.models.db.disease_states import DiseaseGroups
 
 
 class DiseaseStatesTestCase(TestCase):
@@ -14,7 +13,7 @@ class DiseaseStatesTestCase(TestCase):
             alias="DiseaseStatesInterfaceTestCase"
         )
         
-        self.disease_states = DiseaseStates(
+        self.disease_states = DiseaseGroups(
             name="Unit Test",
             can_get_infected=False,
             is_infected=False,

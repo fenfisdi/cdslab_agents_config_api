@@ -1,12 +1,15 @@
 from uuid import UUID
+
+from src.models import Configuration
+from src.models.db.disease_states import DiseaseGroups
 from src.models.db.master.disease_states import MasterDiseaseStates
-from src.models.db.disease_states import DiseaseStates
 
 
 class DiseaseStatesInterface:
     """
     Interface to consult disease states in DB
     """
+
     @staticmethod
     def find_all():
         """
@@ -24,5 +27,14 @@ class DiseaseStatesInterface:
         filters = dict(
             identifier=identifier
         )
-        return DiseaseStates.objects(**filters).first()
+        return DiseaseGroups.objects(**filters).first()
 
+
+class DiseaseGroupsInterface:
+
+    @staticmethod
+    def find_all(configuration: Configuration):
+        filters = dict(
+            configuration=configuration,
+        )
+        return DiseaseGroups.objects(**filters).all()
