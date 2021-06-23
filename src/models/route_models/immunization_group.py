@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from src.models import Distribution
+from .distribution import Distribution
 
 
 class NewImmunizationGroup(BaseModel):

@@ -11,7 +11,6 @@ __all__ = [
     'NewAgeGroup',
     'NewConfiguration',
     'UpdateConfiguration',
-    'Distribution',
     'NewImmunizationGroup',
     'NewMobilityGroup',
     'NewNaturalHistory',
