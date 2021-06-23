@@ -8,8 +8,13 @@ class DistributionType(Enum):
     WEIGHTS: str = 'weights'
 
 
-class DistributionDiseaseType(Enum):
+class DiseaseDistributionType(Enum):
     DIAGNOSIS: str = 'diagnosis'
     ISOLATION: str = 'isolation'
     HOSPITAL: str = 'hospitalization'
     ICU: str = 'icu'
+
+
+class NaturalDistributionType(Enum):
+    TIME: str = 'time_distribution'
+    ALERTNESS: str = 'alertness_distribution'

@@ -1,9 +1,9 @@
 from unittest import TestCase
 
 from mongoengine import connect, disconnect
+from src.models.db.Distribution import Distribution
 
 from src.interfaces import DistributionInterface
-from src.models.db.Distribution import Distribution
 
 
 class DistributionInterfaceTestCase(TestCase):
@@ -18,7 +18,7 @@ class DistributionInterfaceTestCase(TestCase):
         self.distribution = Distribution(
             name=self.distribution_name,
             type=[self.params_distribution]
-        ).save()
+        ).create_natural_history()
 
     def tearDown(self):
         disconnect()
