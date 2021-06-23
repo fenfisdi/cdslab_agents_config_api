@@ -155,3 +155,11 @@ class DiseaseGroupMessage:
     exist: str = "Disease Groups exist"
     created: str = "Disease Groups has been created"
     not_entered: str = "Disease Groups not entered to save"
+
+@dataclass
+class InitialPopulationMessage:
+    """
+    Messages used in endpoint responses for initial population
+    """
+
+    found = "Parameters found"
