@@ -6,7 +6,7 @@ from starlette.status import (
 )
 
 from src.interfaces import DistributionInterface
-from src.models.general import DistributionDiseaseType
+from src.models.general import DiseaseDistributionType
 from src.utils import BsonObject, DistributionMessage, UJSONResponse
 
 distributions_routes = APIRouter(tags=["Distributions"])
@@ -79,5 +79,5 @@ def list_disease_state_distribution():
     return UJSONResponse(
         DistributionMessage.found,
         HTTP_200_OK,
-        {state.name: state.value for state in DistributionDiseaseType}
+        {state.name: state.value for state in DiseaseDistributionType}
     )

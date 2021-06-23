@@ -1,9 +1,14 @@
-from .distribution import DistributionDiseaseType, DistributionType
+from .distribution import (
+    DiseaseDistributionType,
+    DistributionType,
+    NaturalDistributionType
+)
 from .units import UnitLength, UnitTime
 
 __all__ = [
     'UnitLength',
     'UnitTime',
-    'DistributionDiseaseType',
-    'DistributionType'
+    'DiseaseDistributionType',
+    'DistributionType',
+    'NaturalDistributionType'
 ]

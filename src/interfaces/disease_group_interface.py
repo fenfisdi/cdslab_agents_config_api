@@ -38,3 +38,10 @@ class DiseaseGroupsInterface:
             configuration=configuration,
         )
         return DiseaseGroups.objects(**filters).all()
+
+    @staticmethod
+    def find_one(identifier: UUID):
+        filters = dict(
+            identifier=identifier
+        )
+        return DiseaseGroups.objects(**filters).first()

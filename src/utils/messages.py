@@ -89,17 +89,6 @@ class NaturalHistoryMessage:
     updated: str = "Natural history updated"
 
 
-@dataclass
-class VulnerabilityGroupMessage:
-    """
-    Messages used in endpoint responses for vulnerability group
-    """
-    found: str = "Vulnerability group found"
-    not_found: str = "Vulnerability group not found"
-    created: str = "Vulnerability group has been created"
-    updated: str = "Vulnerability group updated"
-
-
 class SusceptibilityGroupsMessages:
     """
     Messages used in endpoint responses for susceptibility groups
@@ -125,7 +114,7 @@ class ImmunizationGroupMessage:
 
 
 @dataclass
-class VulnerabilityGroupsMessages:
+class VulnerabilityGroupMessage:
     exist: str = "Vulnerability group exist"
     found: str = "Vulnerability Groups found"
     not_found: str = "Vulnerability Groups not found"
@@ -137,7 +126,7 @@ class VulnerabilityGroupsMessages:
 
 
 @dataclass
-class DiseaseGroupMessages:
+class DiseaseGroupMessage:
     found: str = "Disease groups found"
     not_found: str = "Disease groups not found"
     exist: str = "Disease Groups exist"

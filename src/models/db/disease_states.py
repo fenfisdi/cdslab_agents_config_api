@@ -10,14 +10,14 @@ from mongoengine import (
     UUIDField
 )
 
-from src.models.general import DistributionDiseaseType
+from src.models.general import DiseaseDistributionType
 from .base import BaseDocument
 from .configuration import Configuration
 from .distribution import Distribution
 
 
 class DiseaseDistribution(EmbeddedDocument):
-    type = EnumField(DistributionDiseaseType, required=True)
+    type = EnumField(DiseaseDistributionType, required=True)
     distribution = EmbeddedDocumentField(Distribution)
 
 

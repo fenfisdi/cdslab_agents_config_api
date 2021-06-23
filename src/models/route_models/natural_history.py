@@ -3,14 +3,13 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from .distribution import Distribution
+from .distribution import NaturalDistribution
 
 
 class NewNaturalHistory(BaseModel):
     vulnerability_group: UUID = Field(...)
-    disease_state: UUID = Field(...)
-    configuration: UUID = Field(...)
-    distribution: List[Distribution] = Field(...)
+    disease_group: UUID = Field(...)
+    distribution: List[NaturalDistribution] = Field(...)
     avoidance_radius: float = Field(...)
     transitions: dict = Field(...)
 

@@ -23,7 +23,7 @@ from src.utils import (
     DiseaseStatesMessage,
     UJSONResponse
 )
-from src.utils.messages import DiseaseGroupMessages
+from src.utils.messages import DiseaseGroupMessage
 
 disease_states_routes = APIRouter(tags=["Disease States"])
 
@@ -55,13 +55,13 @@ def create_disease_states(
         dg_found = DiseaseGroupsInterface.find_all(configuration_found)
         if dg_found:
             return UJSONResponse(
-                DiseaseGroupMessages.exist,
+                DiseaseGroupMessage.exist,
                 HTTP_400_BAD_REQUEST
             )
 
         if not disease_groups:
             return UJSONResponse(
-                DiseaseGroupMessages.not_entered,
+                DiseaseGroupMessage.not_entered,
                 HTTP_400_BAD_REQUEST
             )
 
@@ -79,7 +79,7 @@ def create_disease_states(
         )
 
     return UJSONResponse(
-        DiseaseGroupMessages.created,
+        DiseaseGroupMessage.created,
         HTTP_201_CREATED
     )
 
@@ -103,11 +103,11 @@ def create_disease_states(
         dg_found = DiseaseGroupsInterface.find_all(configuration_found)
         if not dg_found:
             return UJSONResponse(
-                DiseaseGroupMessages.not_found,
+                DiseaseGroupMessage.not_found,
                 HTTP_400_BAD_REQUEST
             )
         return UJSONResponse(
-            DiseaseGroupMessages.found,
+            DiseaseGroupMessage.found,
             HTTP_200_OK,
             BsonObject.dict(dg_found)
         )
@@ -119,7 +119,7 @@ def create_disease_states(
         )
 
     return UJSONResponse(
-        DiseaseGroupMessages.created,
+        DiseaseGroupMessage.created,
         HTTP_201_CREATED
     )
 

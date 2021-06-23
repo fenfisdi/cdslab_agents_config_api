@@ -1,6 +1,10 @@
 from pydantic import BaseModel, Field
 
-from src.models.general import DistributionDiseaseType, DistributionType
+from src.models.general import (
+    DiseaseDistributionType,
+    DistributionType,
+    NaturalDistributionType
+)
 
 
 class Distribution(BaseModel):
@@ -12,5 +16,10 @@ class Distribution(BaseModel):
 
 
 class DiseaseDistribution(BaseModel):
-    type: DistributionDiseaseType = Field(...)
+    type: DiseaseDistributionType = Field(...)
+    distribution: Distribution = Field(...)
+
+
+class NaturalDistribution(BaseModel):
+    type: NaturalDistributionType = Field(...)
     distribution: Distribution = Field(...)

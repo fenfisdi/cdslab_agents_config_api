@@ -1,6 +1,7 @@
 from uuid import UUID
 
-from src.models import NaturalHistory
+from src.models import Configuration, NaturalHistory
+
 
 class NaturalHistoryInterface:
     """
@@ -20,3 +21,10 @@ class NaturalHistoryInterface:
         )
 
         return NaturalHistory.objects(**filters).first()
+
+    @staticmethod
+    def find_by_config(configuration: Configuration):
+        filters = dict(
+            configuration=configuration
+        )
+        return NaturalHistory.objects(**filters).all()
