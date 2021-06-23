@@ -22,7 +22,7 @@ from src.utils.messages import (
 )
 from src.utils.response import UJSONResponse
 
-susceptibility_groups_routes = APIRouter(tags=["SusceptibilityGroups"])
+susceptibility_groups_routes = APIRouter(tags=["Susceptibility Groups"])
 
 
 @susceptibility_groups_routes.get(

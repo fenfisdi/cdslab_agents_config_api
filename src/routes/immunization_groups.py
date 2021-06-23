@@ -98,10 +98,10 @@ def create_configuration(
                 HTTP_400_BAD_REQUEST
             )
 
-        immunization_groups_found = ImmunizationGroupInterface.find_by_configuration(
+        ig_found = ImmunizationGroupInterface.find_by_configuration(
             configuration_found
         )
-        if immunization_groups_found:
+        if ig_found:
             return UJSONResponse(
                 ImmunizationGroupMessage.exist,
                 HTTP_400_BAD_REQUEST
