@@ -1,10 +1,15 @@
 from .date_time import DateTime
 from .encoder import BsonObject
 from .response import UJSONResponse
-from .messages import UnitsMessage, \
-    DistributionMessage, DiseaseStatesMessage, \
-    ConfigurationMessage, VulnerabilityGroupMessage,\
-    NaturalHistoryMessage
+from .messages import (
+    UnitsMessage, 
+    DistributionMessage, 
+    DiseaseStatesMessage, 
+    ConfigurationMessage, 
+    VulnerabilityGroupMessage,
+    NaturalHistoryMessage,
+    InitialPopulationMessage
+)
 
 __all__ = [
     "DateTime",
@@ -15,5 +20,6 @@ __all__ = [
     "DiseaseStatesMessage",
     "ConfigurationMessage",
     "VulnerabilityGroupMessage",
-    "NaturalHistoryMessage"
+    "NaturalHistoryMessage",
+    "InitialPopulationMessage"
 ]
