@@ -134,3 +134,12 @@ class VulnerabilityGroupsMessages:
     updated: str = "Vulnerability Groups updated"
     deleted: str = "Vulnerability Groups deleted"
     bad_deleted: str = "Vulnerability Groups bad deleted"
+
+
+@dataclass
+class DiseaseGroupMessages:
+    found: str = "Disease groups found"
+    not_found: str = "Disease groups not found"
+    exist: str = "Disease Groups exist"
+    created: str = "Disease Groups has been created"
+    not_entered: str = "Disease Groups not entered to save"
