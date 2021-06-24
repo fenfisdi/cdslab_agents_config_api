@@ -14,7 +14,8 @@ from src.interfaces import (
     NaturalHistoryInterface,
     VulnerabilityGroupInterface
 )
-from src.models import NaturalHistory, NewNaturalHistory, UpdateNaturalHistory
+from src.models.db import NaturalHistory
+from src.models.route_models import NewNaturalHistory, UpdateNaturalHistory
 from src.use_case import SecurityUseCase
 from src.utils import BsonObject, UJSONResponse
 from src.utils import NaturalHistoryMessage
@@ -133,37 +134,53 @@ def list_natural_histories(
     )
 
 
-# TODO: Verify Put Information
-@natural_history_routes.put("/naturalHistory")
-def update_configurate(natural_history: UpdateNaturalHistory):
+@natural_history_routes.put("/configuration/{conf_uuid}/natural_history/{uuid}")
+def update_natural_history(
+    conf_uuid: UUID,
+    uuid: UUID,
+    natural_history: UpdateNaturalHistory,
+    user = Depends(SecurityUseCase.validate)
+):
     """
     Update a natural history
 
     \f
+    :param conf_uuid:
+    :param uuid:
     :param natural_history: natural history information
+    :param user:
     """
 
     try:
-        natural_history_found = NaturalHistoryInterface.find_by_identifier(
-            natural_history.identifier
+        configuration = ConfigurationInterface.find_by_identifier(
+            conf_uuid,
+            user
+        )
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        nh_found = NaturalHistoryInterface.find_one(
+            uuid
         )
 
-        if not natural_history_found:
+        if not nh_found:
             return UJSONResponse(
                 NaturalHistoryMessage.not_found,
                 HTTP_404_NOT_FOUND
             )
 
-        natural_history_found.update(
-            **natural_history.dict(exclude_none=None)
+        nh_found.update(
+            **natural_history.dict(exclude_none=True)
         )
-
-        natural_history_found.create_natural_history().reload()
+        nh_found.reload()
 
         return UJSONResponse(
             NaturalHistoryMessage.updated,
             HTTP_200_OK,
-            BsonObject.dict(natural_history_found)
+            BsonObject.dict(nh_found)
         )
 
     except Exception as error:

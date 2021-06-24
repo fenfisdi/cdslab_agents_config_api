@@ -5,7 +5,7 @@ from .distribution import Distribution
 from .immunization_group import ImmunizationGroup
 from .mobility_group import MobilityGroup
 from .natural_history import NaturalHistory
-from .quarantine_tracing import Quarantine, QuarantineGroup
+from .quarantine import Quarantine, QuarantineGroup
 from .simulation import Simulation
 from .susceptibility_group import SusceptibilityGroup
 from .user import User

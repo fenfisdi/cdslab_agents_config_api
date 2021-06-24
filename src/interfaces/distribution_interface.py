@@ -1,6 +1,5 @@
 from src.models.db.distribution import Distribution
 from src.models.db.master.distribution import MasterDistribution
-from src.models.db.distribution import Distribution
 
 
 class DistributionInterface:

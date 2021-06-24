@@ -1,9 +1,6 @@
 from uuid import UUID
 
-from src.models import (
-    ImmunizationGroup,
-    Configuration
-)
+from src.models.db import Configuration, ImmunizationGroup
 
 
 class ImmunizationGroupInterface:

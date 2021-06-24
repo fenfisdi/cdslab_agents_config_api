@@ -1,4 +1,6 @@
-from src.models import Configuration, SusceptibilityGroup
+from uuid import UUID
+
+from src.models.db import Configuration, SusceptibilityGroup
 
 
 class SusceptibilityGroupInterface:
@@ -14,7 +16,7 @@ class SusceptibilityGroupInterface:
         return SusceptibilityGroup.objects().all()
 
     @staticmethod
-    def find_one(identifier: str):
+    def find_one(identifier: UUID):
         """
         Find a existing susceptibility group in db
         :param identifier: Identifier to search
