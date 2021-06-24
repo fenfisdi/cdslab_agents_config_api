@@ -15,6 +15,7 @@ from .quarantine_interface import (
 from .susceptibility_group_interface import SusceptibilityGroupInterface
 from .user_interface import UserInterface
 from .vulnerability_group import VulnerabilityGroupInterface
+from .initial_population_interface import InitialPopulationInterface
 
 __all__ = [
     'DistributionInterface',
@@ -28,7 +29,7 @@ __all__ = [
     "SusceptibilityGroupInterface",
     'NaturalHistoryInterface',
     'ImmunizationGroupInterface',
-    'NaturalHistoryInterface',
     "QuarantineGroupInterface",
+    'InitialPopulationInterface',
     'QuarantineInterface'
 ]

@@ -70,3 +70,4 @@ class BsonObject:
             if k in invalid_keys:
                 del data[k]
         return data
+        

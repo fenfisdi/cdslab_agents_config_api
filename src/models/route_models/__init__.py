@@ -8,6 +8,11 @@ from .natural_history import NewNaturalHistory, UpdateNaturalHistory
 from .quarantine_group import NewQuarantine, UpdateQuarantineGroup
 from .susceptibility_group import NewSusceptibilityGroup, UpdateSusceptibilityGroup
 from .vulnerability_group import NewVulnerabilityGroup
+from .initial_pupation import (
+    NewInitialPopulationSetup, 
+    UpdateInitialPopulationSetup
+)
+
 
 __all__ = [
     'NewAgeGroup',
@@ -22,5 +27,8 @@ __all__ = [
     'NewVulnerabilityGroup',
     'NewDiseaseGroup',
     'NewQuarantine',
-    'UpdateQuarantineGroup'
+    'UpdateQuarantineGroup',
+    'NewInitialPopulationSetup',
+    'UpdateInitialPopulationSetup'
+
 ]

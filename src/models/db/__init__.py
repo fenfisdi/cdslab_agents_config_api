@@ -10,6 +10,7 @@ from .simulation import Simulation
 from .susceptibility_group import SusceptibilityGroup
 from .user import User
 from .vulnerability_group import VulnerabilityGroup
+from .initial_population import InitialPopulationSetup
 
 __all__ = [
     'AgeGroup',
@@ -24,5 +25,6 @@ __all__ = [
     'User',
     'VulnerabilityGroup',
     'Quarantine',
-    'QuarantineGroup'
+    'QuarantineGroup',
+    'InitialPopulationSetup'
 ]
