@@ -4,12 +4,12 @@ from typing import Union
 from mongoengine import Document
 
 from src.interfaces import (
-    DiseaseStatesInterface,
-    VulnerabilityGroupInterface,
-    AgeGroupInterface,
+    ConfigurationInterface,
+    DiseaseGroupsInterface,
+    ImmunizationGroupInterface,
     MobilityGroupInterface,
-    NaturalHistoryInterface,
-    ConfigurationInterface
+    SusceptibilityGroupInterface,
+    VulnerabilityGroupInterface
 )
 from src.models.db import User
 from src.utils import BsonObject
@@ -31,13 +31,14 @@ class InitialPopulationUseCase:
 
         config = ConfigurationInterface.find_by_identifier(config_id, user)
 
-        natural_history = NaturalHistoryInterface.find_by_configuration(config)
-        disease_state = DiseaseStatesInterface.find_by_configuration(config)
+        disease_state = DiseaseGroupsInterface.find_all(config)
         vulnerability_group = VulnerabilityGroupInterface.find_by_configuration(
             config
         )
-        age_group = AgeGroupInterface.find_by_configuration(config)
+        
         mobility_group = MobilityGroupInterface.find_by_configuration(config)
+        immunization_group = ImmunizationGroupInterface.find_by_configuration(config)
+        susceptibility_group = SusceptibilityGroupInterface.find_by_conf(config)
 
         parameters_found = []
 
@@ -45,21 +46,25 @@ class InitialPopulationUseCase:
             parameters_found.append(
                 cls.get_information(disease_state)
             )
+
         if vulnerability_group:
             parameters_found.append(
                 cls.get_information(vulnerability_group)
             )
-        if age_group:
-            parameters_found.append(
-                cls.get_information(age_group)
-            )
+
         if mobility_group:
             parameters_found.append(
                 cls.get_information(mobility_group)
             )
-        if natural_history:
+
+        if immunization_group:
             parameters_found.append(
-                cls.get_information(natural_history)
+                cls.get_information(immunization_group)
+            )
+
+        if susceptibility_group:
+            parameters_found.append(
+                cls.get_information(susceptibility_group)
             )
 
         return parameters_found
@@ -72,9 +77,9 @@ class InitialPopulationUseCase:
 
         :param parameter: mongo document
         """
-        data = BsonObject.dict(parameter,True)
+        data = BsonObject.dict(parameter,True).pop()
 
         return dict(
-            variable=data.get("_cls"),
-            identifier=data.get("identifier")
+            variable=data["_cls"],
+            identifier=data["identifier"]
         )

@@ -17,7 +17,8 @@ from src.routes import (
     quarantine_group_routes,
     susceptibility_groups_routes,
     units_routes,
-    vulnerability_group_routes
+    vulnerability_group_routes,
+    initial_population_routes
 )
 
 app = FastAPI(**fastApiConfig)
@@ -47,3 +48,4 @@ app.include_router(vulnerability_group_routes)
 app.include_router(disease_states_routes)
 app.include_router(natural_history_routes)
 app.include_router(quarantine_group_routes)
+app.include_router(initial_population_routes)
