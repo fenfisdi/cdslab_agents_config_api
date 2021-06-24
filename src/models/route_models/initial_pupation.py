@@ -3,19 +3,12 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
+from src.models.general import ConfigurationVariableName
 
 class NewInitialPopulationSetup(BaseModel):
     nesting_variables_names: List[str] = Field(...)
-    nesting_varibles_id: List[str] = Field(...)
-    percentages: dict = Field(
-        {
-            "Group 1" : {
-                "Group 2": {
-                    "Percentage": "value"
-                }
-            }
-        }
-    )
+    percentages: dict = Field(...)
+    variable_name: ConfigurationVariableName = Field(...)
     
 class UpdateInitialPopulationSetup(NewInitialPopulationSetup):
     identifier: UUID = Field(...)

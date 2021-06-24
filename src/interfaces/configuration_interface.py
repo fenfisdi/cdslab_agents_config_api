@@ -50,3 +50,30 @@ class ConfigurationInterface:
             is_deleted=False,
         )
         return Configuration.objects(**filters).first()
+
+    @staticmethod
+    def find_variables(
+        identifier: UUID, 
+        user: User,
+        configured: bool
+    ):
+        """
+        Find configuration variables by identifier, user, and variable status 
+
+        :param identifier: Identifier to search the configuration
+        :param user: User authenticated.
+        :param configured: status variables
+        """
+
+        filters = dict(
+            identifier=identifier,
+            user=user,
+            is_deleted=False
+        )
+
+        found = Configuration.objects(**filters).first()
+        variables = [ 
+            var.name.value for var in  found.variables if var.configured == configured
+        ]
+
+        return  variables
