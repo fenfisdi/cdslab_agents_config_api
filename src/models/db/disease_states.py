@@ -10,7 +10,7 @@ from mongoengine import (
     UUIDField
 )
 
-from src.models.general import DiseaseDistributionType
+from src.models.general import DiseaseDistributionType, UnitLength
 from .base import BaseDocument
 from .configuration import Configuration
 from .distribution import Distribution
@@ -29,5 +29,6 @@ class DiseaseGroups(BaseDocument):
     is_infected = BooleanField(required=True)
     can_spread = BooleanField(required=True)
     spread_radius = FloatField()
+    spread_radius_unit = EnumField(UnitLength)
     spread_probability = FloatField()
     distributions = EmbeddedDocumentListField(DiseaseDistribution)
