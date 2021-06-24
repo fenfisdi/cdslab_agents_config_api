@@ -1,4 +1,5 @@
 from uuid import UUID
+
 from src.models.db import(
     configuration,
     InitialPopulationSetup
