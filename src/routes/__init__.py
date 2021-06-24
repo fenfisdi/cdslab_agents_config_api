@@ -9,6 +9,7 @@ from .quarantine_groups import quarantine_group_routes
 from .susceptibility_groups import susceptibility_groups_routes
 from .units import units_routes
 from .vulnerability_groups import vulnerability_group_routes
+from .initial_population import initial_population_routes
 
 __all__ = [
     "units_routes",
@@ -23,4 +24,5 @@ __all__ = [
     "immunization_routes",
     "vulnerability_group_routes",
     "quarantine_group_routes",
+    "initial_population_routes"
 ]
