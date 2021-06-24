@@ -4,6 +4,7 @@ from mongoengine import (
     DictField,
     EmbeddedDocument,
     EmbeddedDocumentField,
+    EmbeddedDocumentListField,
     EnumField,
     IntField,
     ReferenceField,
@@ -11,10 +12,18 @@ from mongoengine import (
     UUIDField
 )
 
-from src.models.general import UnitLength, UnitTime
+from src.models.general import (
+    UnitLength, 
+    UnitTime,
+    ConfigurationVariableName
+)
 from .base import BaseDocument
 from .user import User
 
+
+class Variables(EmbeddedDocument):
+    name = EnumField(ConfigurationVariableName, required=True)
+    configured = BooleanField(default=False)
 
 class IntervalDate(EmbeddedDocument):
     start = DateTimeField()
@@ -32,3 +41,4 @@ class Configuration(BaseDocument):
     distance_units = EnumField(UnitLength)
     is_deleted = BooleanField(default=False)
     user = ReferenceField(User, dbref=True, required=True)
+    variables = EmbeddedDocumentListField(Variables)

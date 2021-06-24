@@ -1,5 +1,5 @@
 from .age_group import AgeGroup
-from .configuration import Configuration
+from .configuration import Configuration, Variables
 from .disease_states import DiseaseGroups
 from .distribution import Distribution
 from .immunization_group import ImmunizationGroup
@@ -26,5 +26,6 @@ __all__ = [
     'VulnerabilityGroup',
     'Quarantine',
     'QuarantineGroup',
-    'InitialPopulationSetup'
+    'InitialPopulationSetup',
+    'Variables'
 ]

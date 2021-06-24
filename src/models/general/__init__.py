@@ -5,6 +5,7 @@ from .distribution import (
 )
 from .quarantine import RestrictionType, TracingType
 from .units import UnitLength, UnitTime
+from .configuration import ConfigurationVariableName
 
 __all__ = [
     'UnitLength',
@@ -13,5 +14,6 @@ __all__ = [
     'DistributionType',
     'NaturalDistributionType',
     'RestrictionType',
-    'TracingType'
+    'TracingType',
+    'ConfigurationVariableName'
 ]

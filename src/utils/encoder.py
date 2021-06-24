@@ -28,16 +28,11 @@ class BsonObject:
     """
 
     @classmethod
-    def dict(
-        cls, 
-        document: Union[Document, Document],
-        get_type = False
-    ):
+    def dict(cls, document: Union[Document, Document]):
         """
         Creates a python dictionary based in a mongodb document
         
         :param document: Mongodb document to transform
-        :param get_type: Handler the filter keys
         """
         if isinstance(document, QuerySet):
             document = [value.to_mongo() for value in document]
@@ -47,13 +42,13 @@ class BsonObject:
         document_dict = loads(raw)
 
         if isinstance(document_dict, dict):
-            return cls.__filter_keys(document_dict, get_type)
+            return cls.__filter_keys(document_dict)
         if isinstance(document_dict, list):
-            return [cls.__filter_keys(document, get_type) for document in document_dict]
+            return [cls.__filter_keys(document) for document in document_dict]
         raise TypeError('Invalid Type')
 
     @classmethod
-    def __filter_keys(cls, data: dict, get_type: bool) -> dict:
+    def __filter_keys(cls, data: dict) -> dict:
         """
         Remove sensitive data from the dictionary
         
@@ -62,9 +57,6 @@ class BsonObject:
         invalid_keys = {
             "_id", "_cls", "inserted_at", "updated_at", "is_deleted"
         }
-
-        invalid_keys.remove("_cls") if get_type \
-            else invalid_keys
 
         for k in data.copy().keys():
             if k in invalid_keys:

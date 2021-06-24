@@ -162,4 +162,5 @@ class InitialPopulationMessage:
     Messages used in endpoint responses for initial population
     """
 
-    found = "Parameters found"
+    found: str = "Variables found"
+    created: str = "configured variable"

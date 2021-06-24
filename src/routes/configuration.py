@@ -9,8 +9,9 @@ from starlette.status import (
 )
 
 from src.interfaces import ConfigurationInterface
-from src.models.db import Configuration
+from src.models.db import Configuration, Variables
 from src.models.route_models import NewConfiguration, UpdateConfiguration
+from src.models.general import ConfigurationVariableName
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage
@@ -92,6 +93,13 @@ def create_configuration(
             )
 
         new_configuration = Configuration(
+            variables=[
+                Variables(
+                    name=name,
+                    configured=True if name == ConfigurationVariableName.Age else False
+                )
+                for name in ConfigurationVariableName 
+            ],
             **configuration.dict(),
             identifier=uuid1(),
             user=user
