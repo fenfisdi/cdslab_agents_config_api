@@ -3,6 +3,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
+from src.models.general import UnitLength
 from .distribution import NaturalDistribution
 
 
@@ -17,4 +18,5 @@ class NewNaturalHistory(UpdateNaturalHistory):
     disease_group: UUID = Field(...)
     distribution: List[NaturalDistribution] = Field(...)
     avoidance_radius: float = Field(...)
+    avoidance_radius_unit: UnitLength = Field(...)
     transitions: dict = Field(...)

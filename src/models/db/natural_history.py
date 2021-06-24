@@ -9,7 +9,7 @@ from mongoengine import (
     UUIDField
 )
 
-from src.models.general import NaturalDistributionType
+from src.models.general import NaturalDistributionType, UnitLength
 from .base import BaseDocument
 from .configuration import Configuration
 from .disease_states import DiseaseGroups
@@ -29,4 +29,5 @@ class NaturalHistory(BaseDocument):
     disease_group = ReferenceField(DiseaseGroups, dbref=True)
     distribution = EmbeddedDocumentListField(NaturalDistribution)
     avoidance_radius = FloatField()
+    avoidance_radius_unit = EnumField(UnitLength)
     transitions = DictField()
