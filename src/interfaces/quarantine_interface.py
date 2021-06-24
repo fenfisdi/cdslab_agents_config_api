@@ -1,9 +1,16 @@
 from uuid import UUID
 
-from src.models import (
-    QuarantineGroup,
-    Configuration
-)
+from src.models.db import Configuration, Quarantine, QuarantineGroup
+
+
+class QuarantineInterface:
+
+    @staticmethod
+    def find_by_configuration(configuration: Configuration):
+        filters = dict(
+            configuration=configuration,
+        )
+        return Quarantine.objects(**filters).first()
 
 
 class QuarantineGroupInterface:
@@ -12,7 +19,7 @@ class QuarantineGroupInterface:
     """
 
     @staticmethod
-    def find_by_identifier(identifier: UUID):
+    def find_by_identifier(identifier: UUID) -> QuarantineGroup:
         """
         Get a existing quarantine group in db
 
@@ -24,15 +31,18 @@ class QuarantineGroupInterface:
         return QuarantineGroup.objects(**filters).first()
 
     @staticmethod
-    def find_all():
+    def find_all(quarantine: Quarantine):
         """
         Get all existing quarantine groups in db
         """
-        return QuarantineGroup.objects().all()
+        filters = dict(
+            quarantine=quarantine
+        )
+        return QuarantineGroup.objects(**filters).all()
 
     @staticmethod
     def find_by_configuration(
-            configuration: Configuration
+        configuration: Configuration
     ):
         """
         Get all existing quarantine groups by
@@ -41,4 +51,4 @@ class QuarantineGroupInterface:
         filters = dict(
             configuration=configuration
         )
-        return QuarantineGroup.objects(**filters).all()
+        return QuarantineGroup.objects(**filters).one()

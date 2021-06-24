@@ -8,13 +8,13 @@ from .distribution_interface import DistributionInterface
 from .immunization_group_interface import ImmunizationGroupInterface
 from .mobility_groups_interface import MobilityGroupInterface
 from .natural_history_interface import NaturalHistoryInterface
-from .quarantine_gropus_interface import QuarantineGroupInterface
+from .quarantine_interface import (
+    QuarantineGroupInterface,
+    QuarantineInterface
+)
 from .susceptibility_group_interface import SusceptibilityGroupInterface
 from .user_interface import UserInterface
 from .vulnerability_group import VulnerabilityGroupInterface
-from .cqr_group_info_interface import CQRGroupInfoInterface
-from .quarantine_restrictions_interface import QuarantineRestrictionInterface
-from .quarantine_tracing_interface import QuarantineTracingInterface
 
 __all__ = [
     'DistributionInterface',
@@ -30,7 +30,5 @@ __all__ = [
     'ImmunizationGroupInterface',
     'NaturalHistoryInterface',
     "QuarantineGroupInterface",
-    "CQRGroupInfoInterface",
-    "QuarantineRestrictionInterface",
-    "QuarantineTracingInterface"
+    'QuarantineInterface'
 ]

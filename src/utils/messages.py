@@ -59,7 +59,13 @@ class MobilityGroupsMessages:
 
 
 @dataclass
-class QuarantineGroupsMessages:
+class QuarantineMessage:
+    found: str = "Quarantine found"
+    not_found: str = "Quarantine not found"
+
+
+@dataclass
+class QuarantineGroupMessages:
     """
     Messages used in endpoint responses for quarantine groups
     """
@@ -147,31 +153,3 @@ class DiseaseGroupMessage:
     exist: str = "Disease Groups exist"
     created: str = "Disease Groups has been created"
     not_entered: str = "Disease Groups not entered to save"
-
-
-@dataclass
-class CQRGroupInfoMessages:
-    """
-    Messages used in endpoint responses for CQRGroupInfo
-    """
-    found: str = "CQRGroupInfo found"
-    not_found: str = "CQRGroupInfo not found"
-    created: str = "CQRGroupInfo has been created"
-    updated: str = "CQRGroupInfo updated"
-    deleted: str = "CQRGroupInfo deleted"
-    bad_deleted: str = "CQRGroupInfo bad deleted"
-    cqr_group_not_entered: str = "CQRGroupInfo not entered"
-
-
-@dataclass
-class QuarantineTracingMessage:
-    """
-    Messages used in endpoint responses for QuarantineTracing
-    """
-    found: str = "QuarantineTracing found"
-    not_found: str = "QuarantineTracing not found"
-    created: str = "QuarantineTracing has been created"
-    updated: str = "QuarantineTracing updated"
-    deleted: str = "QuarantineTracing deleted"
-    bad_deleted: str = "QuarantineTracing bad deleted"
-    quarantine_tracing_not_entered: str = "QuarantineTracing not entered"

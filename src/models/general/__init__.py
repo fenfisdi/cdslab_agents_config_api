@@ -3,6 +3,7 @@ from .distribution import (
     DistributionType,
     NaturalDistributionType
 )
+from .quarantine import RestrictionType, TracingType
 from .units import UnitLength, UnitTime
 
 __all__ = [
@@ -10,5 +11,7 @@ __all__ = [
     'UnitTime',
     'DiseaseDistributionType',
     'DistributionType',
-    'NaturalDistributionType'
+    'NaturalDistributionType',
+    'RestrictionType',
+    'TracingType'
 ]
