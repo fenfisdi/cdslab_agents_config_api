@@ -4,6 +4,7 @@ from uuid import uuid1
 
 from src.models.db.master.distribution import MasterDistribution
 from src.models.db.master.disease_states import MasterDiseaseStates
+from src.models.db.master.quarantine_restriction import QuarantineRestriction
 
 if __name__ == "__main__":
 
@@ -57,6 +58,19 @@ if __name__ == "__main__":
                                         "name": "nsample", "type":["int", "List[int]"]}}]  
                 }
 
+    quarantine_restrictions = [
+        {
+            "name": "Cyclic quarantine restrictions",
+            "type": "bool",
+            "value": False
+        },
+        {
+            "name": "Quarantine restrictions by tracing variables",
+            "type": "bool",
+            "value": False
+        }
+    ]
+
     for name, parameters in distributions.items():
         try:
             distribution = MasterDistribution(
@@ -69,9 +83,22 @@ if __name__ == "__main__":
     for name in disease_status:
         try:
             MasterDiseaseStates(
-                identifer=uuid1().hex, 
+                identifier=uuid1(),
                 name=name
             ).save()
-            
+
         except Exception as error:
             raise RuntimeError(f"No fue posible insertar el estado {name}, {error}") from error
+
+    for quarantine_restriction in quarantine_restrictions:
+        try:
+            QuarantineRestriction(
+                identifier=uuid1(),
+                name=quarantine_restriction["name"],
+                type=quarantine_restriction["type"],
+                value=quarantine_restriction["value"]
+            ).save()
+        except Exception as error:
+            raise RuntimeError(
+                f"An error has been while insert quarantine restriction {quarantine_restriction}"
+            ) from error
