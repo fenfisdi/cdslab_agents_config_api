@@ -11,8 +11,7 @@ from starlette.status import (
 
 from src.interfaces import ConfigurationInterface
 from src.interfaces.disease_group_interface import (
-    DiseaseGroupsInterface,
-    DiseaseStatesInterface
+    DiseaseGroupsInterface
 )
 from src.models.db import DiseaseGroups
 from src.models.route_models import NewDiseaseGroup
@@ -20,7 +19,6 @@ from src.use_case import SecurityUseCase
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
-    DiseaseStatesMessage,
     UJSONResponse
 )
 from src.utils.messages import DiseaseGroupMessage
@@ -85,7 +83,7 @@ def create_disease_states(
 
 
 @disease_states_routes.get('/configuration/{conf_uuid}/disease_states')
-def create_disease_states(
+def find_disease_states(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
@@ -117,35 +115,3 @@ def create_disease_states(
             str(error),
             HTTP_400_BAD_REQUEST
         )
-
-    return UJSONResponse(
-        DiseaseGroupMessage.created,
-        HTTP_201_CREATED
-    )
-
-
-@disease_states_routes.get("/diseaseStates")
-def list_disease_states():
-    """
-    Get disease states in data base
-    """
-    try:
-        states = DiseaseStatesInterface.find_all()
-
-        if not states:
-            return UJSONResponse(
-                DiseaseStatesMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
-
-    return UJSONResponse(
-        DiseaseStatesMessage.found,
-        HTTP_200_OK,
-        BsonObject.dict(states)
-    )

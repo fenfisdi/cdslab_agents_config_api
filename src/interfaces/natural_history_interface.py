@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.models import Configuration, NaturalHistory
+from src.models.db import Configuration, NaturalHistory
 
 
 class NaturalHistoryInterface:
@@ -9,7 +9,7 @@ class NaturalHistoryInterface:
     """
 
     @staticmethod
-    def find_by_identifier(identifier: UUID):
+    def find_one(identifier: UUID):
         """
         Get a natural history by identifier
 

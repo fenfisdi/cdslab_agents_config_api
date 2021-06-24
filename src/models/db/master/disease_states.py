@@ -6,6 +6,5 @@ from mongoengine import (
 
 
 class MasterDiseaseStates(Document):
-    identifer = UUIDField(binary=False, unique=True, required=True)
+    identifier = UUIDField(binary=False, unique=True, required=True)
     name = StringField(required=True)
-    

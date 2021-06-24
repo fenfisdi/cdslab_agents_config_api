@@ -13,7 +13,8 @@ from src.interfaces import (
     ConfigurationInterface,
     MobilityGroupInterface
 )
-from src.models import MobilityGroup, NewMobilityGroup
+from src.models.db import MobilityGroup
+from src.models.route_models import NewMobilityGroup
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, MobilityGroupsMessages

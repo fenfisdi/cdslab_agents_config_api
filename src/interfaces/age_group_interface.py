@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.models import AgeGroup, Configuration
+from src.models.db import AgeGroup, Configuration
 
 
 class AgeGroupInterface:
@@ -9,7 +9,7 @@ class AgeGroupInterface:
     """
 
     @staticmethod
-    def find_one(identifier: str):
+    def find_one(identifier: UUID) -> AgeGroup:
         """
         Get a existing age group by identifier in db
         """
