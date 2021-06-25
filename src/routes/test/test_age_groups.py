@@ -85,8 +85,7 @@ class ListAgeGroupRouteTestCase(TestCase):
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, 404)
 
-    @patch(solve_path("AgeGroupInterface"))
-    def test_create_age_group(self, age_group_interface: Mock):
+    def test_create_age_group(self):
         age_group_first = dict(
             name=self.name_first,
             population_percentage=self.population_percentage
