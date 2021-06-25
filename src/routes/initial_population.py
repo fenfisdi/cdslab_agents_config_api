@@ -327,3 +327,60 @@ def delete_initial_population_setup(
             str(error),
             HTTP_400_BAD_REQUEST
         )
+
+
+@initial_population_routes.get("/configuration/{conf_uuid}/initialPopulation/setup/parameters")
+def get_parameters(
+    config_uuid: UUID,
+    variable: ConfigurationVariableName,
+    user=Depends(SecurityUseCase.validate)
+):
+    """
+    
+    Get the parameters for each variable name
+
+    \f
+    :param config_uuid: configuration id
+    :param variable: configured variable
+    :param user: user information
+    """
+    try:
+        config_found = ConfigurationInterface.find_by_identifier(
+            config_uuid,
+            user
+        )
+
+        if not config_found:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        if variable is ConfigurationVariableName.mobility:
+            parameter = MobilityGroupInterface.find_by_configuration(config_found)
+        elif variable is ConfigurationVariableName.disease:
+            parameter = DiseaseGroupsInterface.find_all(config_found)
+        elif variable is ConfigurationVariableName.vulnerability:
+            parameter = VulnerabilityGroupInterface.find_by_configuration(config_found)
+        elif variable is ConfigurationVariableName.quaratine:
+            parameter = QuarantineGroupInterface.find_by_configuration(config_found)
+        elif variable is ConfigurationVariableName.Age:
+            parameter = AgeGroupInterface.find_by_configuration
+        else:
+            return UJSONResponse(
+                InitialPopulationMessage.not_found,
+                HTTP_400_BAD_REQUEST
+            )
+
+        return UJSONResponse(
+            InitialPopulationMessage.parameters_found,
+            HTTP_200_OK,
+            BsonObject.dict(parameter)
+        )
+
+
+    except Exception as error:
+        return UJSONResponse(
+            str(error),
+            HTTP_400_BAD_REQUEST
+        )
