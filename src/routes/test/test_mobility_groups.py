@@ -1,4 +1,4 @@
-import uuid
+from uuid import uuid1
 
 from typing import List
 from unittest import TestCase
@@ -6,11 +6,6 @@ from unittest.mock import patch, Mock
 from mongoengine import connect, disconnect
 
 from fastapi.testclient import TestClient
-
-from src.models import MobilityGroup
-
-
-route = "/mobility_groups"
 
 
 def solve_path(path: str):
@@ -23,60 +18,42 @@ class ListMobilityGroupRoteTestCase(TestCase):
         from src.api import app
         self.client = TestClient(app)
 
-        self.identifier = uuid.uuid1().hex
-        self.configuration_identifier = uuid.uuid1().hex
-        self.distribution_identifier = uuid.uuid1().hex
+        self.conf_identifier = uuid1()
+        self.route = f"/configuration/{self.conf_identifier}/mobility_groups"
 
-    @patch(solve_path("AgeGroupInterface"))
-    def test_find_all_successful(
+    def tearDown(self):
+        disconnect()
+
+    @patch(solve_path("MobilityGroupInterface"))
+    @patch(solve_path("ConfigurationInterface"))
+    def test_list_mobility_groups_successful(
             self,
-            mobility_group_interface: Mock
+            mobility_group_interface: Mock,
+            configuration_interface: Mock
     ):
+        configuration_interface.find_by_identifier.return_value = Mock(
+            to_mongo=Mock(return_value={})
+        )
         mobility_group_interface.find_all.return_value = Mock(
             to_mongo=Mock(return_value={})
         )
 
-        response = self.client.get(route)
+        response = self.client.get(self.route)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, 200)
 
-    @patch(solve_path("AgeGroupInterface"))
-    def test_find_all_not_found(
+    @patch(solve_path("MobilityGroupInterface"))
+    @patch(solve_path("ConfigurationInterface"))
+    def test_list_mobility_groups_fail(
             self,
-            mobility_group_interface: Mock
+            mobility_group_interface: Mock,
+            configuration_interface: Mock
     ):
+        configuration_interface.find_by_identifier.return_value = None
         mobility_group_interface.find_all.return_value = None
 
-        response = self.client.get(route)
-
-        self.assertIsNotNone(response)
-        self.assertEqual(response.status_code, 404)
-
-    @patch(solve_path("AgeGroupInterface"))
-    def test_find_by_configuration_successful(
-            self,
-            mobility_group_interface: Mock
-    ):
-        mobility_group_interface. \
-            find_by_configuration.return_value = Mock(
-                to_mongo=Mock(return_value={})
-            )
-
-        response = self.client.get(route)
-
-        self.assertIsNotNone(response)
-        self.assertEqual(response.status_code, 200)
-
-    @patch(solve_path("AgeGroupInterface"))
-    def test_find_by_configuration_not_found(
-            self,
-            mobility_group_interface: Mock
-    ):
-        mobility_group_interface. \
-            find_by_configuration.return_value = None
-
-        response = self.client.get(route)
+        response = self.client.get(self.route)
 
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, 404)
