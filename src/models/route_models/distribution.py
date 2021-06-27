@@ -9,10 +9,11 @@ from src.models.general import (
 
 class Distribution(BaseModel):
     name: str = Field(None)
-    distribution_type: DistributionType = Field(None)
-    distribution_name: str = Field(None)
-    distribution_filename: str = Field(None)
-    distribution_extra_arguments: dict = Field(None)
+    dist_type: DistributionType = Field(None)
+    constant: float = Field(None)
+    dist_name: str = Field(None)
+    filename: str = Field(None)
+    kwargs: dict = Field(None)
 
 
 class DiseaseDistribution(BaseModel):

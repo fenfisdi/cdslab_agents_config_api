@@ -1,11 +1,18 @@
-from mongoengine import DictField, EmbeddedDocument, EnumField, StringField
+from mongoengine import (
+    DictField,
+    EmbeddedDocument,
+    EnumField,
+    StringField,
+    FloatField
+)
 
 from src.models.general import DistributionType
 
 
 class Distribution(EmbeddedDocument):
     name = StringField()
-    distribution_type = EnumField(DistributionType, required=True)
-    distribution_name = StringField()
-    distribution_filename = StringField()
-    distribution_extra_arguments = DictField(null=True)
+    dist_type = EnumField(DistributionType, required=True)
+    constant = FloatField()
+    dist_name = StringField()
+    filename = StringField()
+    kwargs = DictField(null=True)
