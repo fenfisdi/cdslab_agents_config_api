@@ -16,25 +16,20 @@ class SusceptibilityGroupInterface:
         return SusceptibilityGroup.objects().all()
 
     @staticmethod
-    def find_one(identifier: UUID):
+    def find_one(identifier: UUID) -> SusceptibilityGroup:
         """
         Find a existing susceptibility group in db
+
         :param identifier: Identifier to search
         """
         filters = dict(
-            identifier=identifier
+            identifier=identifier,
         )
-        return SusceptibilityGroup.objects(
-            **filters
-        ).first()
+        return SusceptibilityGroup.objects(**filters).first()
 
     @staticmethod
-    def find_by_conf(
-        configuration: Configuration
-    ):
+    def find_by_conf(configuration: Configuration) -> SusceptibilityGroup:
         filters = dict(
-            configuration=configuration
+            configuration=configuration,
         )
-        return SusceptibilityGroup.objects(
-            **filters
-        ).all()
+        return SusceptibilityGroup.objects(**filters).all()
