@@ -9,13 +9,13 @@ from starlette.status import (
     HTTP_404_NOT_FOUND
 )
 
-from src.interfaces import ConfigurationInterface
+from src.interfaces import ConfigurationInterface, UserInterface
 from src.interfaces.disease_group_interface import (
     DiseaseGroupsInterface
 )
 from src.models.db import DiseaseGroups
 from src.models.route_models import NewDiseaseGroup
-from src.use_case import SecurityUseCase
+from src.use_case import SecurityUseCase, DistributionUseCase
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
