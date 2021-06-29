@@ -15,7 +15,7 @@ from src.interfaces import (
 )
 from src.models.db import MobilityGroup
 from src.models.route_models import NewMobilityGroup
-from src.use_case import SecurityUseCase
+from src.use_case import SecurityUseCase, DistributionUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, MobilityGroupsMessages
 from src.utils.response import UJSONResponse
@@ -76,12 +76,12 @@ def create_mobility_groups(
     user = Depends(SecurityUseCase.validate)
 ):
     """
-    Create a mobility groups to specific configuration.
+    Create many mobility groups to specific configuration.
 
     \f
     :param conf_uuid: Configuration identifier
     :param mobility_groups: Mobility groups list to insert in db
-    :param user:
+    :param user: User logged
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
@@ -102,6 +102,9 @@ def create_mobility_groups(
             )
 
         for mobility_group in mobility_groups:
+            DistributionUseCase.validateDistribution(
+                mobility_group.distribution
+            )
             MobilityGroup(
                 **mobility_group.dict(),
                 identifier=uuid1(),
@@ -116,4 +119,163 @@ def create_mobility_groups(
     return UJSONResponse(
         MobilityGroupsMessages.created,
         HTTP_201_CREATED
+    )
+
+
+@mobility_group_routes.post("/configuration/{conf_uuid}/mobility_group")
+def create_mobility_group(
+    conf_uuid: UUID,
+    mobility_group: NewMobilityGroup,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Create a mobility group to specific configuration.
+
+    \f
+    :param conf_uuid: Configuration identifier
+    :param mobility_group: Mobility group to insert in db
+    :param user: Logged user
+    """
+    try:
+        configuration = ConfigurationInterface.find_by_identifier(
+            conf_uuid,
+            user
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        if not mobility_group:
+            return UJSONResponse(
+                MobilityGroupsMessages.not_distribution_entered,
+                HTTP_400_BAD_REQUEST
+            )
+
+        DistributionUseCase.validateDistribution(
+            mobility_group.distribution
+        )
+        MobilityGroup(
+            **mobility_group.dict(),
+            identifier=uuid1(),
+            configuration=configuration,
+        ).save()
+    except Exception as error:
+        return UJSONResponse(
+            str(error),
+            HTTP_400_BAD_REQUEST
+        )
+
+    return UJSONResponse(
+        MobilityGroupsMessages.created,
+        HTTP_201_CREATED
+    )
+
+
+@mobility_group_routes.put(
+    "/configuration/{conf_uuid}/mobility_group/{mob_uuid}"
+)
+def update_mobility_group(
+    conf_uuid: UUID,
+    mob_uuid: UUID,
+    mobility_group: NewMobilityGroup,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Update a mobility group to specific configuration.
+
+    \f
+    :param conf_uuid: Configuration identifier
+    :param mob_uuid: MobilityGroup identifier
+    :param mobility_group: Mobility group to update in db
+    :param user: Logged user
+    """
+    try:
+        configuration = ConfigurationInterface.find_by_identifier(
+            conf_uuid,
+            user
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        mobility_group_found = MobilityGroupInterface.find_one(mob_uuid)
+
+        DistributionUseCase.validateDistribution(
+            mobility_group.distribution
+        )
+        if not mobility_group_found:
+            return UJSONResponse(
+                MobilityGroupsMessages.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        mobility_group_found.update(**mobility_group.dict())
+        mobility_group_found.save().reload()
+
+    except Exception as error:
+        return UJSONResponse(
+            str(error),
+            HTTP_400_BAD_REQUEST
+        )
+
+    return UJSONResponse(
+        MobilityGroupsMessages.updated,
+        HTTP_200_OK,
+        BsonObject.dict(mobility_group_found)
+    )
+
+
+@mobility_group_routes.delete(
+    "/configuration/{conf_uuid}/mobility_group/{mob_uuid}"
+)
+def update_mobility_group(
+    conf_uuid: UUID,
+    mob_uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Delete a mobility group to specific configuration.
+
+    \f
+    :param conf_uuid: Configuration identifier
+    :param mob_uuid: MobilityGroup identifier
+    :param user: Logged user
+    """
+    try:
+        configuration = ConfigurationInterface.find_by_identifier(
+            conf_uuid,
+            user
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        mobility_group_found = MobilityGroupInterface.find_one(mob_uuid)
+
+        if not mobility_group_found:
+            return UJSONResponse(
+                MobilityGroupsMessages.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        mobility_group_found.delete()
+
+    except Exception as error:
+        return UJSONResponse(
+            str(error),
+            HTTP_400_BAD_REQUEST
+        )
+
+    return UJSONResponse(
+        MobilityGroupsMessages.deleted,
+        HTTP_200_OK
     )
