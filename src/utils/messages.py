@@ -54,6 +54,7 @@ class MobilityGroupsMessages:
     exist: str = 'Mobility Groups exist'
     created: str = "Mobility Groups has been created"
     updated: str = "Mobility Groups updated"
+    deleted: str = "Mobility Groups deleted"
     not_mobility_group_entered: str = "Mobility Groups not entered"
     not_distribution_entered: str = "Distribution not entered"
 
