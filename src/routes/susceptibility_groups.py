@@ -184,7 +184,7 @@ def update_susceptibility_group(
 @susceptibility_groups_routes.get(
     "/configuration/{conf_uuid}/susceptibility_group/{uuid}"
 )
-def find_susceptibility_groups(
+def find_susceptibility_group(
     conf_uuid: UUID,
     uuid: UUID,
     user = Depends(SecurityUseCase.validate)
@@ -272,3 +272,43 @@ def list_susceptibility_groups(
         HTTP_200_OK,
         BsonObject.dict(susceptibility_groups)
     )
+
+
+@susceptibility_groups_routes.delete(
+    "/configuration/{conf_uuid}/susceptibility_group/{uuid}"
+)
+def delete_susceptibility_group(
+    conf_uuid: UUID,
+    uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
+    try:
+        configuration = ConfigurationInterface.find_by_identifier(
+            conf_uuid,
+            user
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        sg_found = SusceptibilityGroupInterface.find_one(uuid)
+        if not sg_found:
+            return UJSONResponse(
+                SusceptibilityGroupMessages.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        sg_found.delete()
+        return UJSONResponse(
+            SusceptibilityGroupMessages.deleted,
+            HTTP_200_OK
+        )
+
+    except Exception as error:
+        return UJSONResponse(
+            str(error),
+            HTTP_400_BAD_REQUEST
+        )

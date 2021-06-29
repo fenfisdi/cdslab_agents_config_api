@@ -39,7 +39,7 @@ class ConfigurationMessage:
     deleted: str = "Configuration has been deleted"
     found: str = "Configuration found"
     not_found: str = "Configuration not found"
-    exist: str = 'Configuration exist'
+    exist: str = "Configuration exist"
     created: str = "Configuration has been created"
     updated: str = "Configuration updated"
 
@@ -51,7 +51,7 @@ class MobilityGroupsMessages:
     """
     found: str = "Mobility Groups found"
     not_found: str = "Mobility Groups not found"
-    exist: str = 'Mobility Groups exist'
+    exist: str = "Mobility Groups exist"
     created: str = "Mobility Groups has been created"
     updated: str = "Mobility Groups updated"
     deleted: str = "Mobility Groups deleted"
@@ -72,7 +72,7 @@ class QuarantineGroupMessages:
     """
     found: str = "Quarantine Groups found"
     not_found: str = "Quarantine Groups not found"
-    exist: str = 'Quarantine Groups exist'
+    exist: str = "Quarantine Groups exist"
     created: str = "Quarantine Groups has been created"
     updated: str = "Quarantine Groups updated"
     not_quarantine_groups_entered: str = "Quarantine Groups not entered"
@@ -115,9 +115,10 @@ class SusceptibilityGroupMessages:
     """
     Messages used in endpoint responses for susceptibility groups
     """
+    deleted: str = "Susceptibility group has been deleted"
     found: str = "Susceptibility group found"
     not_found: str = "Susceptibility group not found"
-    exist: str = 'Susceptibility group exist'
+    exist: str = "Susceptibility group exist"
     created: str = "Susceptibility group has been created"
     updated: str = "Susceptibility group updated"
     empty: str = "Susceptibility groups not entered"
