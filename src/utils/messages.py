@@ -111,16 +111,16 @@ class NaturalHistoryMessage:
     updated: str = "Natural history updated"
 
 
-class SusceptibilityGroupsMessages:
+class SusceptibilityGroupMessages:
     """
     Messages used in endpoint responses for susceptibility groups
     """
-    found: str = "Susceptibility groups found"
-    not_found: str = "Susceptibility groups not found"
-    exist: str = 'Susceptibility groups exist'
-    created: str = "Susceptibility groups has been created"
-    updated: str = "Susceptibility groups updated"
-    not_susceptibility_group_entered = "Susceptibility groups not entered"
+    found: str = "Susceptibility group found"
+    not_found: str = "Susceptibility group not found"
+    exist: str = 'Susceptibility group exist'
+    created: str = "Susceptibility group has been created"
+    updated: str = "Susceptibility group updated"
+    empty: str = "Susceptibility groups not entered"
 
 
 @dataclass

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from uuid import UUID, uuid1
 
 from fastapi import APIRouter, Depends
@@ -19,7 +19,7 @@ from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
     ConfigurationMessage,
-    SusceptibilityGroupsMessages
+    SusceptibilityGroupMessages
 )
 from src.utils.response import UJSONResponse
 
