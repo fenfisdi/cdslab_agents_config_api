@@ -11,56 +11,55 @@ if __name__ == "__main__":
     mongo_uri = environ.get("MONGO_URI")
     connect(host=mongo_uri)
 
-    disease_status = ["diagnosis", "quarantine_postdiagnosis", "hospitalization_prob", "ICU_prob"]
-
     distributions = { 
-                "Empirical": [{"Parameter": "bandwidth", "Type": "float", "Field": [1.0]},
-                          {"Parameter": "algorithm", "Type": None, "Field": ["auto", "kd_tree", "ball_tree"]},
-                          {"Parameter": "kernel", "Type": None, "Field": ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]},
-                          {"Parameter": "metric", "Type": "str", "Field": ["euclidean"]},
-                          {"Parameter": "atol", "Type": "float", "Field": [0]},
-                          {"Parameter": "rtol", "Type": "float", "Field": [0]},
-                          {"Parameter": "breadth_first", "Type": "boolean", "Field": ["True", "False"]},
-                          {"Parameter": "leaf_size", "Type": "int", "Field": [40]},
-                          {"Parameter": "metric_params", "Type": "dict", "Field": [None]} ],
-                "Constant": [{"Parameter": "Type constant", "Type": "int", "Field": [None]}],
-                "Weigths": [{"Parameter": "bandwidth", "Type": "float", "Field": [1.0]},
-                          {"Parameter": "algorithm", "Type": None, "Field": ["auto", "kd_tree", "ball_tree"]},
-                          {"Parameter": "kernel", "Type": None, "Field": ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]},
-                          {"Parameter": "metric", "Type": "str", "Field": ["euclidean"]},
-                          {"Parameter": "atol", "Type": "float", "Field": [0]},
-                          {"Parameter": "rtol", "Type": "float", "Field": [0]},
-                          {"Parameter": "breadth_first", "Type": "boolean", "Field": ["True", "False"]},
-                          {"Parameter": "leaf_size", "Type": "int", "Field": [40]}],
-                "Numpy": [{"Parameter": "normal", "Type": "numpy", "Field": [
+                "empirical": [
+                        {"parameter": "bandwidth", "type": "float", "values": None, "default_value":1.0},
+                        {"parameter": "algorithm", "type": None, "values": ["auto", "kd_tree", "ball_tree"]},
+                        {"parameter": "kernel", "type": None, "values": ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]},
+                        {"parameter": "metric", "type": "str", "values": ["euclidean"]},
+                        {"parameter": "atol", "type": "float", "values": None, "default_value": 0},
+                        {"parameter": "rtol", "type": "float", "values": None, "default_value":0},
+                        {"parameter": "breadth_first", "type": "boolean", "values": ["True", "False"]},
+                        {"parameter": "leaf_size", "type": "int", "values": None, "default_value": 40},
+                        {"parameter": "metric_params", "Type": "dict", "values": None, "default_value": None} ],
+                "constant": [{"parameter": "type constant", "type": "int", "values": None, "default_value":None}],
+                "weigths": [{"parameter": "bandwidth", "type": "float", "values": None, "default_value": 1.0},
+                          {"parameter": "algorithm", "type": None, "values": ["auto", "kd_tree", "ball_tree"]},
+                          {"parameter": "kernel", "type": None, "values": ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]},
+                          {"parameter": "metric", "type": "str", "values": ["euclidean"]},
+                          {"parameter": "atol", "type": "float", "values": None, "default_value":0},
+                          {"parameter": "rtol", "type": "float", "values": None, "default_value": 0},
+                          {"parameter": "breadth_first", "type": "boolean", "values": ["True", "False"]},
+                          {"parameter": "leaf_size", "type": "int", "values": None, "default_value": 40}],
+                "numpy": [{"parameter": "normal", "type": "numpy", "values": [
                                         {"name": "loc", "type":["float", "List[float]"]}, 
                                         {"name": "scale", "type":["float", "List[float]"]}
                                         ]},
-                          {"Parameter": "lognormal", "Type": "numpy", "Field": [
+                          {"parameter": "lognormal", "type": "numpy", "values": [
                               {"name": "mean", "type":["float", "List[float]"]},
                               {"name": "sigma", "type":["float", "List[float]"]}
                               ]},
-                          {"Parameter": "weibull", "Type": "numpy", "Field": [
+                          {"parameter": "weibull", "type": "numpy", "values": [
                               {"name": "a", "type":["float", "List[float]"]}
                               ]},
-                          {"Parameter": "gamma", "Type": "numpy", "Field": [
+                          {"parameter": "gamma", "type": "numpy", "values": [
                                 {"name": "shape", "type":["float", "List[float]"]},
                                 {"name": "scale", "type":["float", "List[float]"]}
                                     ]},
-                          {"Parameter": "logistic", "Type": "numpy", "Field": [
+                          {"parameter": "logistic", "type": "numpy", "values": [
                               {"name": "loc", "type":["float", "List[float]"]}, 
                               {"name": "scale", "type":["float", "List[float]"]}
                               ]},
-                          {"Parameter": "poisson", "Type": "numpy", "Field": [
+                          {"parameter": "poisson", "type": "numpy", "values": [
                               {"name": "Iam", "type":["float", "List[float]"]}
                             ]},
-                          {"Parameter": "logseries", "Type": "numpy", "Field": [
+                          {"parameter": "logseries", "type": "numpy", "values": [
                               {"name": "P", "type":["float", "List[float]"]}
                             ]},
-                          {"Parameter": "geometric", "Type": "numpy", "Field": [
+                          {"parameter": "geometric", "type": "numpy", "values": [
                               {"name": "P", "type":["float", "List[float]"]}
                             ]},
-                          {"Parameter": "hypergeometric", "Type": "numpy", "Field": [
+                          {"parameter": "hypergeometric", "type": "numpy", "values": [
                               {"name": "ngoodint", "type":["int", "List[int]"]},
                               {"name": "nbad", "type":["int", "List[int]"]},
                              {"name": "nsample", "type":["int", "List[int]"]}
@@ -88,16 +87,6 @@ if __name__ == "__main__":
 
         except Exception as error:
             raise RuntimeError(f"No fue posible insertar la distribución {name}, {error}") from error
-
-    for name in disease_status:
-        try:
-            MasterDiseaseStates(
-                identifier=uuid1(),
-                name=name
-            ).save()
-
-        except Exception as error:
-            raise RuntimeError(f"No fue posible insertar el estado {name}, {error}") from error
 
     for quarantine_restriction in quarantine_restrictions:
         try:
