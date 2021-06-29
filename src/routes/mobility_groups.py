@@ -130,13 +130,13 @@ def create_mobility_group(
     user=Depends(SecurityUseCase.validate)
 ):
     """
-        Create a mobility group to specific configuration.
+    Create a mobility group to specific configuration.
 
-        \f
-        :param conf_uuid: Configuration identifier
-        :param mobility_group: Mobility group to insert in db
-        :param user:
-        """
+    \f
+    :param conf_uuid: Configuration identifier
+    :param mobility_group: Mobility group to insert in db
+    :param user: Logged user
+    """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
             conf_uuid,
@@ -184,6 +184,15 @@ def update_mobility_group(
     mobility_group: NewMobilityGroup,
     user=Depends(SecurityUseCase.validate)
 ):
+    """
+    Update a mobility group to specific configuration.
+
+    \f
+    :param conf_uuid: Configuration identifier
+    :param mob_uuid: MobilityGroup identifier
+    :param mobility_group: Mobility group to update in db
+    :param user: Logged user
+    """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
             conf_uuid,
@@ -229,9 +238,17 @@ def update_mobility_group(
 def update_mobility_group(
     conf_uuid: UUID,
     mob_uuid: UUID,
+    user=Depends(SecurityUseCase.validate)
 ):
+    """
+    Delete a mobility group to specific configuration.
+
+    \f
+    :param conf_uuid: Configuration identifier
+    :param mob_uuid: MobilityGroup identifier
+    :param user: Logged user
+    """
     try:
-        user = UserInterface.find_one("diego@gmail.com")
         configuration = ConfigurationInterface.find_by_identifier(
             conf_uuid,
             user
