@@ -188,6 +188,14 @@ def update_disease_state(
     disease_group: NewDiseaseGroup,
     user = Depends(SecurityUseCase.validate)
 ):
+    """
+    Update a disease state from specific configuration.
+
+    :param conf_uuid: Identifier configuration
+    :param dsg_uuid: Identifier disease state
+    :param disease_group: Disease groups list
+    :param user: User logged
+    """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(
             conf_uuid,
@@ -242,6 +250,13 @@ def update_disease_state(
     dsg_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
+    """
+    Delete a disease state from specific configuration.
+
+    :param conf_uuid: Identifier configuration
+    :param dsg_uuid: Identifier disease state
+    :param user: User logged
+    """
     try:
         configuration_found = ConfigurationInterface.find_by_identifier(
             conf_uuid,
