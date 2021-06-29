@@ -101,15 +101,19 @@ def create_mobility_groups(
                 HTTP_400_BAD_REQUEST
             )
 
+        resp = []
         for mobility_group in mobility_groups:
             DistributionUseCase.validateDistribution(
                 mobility_group.distribution
             )
-            MobilityGroup(
+            new_mobility_group = MobilityGroup(
                 **mobility_group.dict(),
                 identifier=uuid1(),
                 configuration=configuration,
-            ).save()
+            )
+            new_mobility_group.save().reload()
+            resp.append(new_mobility_group)
+
     except Exception as error:
         return UJSONResponse(
             str(error),
@@ -118,7 +122,8 @@ def create_mobility_groups(
 
     return UJSONResponse(
         MobilityGroupsMessages.created,
-        HTTP_201_CREATED
+        HTTP_201_CREATED,
+        BsonObject.dict(resp)
     )
 
 
@@ -157,11 +162,13 @@ def create_mobility_group(
         DistributionUseCase.validateDistribution(
             mobility_group.distribution
         )
-        MobilityGroup(
+        new_mobility_group = MobilityGroup(
             **mobility_group.dict(),
             identifier=uuid1(),
             configuration=configuration,
-        ).save()
+        )
+        new_mobility_group.save().reload()
+
     except Exception as error:
         return UJSONResponse(
             str(error),
@@ -170,7 +177,8 @@ def create_mobility_group(
 
     return UJSONResponse(
         MobilityGroupsMessages.created,
-        HTTP_201_CREATED
+        HTTP_201_CREATED,
+        BsonObject.dict(new_mobility_group)
     )
 
 
@@ -215,7 +223,7 @@ def update_mobility_group(
                 HTTP_404_NOT_FOUND
             )
 
-        mobility_group_found.update(**mobility_group.dict())
+        mobility_group_found.update(**mobility_group.dict(exclude_none=True))
         mobility_group_found.save().reload()
 
     except Exception as error:
