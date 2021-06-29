@@ -11,8 +11,7 @@ from starlette.status import (
 
 from src.interfaces import (
     ConfigurationInterface,
-    MobilityGroupInterface,
-UserInterface
+    MobilityGroupInterface
 )
 from src.models.db import MobilityGroup
 from src.models.route_models import NewMobilityGroup
@@ -27,7 +26,7 @@ mobility_group_routes = APIRouter(tags=["Mobility Groups"])
 @mobility_group_routes.get("/configuration/{conf_uuid}/mobility_groups")
 def list_mobility_groups(
     conf_uuid: UUID,
-    user=Depends(SecurityUseCase.validate)
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     List all mobility groups from specific configuration.
@@ -74,7 +73,7 @@ def list_mobility_groups(
 def create_mobility_groups(
     conf_uuid: UUID,
     mobility_groups: List[NewMobilityGroup],
-    user=Depends(SecurityUseCase.validate)
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     Create many mobility groups to specific configuration.
@@ -127,7 +126,7 @@ def create_mobility_groups(
 def create_mobility_group(
     conf_uuid: UUID,
     mobility_group: NewMobilityGroup,
-    user=Depends(SecurityUseCase.validate)
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     Create a mobility group to specific configuration.
@@ -182,7 +181,7 @@ def update_mobility_group(
     conf_uuid: UUID,
     mob_uuid: UUID,
     mobility_group: NewMobilityGroup,
-    user=Depends(SecurityUseCase.validate)
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     Update a mobility group to specific configuration.
@@ -238,7 +237,7 @@ def update_mobility_group(
 def update_mobility_group(
     conf_uuid: UUID,
     mob_uuid: UUID,
-    user=Depends(SecurityUseCase.validate)
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     Delete a mobility group to specific configuration.
