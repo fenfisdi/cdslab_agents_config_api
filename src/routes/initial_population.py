@@ -30,6 +30,7 @@ from src.interfaces import(
 
 initial_population_routes = APIRouter(tags=["Initial Population"])
 
+
 @initial_population_routes.get("/configuration/{conf_uuid}/initialPopulation/setup/variables")
 def get_variables(
     config_uuid: UUID,
