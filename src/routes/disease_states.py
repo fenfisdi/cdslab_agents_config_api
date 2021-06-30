@@ -9,13 +9,13 @@ from starlette.status import (
     HTTP_404_NOT_FOUND
 )
 
-from src.interfaces import ConfigurationInterface, UserInterface
+from src.interfaces import ConfigurationInterface
 from src.interfaces.disease_group_interface import (
     DiseaseGroupsInterface
 )
 from src.models.db import DiseaseGroups
 from src.models.route_models import NewDiseaseGroup
-from src.use_case import SecurityUseCase, DistributionUseCase
+from src.use_case import SecurityUseCase
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
@@ -155,10 +155,6 @@ def create_disease_state(
                 HTTP_404_NOT_FOUND
             )
 
-        for dit_info in disease_group.distributions:
-            DistributionUseCase.verify_distribution(
-                dit_info.distribution
-            )
         new_dg = DiseaseGroups(
             **disease_group.dict(),
             identifier=uuid1(),
@@ -219,11 +215,6 @@ def update_disease_state(
             return UJSONResponse(
                 DiseaseGroupMessage.not_found,
                 HTTP_404_NOT_FOUND
-            )
-
-        for dit_info in disease_group.distributions:
-            DistributionUseCase.verify_distribution(
-                dit_info.distribution
             )
 
         dg_found.update(**disease_group.dict(exclude_none=True))
