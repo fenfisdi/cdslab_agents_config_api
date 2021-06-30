@@ -154,4 +154,6 @@ class DiseaseGroupMessage:
     not_found: str = "Disease groups not found"
     exist: str = "Disease Groups exist"
     created: str = "Disease Groups has been created"
+    updated: str = "Disease Groups has been updated"
+    deleted: str = "Disease Groups has been deleted"
     not_entered: str = "Disease Groups not entered to save"
