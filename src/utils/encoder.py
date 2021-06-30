@@ -34,7 +34,7 @@ class BsonObject:
         
         :param document: Mongodb document to transform
         """
-        if isinstance(document, QuerySet):
+        if isinstance(document, QuerySet) or isinstance(document, list):
             document = [value.to_mongo() for value in document]
             raw = BsonEncoder().encode(document)
         else:
