@@ -16,12 +16,13 @@ if __name__ == "__main__":
                 "parameter": "bandwidth",
                 "type": "float",
                 "values": None,
-                "default_value": 1.0
+                "default_value": 1.0,
             },
             {
                 "parameter": "algorithm",
                 "type": None,
-                "values": ["auto", "kd_tree", "ball_tree"]
+                "values": ["auto", "kd_tree", "ball_tree"],
+                "default_value": "auto",
             },
             {
                 "parameter": "kernel",
@@ -33,41 +34,44 @@ if __name__ == "__main__":
                     "exponential",
                     "linear",
                     "cosine"
-                ]
+                ],
+                "default_value": "gaussian",
             },
             {
                 "parameter": "metric",
                 "type": "str",
-                "values": ["euclidean"]
+                "values": ["euclidean"],
+                "default_value": "euclidean",
             },
             {
                 "parameter": "atol",
                 "type": "float",
                 "values": None,
-                "default_value": 0
+                "default_value": 0,
             },
             {
                 "parameter": "rtol",
                 "type": "float",
                 "values": None,
-                "default_value": 0
+                "default_value": 0,
             },
             {
                 "parameter": "breadth_first",
                 "type": "boolean",
-                "values": ["True", "False"]
+                "values": ["True", "False"],
+                "default_value": "True",
             },
             {
                 "parameter": "leaf_size",
                 "type": "int",
                 "values": None,
-                "default_value": 40
+                "default_value": 40,
             },
             {
                 "parameter": "metric_params",
                 "Type": "dict",
                 "values": None,
-                "default_value": None
+                "default_value": {},
             }
         ],
         "constant": [
@@ -75,7 +79,7 @@ if __name__ == "__main__":
                 "parameter": "type constant",
                 "type": "int",
                 "values": None,
-                "default_value": None
+                "default_value": 0,
             }
         ],
         "weigths": [
@@ -83,12 +87,13 @@ if __name__ == "__main__":
                 "parameter": "bandwidth",
                 "type": "float",
                 "values": None,
-                "default_value": 1.0
+                "default_value": 1.0,
             },
             {
                 "parameter": "algorithm",
                 "type": None,
-                "values": ["auto", "kd_tree", "ball_tree"]
+                "values": ["auto", "kd_tree", "ball_tree"],
+                "default_value": "auto",
             },
             {
                 "parameter": "kernel",
@@ -100,35 +105,38 @@ if __name__ == "__main__":
                     "exponential",
                     "linear",
                     "cosine"
-                ]
+                ],
+                "default_value": "gaussian",
             },
             {
                 "parameter": "metric",
                 "type": "str",
-                "values": ["euclidean"]
+                "values": ["euclidean"],
+                "default_value": ["euclidean"],
             },
             {
                 "parameter": "atol",
                 "type": "float",
                 "values": None,
-                "default_value": 0
+                "default_value": 0,
             },
             {
                 "parameter": "rtol",
                 "type": "float",
                 "values": None,
-                "default_value": 0
+                "default_value": 0,
             },
             {
                 "parameter": "breadth_first",
                 "type": "boolean",
-                "values": ["True", "False"]
+                "values": ["True", "False"],
+                "default_value": "True",
             },
             {
                 "parameter": "leaf_size",
                 "type": "int",
                 "values": None,
-                "default_value": 40
+                "default_value": 40,
             }
         ],
         "numpy": [
@@ -138,12 +146,12 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "loc",
-                        "type": ["float", "List[float]"]
+                        "type": ["float", "List[float]"],
                     },
                     {
                         "name": "scale",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -152,12 +160,12 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "mean",
-                        "type": ["float", "List[float]"]
+                        "type": ["float", "List[float]"],
                     },
                     {
                         "name": "sigma",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -166,8 +174,8 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "a",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -176,12 +184,12 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "shape",
-                        "type": ["float", "List[float]"]
+                        "type": ["float", "List[float]"],
                     },
                     {
                         "name": "scale",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -190,12 +198,12 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "loc",
-                        "type": ["float", "List[float]"]
+                        "type": ["float", "List[float]"],
                     },
                     {
                         "name": "scale",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -204,8 +212,8 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "Iam",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -214,8 +222,8 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "P",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -224,8 +232,8 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "P",
-                        "type": ["float", "List[float]"]
-                    }
+                        "type": ["float", "List[float]"],
+                    },
                 ]
             },
             {
@@ -234,16 +242,16 @@ if __name__ == "__main__":
                 "values": [
                     {
                         "name": "ngoodint",
-                        "type": ["int", "List[int]"]
+                        "type": ["int", "List[int]"],
                     },
                     {
                         "name": "nbad",
-                        "type": ["int", "List[int]"]
+                        "type": ["int", "List[int]"],
                     },
                     {
                         "name": "nsample",
-                        "type": ["int", "List[int]"]
-                    }
+                        "type": ["int", "List[int]"],
+                    },
                 ]
             }
         ]
