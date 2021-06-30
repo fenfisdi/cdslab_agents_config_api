@@ -14,7 +14,7 @@ from src.interfaces import (
     ConfigurationInterface
 )
 from src.models.db import AgeGroup
-from src.models.route_models import NewAgeGroup
+from src.models.route_models import NewAgeGroup, UpdateAgeGroup
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
@@ -184,7 +184,7 @@ def create_age_group(
 def update_age_group(
     conf_uuid: UUID,
     age_uuid: UUID,
-    age_group: NewAgeGroup,
+    age_group: UpdateAgeGroup,
     user = Depends(SecurityUseCase.validate)
 ):
     """

@@ -1,6 +1,6 @@
 from datetime import datetime
 from json import JSONEncoder
-from typing import Union
+from typing import List, Union
 
 from bson import DBRef, ObjectId
 from mongoengine import Document, QuerySet
@@ -28,13 +28,13 @@ class BsonObject:
     """
 
     @classmethod
-    def dict(cls, document: Union[Document, Document]):
+    def dict(cls, document: Union[List[Document], Document]):
         """
         Creates a python dictionary based in a mongodb document
         
         :param document: Mongodb document to transform
         """
-        if isinstance(document, QuerySet):
+        if isinstance(document, QuerySet) or isinstance(document, list):
             document = [value.to_mongo() for value in document]
             raw = BsonEncoder().encode(document)
         else:
