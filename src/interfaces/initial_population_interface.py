@@ -1,3 +1,4 @@
+from uuid import UUID
 from src.models.db import(
     configuration,
     InitialPopulationSetup
@@ -19,3 +20,15 @@ class InitialPopulationInterface:
             configuration=config
         )
         return InitialPopulationSetup.objects(**filters).all()
+
+    @staticmethod
+    def find_one(identifier: UUID) -> InitialPopulationSetup:
+        """
+        Find a existing initial population in db
+
+        :param identifier: Identifier to search
+        """
+        filters = dict(
+            identifier=identifier,
+        )
+        return InitialPopulationSetup.objects(**filters).first()

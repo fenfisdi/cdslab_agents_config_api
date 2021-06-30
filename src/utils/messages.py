@@ -163,7 +163,9 @@ class InitialPopulationMessage:
     """
 
     found: str = "Variables found"
+    setup_found: str = "Initial population setup found"
     created: str = "configured variable"
     not_found: str = "Variables not found"
     parameters_found: str = "Parameters found"
-    
+    updated: str = "Initial population updated"
+    deleted: str = "Initial population has been deleted"

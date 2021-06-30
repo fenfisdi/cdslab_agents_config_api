@@ -10,5 +10,3 @@ class NewInitialPopulationSetup(BaseModel):
     percentages: dict = Field(...)
     variable_name: ConfigurationVariableName = Field(...)
     
-class UpdateInitialPopulationSetup(NewInitialPopulationSetup):
-    identifier: UUID = Field(...)
