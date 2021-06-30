@@ -5,6 +5,7 @@ from src.models.db import(
     InitialPopulationSetup
 )
 
+
 class InitialPopulationInterface:
     """
     Interface to consult initial population setup in db
