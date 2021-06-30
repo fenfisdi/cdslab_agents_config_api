@@ -75,6 +75,7 @@ class QuarantineGroupMessages:
     exist: str = "Quarantine Groups exist"
     created: str = "Quarantine Groups has been created"
     updated: str = "Quarantine Groups updated"
+    deleted: str = "Quarantine Groups deleted"
     not_quarantine_groups_entered: str = "Quarantine Groups not entered"
     quarantine_restriction_not_found: str = "Quarantine restrictions not found"
     quarantine_restriction_found: str = "Quarantine restrictions found"

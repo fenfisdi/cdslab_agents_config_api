@@ -84,7 +84,7 @@ def find_quarantine(conf_uuid: UUID, user = Depends(SecurityUseCase.validate)):
     \f
 
     :param conf_uuid: Configuration identifier to search
-    :param user:
+    :param user: User logged
     """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
@@ -165,7 +165,7 @@ def create_quarantine(
             identifier=uuid1(),
             configuration=configuration
         )
-        new_quarantine.save()
+        new_quarantine.save().reload()
 
         for quarantine_group in quarantine.quarantine_groups:
             QuarantineGroup(
@@ -182,7 +182,8 @@ def create_quarantine(
 
     return UJSONResponse(
         QuarantineGroupMessages.created,
-        HTTP_201_CREATED
+        HTTP_201_CREATED,
+        BsonObject.dict(new_quarantine)
     )
 
 
@@ -195,6 +196,14 @@ def update_quarantine_groups(
     quarantine_group: UpdateQuarantineGroup,
     user = Depends(SecurityUseCase.validate)
 ):
+    """
+    Update quarantine group in db
+
+    :param conf_uuid: Configuration Identifier to search
+    :param uuid: Quarantine Group Identifier to search
+    :param quarantine_group: Quarantine group to update in db.
+    :param user: User logged
+    """
     try:
         configuration = ConfigurationInterface.find_by_identifier(
             conf_uuid,
@@ -211,7 +220,7 @@ def update_quarantine_groups(
         )
         if not quarantine_found:
             return UJSONResponse(
-                ConfigurationMessage.not_found,
+                QuarantineGroupMessages.not_found,
                 HTTP_404_NOT_FOUND
             )
 
@@ -230,7 +239,65 @@ def update_quarantine_groups(
             HTTP_400_BAD_REQUEST,
         )
     return UJSONResponse(
-        QuarantineGroupMessage.updated,
+        QuarantineGroupMessages.updated,
         HTTP_200_OK,
         BsonObject.dict(quarantine_group_found)
+    )
+
+
+@quarantine_group_routes.delete(
+    "/configuration/{conf_uuid}/quarantine_group/{uuid}"
+)
+def delete_quarantine_group(
+    conf_uuid: UUID,
+    uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Delete quarantine group in db
+
+    :param conf_uuid: Configuration Identifier to search
+    :param uuid: Quarantine Group Identifier to search
+    :param user: User logged
+    """
+    try:
+        configuration = ConfigurationInterface.find_by_identifier(
+            conf_uuid,
+            user
+        )
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        quarantine_found = QuarantineInterface.find_by_configuration(
+            configuration
+        )
+        if not quarantine_found:
+            return UJSONResponse(
+                QuarantineGroupMessages.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        quarantine_group_found = QuarantineGroupInterface.find_by_identifier(
+            uuid
+        )
+
+        if not quarantine_group_found:
+            return UJSONResponse(
+                QuarantineGroupMessages.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        quarantine_found.delete()
+        quarantine_group_found.delete()
+    except Exception as error:
+        return UJSONResponse(
+            str(error),
+            HTTP_400_BAD_REQUEST,
+        )
+    return UJSONResponse(
+        QuarantineGroupMessages.deleted,
+        HTTP_200_OK
     )

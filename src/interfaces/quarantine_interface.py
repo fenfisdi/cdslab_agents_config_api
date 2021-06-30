@@ -6,7 +6,7 @@ from src.models.db import Configuration, Quarantine, QuarantineGroup
 class QuarantineInterface:
 
     @staticmethod
-    def find_by_configuration(configuration: Configuration):
+    def find_by_configuration(configuration: Configuration) -> Quarantine:
         filters = dict(
             configuration=configuration,
         )
