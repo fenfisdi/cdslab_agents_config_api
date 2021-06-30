@@ -1,70 +1,261 @@
 from os import environ
-from mongoengine import connect
 from uuid import uuid1
 
+from mongoengine import connect
+
 from src.models.db.master.distribution import MasterDistribution
-from src.models.db.master.disease_states import MasterDiseaseStates
 from src.models.db.master.quarantine_restriction import QuarantineRestriction
 
 if __name__ == "__main__":
-
     mongo_uri = environ.get("MONGO_URI")
     connect(host=mongo_uri)
 
-    distributions = { 
-                "empirical": [
-                        {"parameter": "bandwidth", "type": "float", "values": None, "default_value":1.0},
-                        {"parameter": "algorithm", "type": None, "values": ["auto", "kd_tree", "ball_tree"]},
-                        {"parameter": "kernel", "type": None, "values": ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]},
-                        {"parameter": "metric", "type": "str", "values": ["euclidean"]},
-                        {"parameter": "atol", "type": "float", "values": None, "default_value": 0},
-                        {"parameter": "rtol", "type": "float", "values": None, "default_value":0},
-                        {"parameter": "breadth_first", "type": "boolean", "values": ["True", "False"]},
-                        {"parameter": "leaf_size", "type": "int", "values": None, "default_value": 40},
-                        {"parameter": "metric_params", "Type": "dict", "values": None, "default_value": None} ],
-                "constant": [{"parameter": "type constant", "type": "int", "values": None, "default_value":None}],
-                "weigths": [{"parameter": "bandwidth", "type": "float", "values": None, "default_value": 1.0},
-                          {"parameter": "algorithm", "type": None, "values": ["auto", "kd_tree", "ball_tree"]},
-                          {"parameter": "kernel", "type": None, "values": ["gaussian", "tophat", "epanechnikov", "exponential", "linear", "cosine"]},
-                          {"parameter": "metric", "type": "str", "values": ["euclidean"]},
-                          {"parameter": "atol", "type": "float", "values": None, "default_value":0},
-                          {"parameter": "rtol", "type": "float", "values": None, "default_value": 0},
-                          {"parameter": "breadth_first", "type": "boolean", "values": ["True", "False"]},
-                          {"parameter": "leaf_size", "type": "int", "values": None, "default_value": 40}],
-                "numpy": [{"parameter": "normal", "type": "numpy", "values": [
-                                        {"name": "loc", "type":["float", "List[float]"]}, 
-                                        {"name": "scale", "type":["float", "List[float]"]}
-                                        ]},
-                          {"parameter": "lognormal", "type": "numpy", "values": [
-                              {"name": "mean", "type":["float", "List[float]"]},
-                              {"name": "sigma", "type":["float", "List[float]"]}
-                              ]},
-                          {"parameter": "weibull", "type": "numpy", "values": [
-                              {"name": "a", "type":["float", "List[float]"]}
-                              ]},
-                          {"parameter": "gamma", "type": "numpy", "values": [
-                                {"name": "shape", "type":["float", "List[float]"]},
-                                {"name": "scale", "type":["float", "List[float]"]}
-                                    ]},
-                          {"parameter": "logistic", "type": "numpy", "values": [
-                              {"name": "loc", "type":["float", "List[float]"]}, 
-                              {"name": "scale", "type":["float", "List[float]"]}
-                              ]},
-                          {"parameter": "poisson", "type": "numpy", "values": [
-                              {"name": "Iam", "type":["float", "List[float]"]}
-                            ]},
-                          {"parameter": "logseries", "type": "numpy", "values": [
-                              {"name": "P", "type":["float", "List[float]"]}
-                            ]},
-                          {"parameter": "geometric", "type": "numpy", "values": [
-                              {"name": "P", "type":["float", "List[float]"]}
-                            ]},
-                          {"parameter": "hypergeometric", "type": "numpy", "values": [
-                              {"name": "ngoodint", "type":["int", "List[int]"]},
-                              {"name": "nbad", "type":["int", "List[int]"]},
-                             {"name": "nsample", "type":["int", "List[int]"]}
-                        ]}]  
-                }
+    distributions = {
+        "empirical": [
+            {
+                "parameter": "bandwidth",
+                "type": "float",
+                "values": None,
+                "default_value": 1.0,
+            },
+            {
+                "parameter": "algorithm",
+                "type": None,
+                "values": ["auto", "kd_tree", "ball_tree"],
+                "default_value": "auto",
+            },
+            {
+                "parameter": "kernel",
+                "type": None,
+                "values": [
+                    "gaussian",
+                    "tophat",
+                    "epanechnikov",
+                    "exponential",
+                    "linear",
+                    "cosine"
+                ],
+                "default_value": "gaussian",
+            },
+            {
+                "parameter": "metric",
+                "type": "str",
+                "values": ["euclidean"],
+                "default_value": "euclidean",
+            },
+            {
+                "parameter": "atol",
+                "type": "float",
+                "values": None,
+                "default_value": 0,
+            },
+            {
+                "parameter": "rtol",
+                "type": "float",
+                "values": None,
+                "default_value": 0,
+            },
+            {
+                "parameter": "breadth_first",
+                "type": "boolean",
+                "values": ["True", "False"],
+                "default_value": "True",
+            },
+            {
+                "parameter": "leaf_size",
+                "type": "int",
+                "values": None,
+                "default_value": 40,
+            },
+            {
+                "parameter": "metric_params",
+                "Type": "dict",
+                "values": None,
+                "default_value": {},
+            }
+        ],
+        "constant": [
+            {
+                "parameter": "type constant",
+                "type": "int",
+                "values": None,
+                "default_value": 0,
+            }
+        ],
+        "weigths": [
+            {
+                "parameter": "bandwidth",
+                "type": "float",
+                "values": None,
+                "default_value": 1.0,
+            },
+            {
+                "parameter": "algorithm",
+                "type": None,
+                "values": ["auto", "kd_tree", "ball_tree"],
+                "default_value": "auto",
+            },
+            {
+                "parameter": "kernel",
+                "type": None,
+                "values": [
+                    "gaussian",
+                    "tophat",
+                    "epanechnikov",
+                    "exponential",
+                    "linear",
+                    "cosine"
+                ],
+                "default_value": "gaussian",
+            },
+            {
+                "parameter": "metric",
+                "type": "str",
+                "values": ["euclidean"],
+                "default_value": ["euclidean"],
+            },
+            {
+                "parameter": "atol",
+                "type": "float",
+                "values": None,
+                "default_value": 0,
+            },
+            {
+                "parameter": "rtol",
+                "type": "float",
+                "values": None,
+                "default_value": 0,
+            },
+            {
+                "parameter": "breadth_first",
+                "type": "boolean",
+                "values": ["True", "False"],
+                "default_value": "True",
+            },
+            {
+                "parameter": "leaf_size",
+                "type": "int",
+                "values": None,
+                "default_value": 40,
+            }
+        ],
+        "numpy": [
+            {
+                "parameter": "normal",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "loc",
+                        "type": ["float", "List[float]"],
+                    },
+                    {
+                        "name": "scale",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "lognormal",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "mean",
+                        "type": ["float", "List[float]"],
+                    },
+                    {
+                        "name": "sigma",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "weibull",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "a",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "gamma",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "shape",
+                        "type": ["float", "List[float]"],
+                    },
+                    {
+                        "name": "scale",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "logistic",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "loc",
+                        "type": ["float", "List[float]"],
+                    },
+                    {
+                        "name": "scale",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "poisson",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "Iam",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "logseries",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "P",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "geometric",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "P",
+                        "type": ["float", "List[float]"],
+                    },
+                ]
+            },
+            {
+                "parameter": "hypergeometric",
+                "type": "numpy",
+                "values": [
+                    {
+                        "name": "ngoodint",
+                        "type": ["int", "List[int]"],
+                    },
+                    {
+                        "name": "nbad",
+                        "type": ["int", "List[int]"],
+                    },
+                    {
+                        "name": "nsample",
+                        "type": ["int", "List[int]"],
+                    },
+                ]
+            }
+        ]
+    }
 
     quarantine_restrictions = [
         {
@@ -83,10 +274,12 @@ if __name__ == "__main__":
         try:
             distribution = MasterDistribution(
                 name=name,
-                type=parameters).save()
+                type=parameters
+            ).save()
 
         except Exception as error:
-            raise RuntimeError(f"No fue posible insertar la distribución {name}, {error}") from error
+            message = f"No fue posible insertar la distribución {name}, {error}"
+            raise RuntimeError(message)
 
     for quarantine_restriction in quarantine_restrictions:
         try:
@@ -97,6 +290,5 @@ if __name__ == "__main__":
                 value=quarantine_restriction["value"]
             ).save()
         except Exception as error:
-            raise RuntimeError(
-                f"An error has been while insert quarantine restriction {quarantine_restriction}"
-            ) from error
+            message = f"An error has been while insert {quarantine_restriction}"
+            raise RuntimeError(message)
