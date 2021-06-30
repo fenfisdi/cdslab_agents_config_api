@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from src.models.db import Configuration, MobilityGroup
 
 
@@ -14,7 +16,7 @@ class MobilityGroupInterface:
         return MobilityGroup.objects().all()
 
     @staticmethod
-    def find_one(identifier: str):
+    def find_one(identifier: UUID) -> MobilityGroup:
         """
         Find a existing mobility group in db
 
@@ -23,14 +25,10 @@ class MobilityGroupInterface:
         filters = dict(
             identifier=identifier
         )
-        return MobilityGroup.objects(
-            **filters
-        ).first()
+        return MobilityGroup.objects(**filters).first()
 
     @staticmethod
-    def find_by_configuration(
-        configuration: Configuration
-    ):
+    def find_by_configuration(configuration: Configuration):
         """
         Find all existing mobility groups by configuration in db
 
@@ -39,6 +37,4 @@ class MobilityGroupInterface:
         filters = dict(
             configuration=configuration
         )
-        return MobilityGroup.objects(
-            **filters
-        ).all()
+        return MobilityGroup.objects(**filters).all()
