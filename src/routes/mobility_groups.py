@@ -15,7 +15,7 @@ from src.interfaces import (
 )
 from src.models.db import MobilityGroup
 from src.models.route_models import NewMobilityGroup
-from src.use_case import DistributionUseCase, SecurityUseCase
+from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, MobilityGroupsMessages
 from src.utils.response import UJSONResponse
@@ -98,9 +98,6 @@ def create_mobility_groups(
 
         resp = []
         for mobility_group in mobility_groups:
-            DistributionUseCase.verify_distribution(
-                mobility_group.distribution
-            )
             new_mobility_group = MobilityGroup(
                 **mobility_group.dict(),
                 identifier=uuid1(),
