@@ -11,7 +11,8 @@ from starlette.status import (
 
 from src.interfaces import (
     AgeGroupInterface,
-    ConfigurationInterface
+    ConfigurationInterface,
+UserInterface
 )
 from src.models.db import AgeGroup
 from src.models.route_models import NewAgeGroup, UpdateAgeGroup
@@ -76,8 +77,7 @@ def list_age_groups(
 @age_group_routes.post("/configuration/{conf_uuid}/age_groups")
 def create_age_groups(
     conf_uuid: UUID,
-    age_groups: List[NewAgeGroup],
-    user = Depends(SecurityUseCase.validate)
+    age_groups: List[NewAgeGroup]
 ):
     """
     Create age groups in db.
@@ -88,6 +88,7 @@ def create_age_groups(
     :param user: User logged
     """
     try:
+        user = UserInterface.find_one("diego@gmail.com")
         configuration = ConfigurationInterface.find_by_identifier(
             conf_uuid,
             user

@@ -16,7 +16,7 @@ class ImmunizationGroupInterface:
         return ImmunizationGroup.objects().all()
 
     @staticmethod
-    def find_one(identifier: UUID):
+    def find_one(identifier: UUID) -> ImmunizationGroup:
         """
         Find a existing immunization group in db.
 
