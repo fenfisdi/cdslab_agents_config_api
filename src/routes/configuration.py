@@ -57,7 +57,7 @@ def find_configuration(uuid: UUID, user = Depends(SecurityUseCase.validate)):
     :param uuid: Identifier of simulation.
     :param user: User authenticated by token.
     """
-    configuration_found = ConfigurationInterface.find_by_identifier(uuid, user)
+    configuration_found = ConfigurationInterface.find_one_by_id(uuid, user)
     if not configuration_found:
         return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
 
@@ -81,7 +81,7 @@ def create_configuration(
     :param user: User authenticated by token.
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_name(
+        configuration_found = ConfigurationInterface.find_one_by_name(
             configuration.name,
             user
         )
@@ -125,7 +125,7 @@ def updated_configuration(
     :param user: User authenticated by token.
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             uuid,
             user
         )
@@ -162,7 +162,7 @@ def delete_configuration(
     :param uuid: Identifier of simulation.
     :param user: User authenticated by token.
     """
-    configuration_found = ConfigurationInterface.find_by_identifier(uuid, user)
+    configuration_found = ConfigurationInterface.find_one_by_id(uuid, user)
     if not configuration_found:
         return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
 

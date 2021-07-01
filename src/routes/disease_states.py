@@ -41,7 +41,7 @@ def create_disease_states(
     """
 
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -95,7 +95,7 @@ def find_disease_states(
     :param user: User logged
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -139,7 +139,7 @@ def create_disease_state(
     """
 
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -193,7 +193,7 @@ def update_disease_state(
     :param user: User logged
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -249,7 +249,7 @@ def update_disease_state(
     :param user: User logged
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )

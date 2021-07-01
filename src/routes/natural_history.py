@@ -43,7 +43,7 @@ def create_natural_history(
     :param user:
     """
     try:
-        config_found = ConfigurationInterface.find_by_identifier(
+        config_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -107,7 +107,7 @@ def list_natural_histories(
     :param user:
     """
 
-    config_found = ConfigurationInterface.find_by_identifier(
+    config_found = ConfigurationInterface.find_one_by_id(
         conf_uuid,
         user
     )
@@ -152,7 +152,7 @@ def update_natural_history(
     """
 
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )

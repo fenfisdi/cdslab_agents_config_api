@@ -19,20 +19,13 @@ class AgeGroupInterface:
         return AgeGroup.objects(**filters).first()
 
     @staticmethod
-    def find_all():
+    def find_all_by_conf(configuration: Configuration):
         """
-        Get all existing age groups in db
-        """
-        return AgeGroup.objects().all()
+        Get all existing age groups in db relation to a configuration.
 
-    @staticmethod
-    def find_by_configuration(configuration_identifier: Configuration):
-        """
-        Get all existing age groups in db relation to a configuration
-
-        :param configuration_identifier: Identifier from a configuration
+        :param configuration: Identifier from a configuration.
         """
         filters = dict(
-            configuration=configuration_identifier
+            configuration=configuration
         )
         return AgeGroup.objects(**filters).all()

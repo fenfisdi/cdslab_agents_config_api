@@ -1,10 +1,10 @@
 import uuid
-
-from mongoengine import connect, disconnect
 from unittest import TestCase
 
-from src.models import Configuration
+from mongoengine import connect, disconnect
+
 from src.interfaces import ConfigurationInterface
+from src.models import Configuration
 
 
 class ConfigurationInterfaceTestCase(TestCase):
@@ -44,7 +44,7 @@ class ConfigurationInterfaceTestCase(TestCase):
         self.assertIsNotNone(configurations)
 
     def test_find_by_identifier(self):
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             self.identifier
         )
 
@@ -55,7 +55,7 @@ class ConfigurationInterfaceTestCase(TestCase):
         )
 
     def test_find_by_name(self):
-        configuration = ConfigurationInterface.find_by_name(
+        configuration = ConfigurationInterface.find_one_by_name(
             self.name
         )
 
