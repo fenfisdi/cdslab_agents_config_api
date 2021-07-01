@@ -69,7 +69,7 @@ if __name__ == "__main__":
             },
             {
                 "parameter": "metric_params",
-                "Type": "dict",
+                "type": "dict",
                 "values": None,
                 "default_value": {},
             }
