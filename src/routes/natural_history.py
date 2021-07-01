@@ -53,7 +53,7 @@ def create_natural_history(
                 HTTP_404_NOT_FOUND
             )
 
-        vg_found = VulnerabilityGroupInterface.find_by_identifier(
+        vg_found = VulnerabilityGroupInterface.find_one_by_id(
             natural_history.vulnerability_group
         )
         if not vg_found:

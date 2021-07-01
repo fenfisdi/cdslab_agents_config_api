@@ -139,13 +139,13 @@ class ImmunizationGroupMessage:
 @dataclass
 class VulnerabilityGroupMessage:
     exist: str = "Vulnerability group exist"
-    found: str = "Vulnerability Groups found"
-    not_found: str = "Vulnerability Groups not found"
-    not_vulnerability_entered: str = "Not Vulnerability Groups entered to save"
-    created: str = "Vulnerability Groups has been created"
-    updated: str = "Vulnerability Groups updated"
-    deleted: str = "Vulnerability Groups deleted"
-    bad_deleted: str = "Vulnerability Groups bad deleted"
+    found: str = "Vulnerability groups found"
+    not_found: str = "Vulnerability groups not found"
+    not_entered: str = "Vulnerability groups not entered to save"
+    created: str = "Vulnerability groups has been created"
+    updated: str = "Vulnerability groups updated"
+    deleted: str = "Vulnerability groups deleted"
+    bad_deleted: str = "Vulnerability groups bad deleted"
 
 
 @dataclass
