@@ -21,7 +21,7 @@ class NaturalHistoryUseCase:
         vulnerability_group: UUID,
         disease_state: UUID
     ):
-        config_found = ConfigurationInterface.find_by_identifier(config)
+        config_found = ConfigurationInterface.find_one_by_id(config)
         group_found = VulnerabilityGroupInterface.find_by_identifier(
             vulnerability_group
         )

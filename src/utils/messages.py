@@ -129,7 +129,7 @@ class ImmunizationGroupMessage:
     exist: str = "Immunization group exist"
     found: str = "Immunization group found"
     not_found: str = "Immunization group not found"
-    not_immunization_entered: str = "Not immunization groups entered to save"
+    not_entered: str = "Immunization groups not entered to save"
     created: str = "Immunization group has been created"
     updated: str = "Immunization group updated"
     deleted: str = "Immunization group deleted"

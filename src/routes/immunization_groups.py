@@ -15,7 +15,7 @@ from src.interfaces import (
 )
 from src.models.db import ImmunizationGroup
 from src.models.route_models import NewImmunizationGroup
-from src.use_case import SecurityUseCase, DistributionUseCase
+from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, ImmunizationGroupMessage
 from src.utils.response import UJSONResponse
@@ -36,7 +36,7 @@ def list_immunization_groups(
     :param user: User authenticated by token.
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -83,7 +83,7 @@ def create_immunization_groups(
     :param user: User authenticated by token.
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -95,15 +95,12 @@ def create_immunization_groups(
 
         if not immunization_groups:
             return UJSONResponse(
-                ImmunizationGroupMessage.not_age_immunization_entered,
+                ImmunizationGroupMessage.not_entered,
                 HTTP_400_BAD_REQUEST
             )
 
         res = []
         for immunization_group in immunization_groups:
-            DistributionUseCase.verify_distribution(
-                immunization_group.distribution
-            )
             img = ImmunizationGroup(
                 **immunization_group.dict(),
                 identifier=uuid1(),
@@ -140,7 +137,7 @@ def create_immunization_group(
     :param user: User authenticated by token.
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -152,13 +149,10 @@ def create_immunization_group(
 
         if not immunization_group:
             return UJSONResponse(
-                ImmunizationGroupMessage.not_immunization_entered,
+                ImmunizationGroupMessage.not_entered,
                 HTTP_400_BAD_REQUEST
             )
 
-        DistributionUseCase.verify_distribution(
-            immunization_group.distribution
-        )
         img = ImmunizationGroup(
             **immunization_group.dict(),
             identifier=uuid1(),
@@ -198,7 +192,7 @@ def update_immunization_group(
     :param user: User authenticated by token.
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -210,20 +204,17 @@ def update_immunization_group(
 
         if not immunization_group:
             return UJSONResponse(
-                ImmunizationGroupMessage.not_immunization_entered,
+                ImmunizationGroupMessage.not_entered,
                 HTTP_400_BAD_REQUEST
             )
 
         img_found = ImmunizationGroupInterface.find_one(img_uuid)
         if not img_found:
             return UJSONResponse(
-                ImmunizationGroupMessage.not_immunization_entered,
+                ImmunizationGroupMessage.not_entered,
                 HTTP_400_BAD_REQUEST
             )
 
-        DistributionUseCase.verify_distribution(
-            immunization_group.distribution
-        )
         img_found.update(**immunization_group.dict(exclude_none=True))
         img_found.save().reload()
 
@@ -257,7 +248,7 @@ def delete_immunization_group(
     :param user: User authenticated by token.
     """
     try:
-        configuration_found = ConfigurationInterface.find_by_identifier(
+        configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -270,7 +261,7 @@ def delete_immunization_group(
         img_found = ImmunizationGroupInterface.find_one(img_uuid)
         if not img_found:
             return UJSONResponse(
-                ImmunizationGroupMessage.not_immunization_entered,
+                ImmunizationGroupMessage.not_entered,
                 HTTP_400_BAD_REQUEST
             )
 

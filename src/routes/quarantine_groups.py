@@ -36,7 +36,7 @@ def list_quarantine_groups(
     Get all existing quarantine groups in db
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -87,7 +87,7 @@ def find_quarantine(conf_uuid: UUID, user = Depends(SecurityUseCase.validate)):
     :param user:
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -134,7 +134,7 @@ def create_quarantine(
     :param user:
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -196,7 +196,7 @@ def update_quarantine_groups(
     user = Depends(SecurityUseCase.validate)
 ):
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )

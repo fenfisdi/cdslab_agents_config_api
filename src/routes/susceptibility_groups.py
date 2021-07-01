@@ -46,7 +46,7 @@ def create_list_susceptibility_group(
     :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -107,7 +107,7 @@ def create_susceptibility_group(
     :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -153,7 +153,7 @@ def update_susceptibility_group(
     :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -197,7 +197,7 @@ def find_susceptibility_group(
     :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -242,7 +242,7 @@ def list_susceptibility_groups(
     :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -283,7 +283,7 @@ def delete_susceptibility_group(
     user = Depends(SecurityUseCase.validate)
 ):
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )

@@ -36,7 +36,7 @@ def list_mobility_groups(
     :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -79,7 +79,7 @@ def create_mobility_groups(
     :param user: User logged
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -134,7 +134,7 @@ def create_mobility_group(
     :param user: Logged user
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -190,7 +190,7 @@ def update_mobility_group(
     :param user: Logged user
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -242,7 +242,7 @@ def delete_mobility_group(
     :param user: Logged user
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
