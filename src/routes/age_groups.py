@@ -23,10 +23,13 @@ from src.utils.messages import (
 )
 from src.utils.response import UJSONResponse
 
-age_group_routes = APIRouter(tags=["Age Groups"])
+age_group_routes = APIRouter(
+    prefix="/configuration/{conf_uuid}",
+    tags=["Age Groups"]
+)
 
 
-@age_group_routes.get("/configuration/{conf_uuid}/age_groups")
+@age_group_routes.get("/age_groups")
 def list_age_groups(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
@@ -67,7 +70,7 @@ def list_age_groups(
         )
 
 
-@age_group_routes.post("/configuration/{conf_uuid}/age_groups")
+@age_group_routes.post("/age_groups")
 def create_age_groups(
     conf_uuid: UUID,
     age_groups: List[NewAgeGroup],
@@ -119,7 +122,7 @@ def create_age_groups(
         )
 
 
-@age_group_routes.post("/configuration/{conf_uuid}/age_group")
+@age_group_routes.post("/age_group")
 def create_age_group(
     conf_uuid: UUID,
     age_group: NewAgeGroup,
@@ -171,7 +174,7 @@ def create_age_group(
     )
 
 
-@age_group_routes.put("/configuration/{conf_uuid}/age_group/{uuid}")
+@age_group_routes.put("/age_group/{uuid}")
 def update_age_group(
     conf_uuid: UUID,
     uuid: UUID,
@@ -229,7 +232,7 @@ def update_age_group(
     )
 
 
-@age_group_routes.delete("/configuration/{conf_uuid}/age_group/{uuid}")
+@age_group_routes.delete("/age_group/{uuid}")
 def delete_age_group(
     conf_uuid: UUID,
     uuid: UUID,
