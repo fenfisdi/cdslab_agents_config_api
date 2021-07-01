@@ -11,8 +11,7 @@ from starlette.status import (
 
 from src.interfaces import (
     AgeGroupInterface,
-    ConfigurationInterface,
-UserInterface
+    ConfigurationInterface
 )
 from src.models.db import AgeGroup
 from src.models.route_models import NewAgeGroup, UpdateAgeGroup
@@ -33,14 +32,14 @@ def list_age_groups(
     user = Depends(SecurityUseCase.validate)
 ):
     """
-    Get existing age groups by configuration identifier.
+    List all age groups by configuration identifier.
 
     \f
     :param conf_uuid: Configuration identifier.
     :param user: User Authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -51,15 +50,15 @@ def list_age_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        age_groups = AgeGroupInterface.find_by_configuration(
+        age_groups = AgeGroupInterface.find_all_by_conf(
             configuration
         )
 
-        if not age_groups:
-            return UJSONResponse(
-                AgeGroupsMessages.not_found,
-                HTTP_404_NOT_FOUND
-            )
+        return UJSONResponse(
+            AgeGroupsMessages.found,
+            HTTP_200_OK,
+            BsonObject.dict(age_groups)
+        )
 
     except Exception as error:
         return UJSONResponse(
@@ -67,17 +66,12 @@ def list_age_groups(
             HTTP_400_BAD_REQUEST
         )
 
-    return UJSONResponse(
-        AgeGroupsMessages.found,
-        HTTP_200_OK,
-        BsonObject.dict(age_groups)
-    )
-
 
 @age_group_routes.post("/configuration/{conf_uuid}/age_groups")
 def create_age_groups(
     conf_uuid: UUID,
-    age_groups: List[NewAgeGroup]
+    age_groups: List[NewAgeGroup],
+    user = Depends(SecurityUseCase.validate)
 ):
     """
     Create age groups in db.
@@ -85,11 +79,10 @@ def create_age_groups(
     \f
     :param conf_uuid: Identifier Configuration.
     :param age_groups: List of age groups to save in db.
-    :param user: User logged
+    :param user: User authenticated.
     """
     try:
-        user = UserInterface.find_one("diego@gmail.com")
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -100,13 +93,10 @@ def create_age_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        if not age_groups:
-            return UJSONResponse(
-                AgeGroupsMessages.not_age_groups_entered,
-                HTTP_404_NOT_FOUND
-            )
+        old_age_groups = AgeGroupInterface.find_all_by_conf(configuration)
+        [age_group.delete() for age_group in old_age_groups]
 
-        resp = []
+        new_age_groups = []
         for age_group in age_groups:
             new_age_group = AgeGroup(
                 **age_group.dict(),
@@ -114,19 +104,19 @@ def create_age_groups(
                 configuration=configuration
             )
             new_age_group.save().reload()
-            resp.append(new_age_group)
+            new_age_groups.append(new_age_group)
+
+        return UJSONResponse(
+            AgeGroupsMessages.created,
+            HTTP_201_CREATED,
+            BsonObject.dict(new_age_groups)
+        )
 
     except Exception as error:
         return UJSONResponse(
             str(error),
             HTTP_400_BAD_REQUEST
         )
-
-    return UJSONResponse(
-        AgeGroupsMessages.created,
-        HTTP_201_CREATED,
-        BsonObject.dict(resp)
-    )
 
 
 @age_group_routes.post("/configuration/{conf_uuid}/age_group")
@@ -141,10 +131,10 @@ def create_age_group(
     \f
     :param conf_uuid: Identifier Configuration.
     :param age_group: Age group to save in db.
-    :param user: User logged
+    :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -181,10 +171,10 @@ def create_age_group(
     )
 
 
-@age_group_routes.put("/configuration/{conf_uuid}/age_group/{age_uuid}")
+@age_group_routes.put("/configuration/{conf_uuid}/age_group/{uuid}")
 def update_age_group(
     conf_uuid: UUID,
-    age_uuid: UUID,
+    uuid: UUID,
     age_group: UpdateAgeGroup,
     user = Depends(SecurityUseCase.validate)
 ):
@@ -193,12 +183,12 @@ def update_age_group(
 
     \f
     :param conf_uuid: Identifier Configuration.
-    :param age_uuid: Identifier age group.
+    :param uuid: Identifier age group.
     :param age_group: Age group to update in db.
-    :param user: User logged
+    :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -215,7 +205,7 @@ def update_age_group(
                 HTTP_404_NOT_FOUND
             )
 
-        age_group_found = AgeGroupInterface.find_one(age_uuid)
+        age_group_found = AgeGroupInterface.find_one(uuid)
 
         if not age_group_found:
             return UJSONResponse(
@@ -239,10 +229,10 @@ def update_age_group(
     )
 
 
-@age_group_routes.delete("/configuration/{conf_uuid}/age_group/{age_uuid}")
-def update_age_group(
+@age_group_routes.delete("/configuration/{conf_uuid}/age_group/{uuid}")
+def delete_age_group(
     conf_uuid: UUID,
-    age_uuid: UUID,
+    uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
     """
@@ -250,11 +240,11 @@ def update_age_group(
 
     \f
     :param conf_uuid: Identifier Configuration.
-    :param age_uuid: Identifier age group.
-    :param user: User logged
+    :param uuid: Identifier age group.
+    :param user: User authenticated.
     """
     try:
-        configuration = ConfigurationInterface.find_by_identifier(
+        configuration = ConfigurationInterface.find_one_by_id(
             conf_uuid,
             user
         )
@@ -265,7 +255,7 @@ def update_age_group(
                 HTTP_404_NOT_FOUND
             )
 
-        age_group_found = AgeGroupInterface.find_one(age_uuid)
+        age_group_found = AgeGroupInterface.find_one(uuid)
 
         if not age_group_found:
             return UJSONResponse(

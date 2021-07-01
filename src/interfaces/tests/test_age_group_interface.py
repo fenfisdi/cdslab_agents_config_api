@@ -1,11 +1,11 @@
 import datetime
-
-from uuid import uuid1
 from unittest import TestCase
+from uuid import uuid1
+
 from mongoengine import connect, disconnect
 
-from src.models.db import AgeGroup, Configuration, User
 from src.interfaces import AgeGroupInterface
+from src.models.db import AgeGroup, Configuration, User
 
 
 class AgeGroupInterfaceTestCase(TestCase):
@@ -58,7 +58,7 @@ class AgeGroupInterfaceTestCase(TestCase):
         )
 
     def test_find_by_configuration(self):
-        age_groups = AgeGroupInterface.find_by_configuration(
+        age_groups = AgeGroupInterface.find_all_by_conf(
             self.configuration_identifier
         )
 

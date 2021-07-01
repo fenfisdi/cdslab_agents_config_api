@@ -22,7 +22,7 @@ class ConfigurationInterface:
         return Configuration.objects(**filters).all()
 
     @staticmethod
-    def find_by_identifier(identifier: UUID, user: User) -> Configuration:
+    def find_one_by_id(identifier: UUID, user: User) -> Configuration:
         """
         Find configuration by identifier and user
 
@@ -37,7 +37,7 @@ class ConfigurationInterface:
         return Configuration.objects(**filters).first()
 
     @staticmethod
-    def find_by_name(name: str, user: User) -> Configuration:
+    def find_one_by_name(name: str, user: User) -> Configuration:
         """
         Find configuration by name, and user
 
