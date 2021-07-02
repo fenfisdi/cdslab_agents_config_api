@@ -1,10 +1,10 @@
 import uuid
-
-from mongoengine import connect, disconnect
 from unittest import TestCase
 
-from src.models import MobilityGroup
+from mongoengine import connect, disconnect
+
 from src.interfaces import MobilityGroupInterface
+from src.models import MobilityGroup
 
 
 class MobilityGroupInterfaceTestCase(TestCase):
@@ -37,13 +37,13 @@ class MobilityGroupInterfaceTestCase(TestCase):
 
     def test_find_one(self):
         mobility_group = \
-            MobilityGroupInterface.find_one(self.identifier)
+            MobilityGroupInterface.find_one_by_id(self.identifier)
 
         self.assertIsNotNone(mobility_group)
 
     def test_find_by_configuration(self):
         mobility_groups = \
-            MobilityGroupInterface.find_by_configuration(
+            MobilityGroupInterface.find_all_by_conf(
                 self.configuration_identifier
             )
 

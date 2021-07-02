@@ -20,10 +20,13 @@ from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, MobilityGroupsMessages
 from src.utils.response import UJSONResponse
 
-mobility_group_routes = APIRouter(tags=["Mobility Groups"])
+mobility_group_routes = APIRouter(
+    prefix="/configuration/{conf_uuid}",
+    tags=["Mobility Groups"]
+)
 
 
-@mobility_group_routes.get("/configuration/{conf_uuid}/mobility_groups")
+@mobility_group_routes.get("/mobility_groups")
 def list_mobility_groups(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
@@ -47,7 +50,7 @@ def list_mobility_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        mobility_groups_found = MobilityGroupInterface.find_by_configuration(
+        mobility_groups_found = MobilityGroupInterface.find_all_by_conf(
             configuration
         )
 
@@ -64,7 +67,7 @@ def list_mobility_groups(
         )
 
 
-@mobility_group_routes.post("/configuration/{conf_uuid}/mobility_groups")
+@mobility_group_routes.post("/mobility_groups")
 def create_mobility_groups(
     conf_uuid: UUID,
     mobility_groups: List[NewMobilityGroup],
@@ -76,7 +79,7 @@ def create_mobility_groups(
     \f
     :param conf_uuid: Configuration identifier
     :param mobility_groups: Mobility groups list to insert in db
-    :param user: User logged
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_one_by_id(
@@ -119,7 +122,7 @@ def create_mobility_groups(
     )
 
 
-@mobility_group_routes.post("/configuration/{conf_uuid}/mobility_group")
+@mobility_group_routes.post("/mobility_group")
 def create_mobility_group(
     conf_uuid: UUID,
     mobility_group: NewMobilityGroup,
@@ -131,7 +134,7 @@ def create_mobility_group(
     \f
     :param conf_uuid: Configuration identifier
     :param mobility_group: Mobility group to insert in db
-    :param user: Logged user
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_one_by_id(
@@ -171,12 +174,10 @@ def create_mobility_group(
     )
 
 
-@mobility_group_routes.put(
-    "/configuration/{conf_uuid}/mobility_group/{mob_uuid}"
-)
+@mobility_group_routes.put("/mobility_group/{uuid}")
 def update_mobility_group(
     conf_uuid: UUID,
-    mob_uuid: UUID,
+    uuid: UUID,
     mobility_group: NewMobilityGroup,
     user = Depends(SecurityUseCase.validate)
 ):
@@ -185,9 +186,9 @@ def update_mobility_group(
 
     \f
     :param conf_uuid: Configuration identifier
-    :param mob_uuid: MobilityGroup identifier
+    :param uuid: MobilityGroup identifier
     :param mobility_group: Mobility group to update in db
-    :param user: Logged user
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_one_by_id(
@@ -201,7 +202,7 @@ def update_mobility_group(
                 HTTP_404_NOT_FOUND
             )
 
-        mobility_group_found = MobilityGroupInterface.find_one(mob_uuid)
+        mobility_group_found = MobilityGroupInterface.find_one_by_id(uuid)
 
         if not mobility_group_found:
             return UJSONResponse(
@@ -225,12 +226,10 @@ def update_mobility_group(
     )
 
 
-@mobility_group_routes.delete(
-    "/configuration/{conf_uuid}/mobility_group/{mob_uuid}"
-)
+@mobility_group_routes.delete("/mobility_group/{uuid}")
 def delete_mobility_group(
     conf_uuid: UUID,
-    mob_uuid: UUID,
+    uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
     """
@@ -238,8 +237,8 @@ def delete_mobility_group(
 
     \f
     :param conf_uuid: Configuration identifier
-    :param mob_uuid: MobilityGroup identifier
-    :param user: Logged user
+    :param uuid: MobilityGroup identifier
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_one_by_id(
@@ -253,7 +252,7 @@ def delete_mobility_group(
                 HTTP_404_NOT_FOUND
             )
 
-        mobility_group_found = MobilityGroupInterface.find_one(mob_uuid)
+        mobility_group_found = MobilityGroupInterface.find_one_by_id(uuid)
 
         if not mobility_group_found:
             return UJSONResponse(
