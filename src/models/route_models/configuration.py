@@ -18,6 +18,8 @@ class UpdateConfiguration(BaseModel):
     iteration_number: int = Field(None)
     box_size: dict = Field(None)
     distance_units: UnitLength = Field(None)
+    hospital_capacity: int = Field(None)
+    icu_capacity: int = Field(None)
 
 
 class NewConfiguration(UpdateConfiguration):
@@ -28,3 +30,5 @@ class NewConfiguration(UpdateConfiguration):
     iteration_number: int = Field(...)
     box_size: dict = Field(...)
     distance_units: UnitLength = Field(...)
+    hospital_capacity: int = Field(...)
+    icu_capacity: int = Field(...)
