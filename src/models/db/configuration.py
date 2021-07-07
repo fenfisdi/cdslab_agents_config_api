@@ -31,4 +31,6 @@ class Configuration(BaseDocument):
     box_size = DictField()
     distance_units = EnumField(UnitLength)
     is_deleted = BooleanField(default=False)
+    hospital_capacity = IntField()
+    icu_capacity = IntField()
     user = ReferenceField(User, dbref=True, required=True)

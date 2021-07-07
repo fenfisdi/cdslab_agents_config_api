@@ -16,7 +16,7 @@ class MobilityGroupInterface:
         return MobilityGroup.objects().all()
 
     @staticmethod
-    def find_one(identifier: UUID) -> MobilityGroup:
+    def find_one_by_id(identifier: UUID) -> MobilityGroup:
         """
         Find a existing mobility group in db
 
@@ -28,7 +28,7 @@ class MobilityGroupInterface:
         return MobilityGroup.objects(**filters).first()
 
     @staticmethod
-    def find_by_configuration(configuration: Configuration):
+    def find_all_by_conf(configuration: Configuration):
         """
         Find all existing mobility groups by configuration in db
 
