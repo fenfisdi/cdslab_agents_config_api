@@ -11,6 +11,7 @@ from starlette.status import (
 from src.interfaces import ConfigurationInterface
 from src.models.db import Configuration
 from src.models.route_models import NewConfiguration, UpdateConfiguration
+from src.services import FileAPI
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage
@@ -97,17 +98,25 @@ def create_configuration(
             user=user
         )
         new_configuration.save()
+
+        response, is_invalid = FileAPI.create_simulation_folder(
+            user.email,
+            new_configuration.identifier
+        )
+        if is_invalid:
+            return response
+
+        return UJSONResponse(
+            ConfigurationMessage.created,
+            HTTP_201_CREATED,
+            BsonObject.dict(new_configuration)
+        )
+
     except Exception as error:
         return UJSONResponse(
             str(error),
             HTTP_400_BAD_REQUEST
         )
-
-    return UJSONResponse(
-        ConfigurationMessage.created,
-        HTTP_201_CREATED,
-        BsonObject.dict(new_configuration)
-    )
 
 
 @configuration_routes.put("/configuration/{uuid}")
