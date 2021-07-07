@@ -2,17 +2,13 @@ from mongoengine import (
     DictField,
     EmbeddedDocument,
     EnumField,
-    StringField,
-    FloatField
+    UUIDField
 )
 
 from src.models.general import DistributionType
 
 
 class Distribution(EmbeddedDocument):
-    name = StringField()
-    dist_type = EnumField(DistributionType, required=True)
-    constant = FloatField()
-    dist_name = StringField()
-    filename = StringField()
+    type = EnumField(DistributionType, required=True)
+    file_id = UUIDField(binary=False, null=True, required=False)
     kwargs = DictField(null=True)
