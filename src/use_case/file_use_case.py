@@ -3,7 +3,7 @@ from typing import Optional, Union
 
 from fastapi import UploadFile
 
-from src.models.db import Configuration, MobilityGroup
+from src.models.db import Configuration, MobilityGroup, SusceptibilityGroup
 from src.models.general import DistributionType, TypeFile
 from src.services import FileAPI
 
@@ -16,7 +16,7 @@ class VerifySimpleDistributionFile:
     def handle(
         cls,
         file: UploadFile,
-        group: Union[MobilityGroup]
+        group: Union[MobilityGroup, SusceptibilityGroup]
     ) -> bool:
         regex_distributions = {
             DistributionType.EMPIRICAL: cls.EMPIRICAL_REGEX,
