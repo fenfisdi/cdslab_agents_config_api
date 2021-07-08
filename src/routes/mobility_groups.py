@@ -14,7 +14,7 @@ from src.interfaces import (
 )
 from src.models.db import MobilityGroup
 from src.models.route_models import NewMobilityGroup
-from src.use_case import SecurityUseCase
+from src.use_case import SaveDistributionFile, SecurityUseCase, VerifySimpleDistributionFile
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, MobilityGroupsMessages
 from src.utils.response import UJSONResponse
@@ -265,7 +265,9 @@ def update_distribution_file(
     user = Depends(SecurityUseCase.validate)
 ):
     """
+    Update file distribution to a mobility group.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param uuid: MobilityGroup identifier.
     :param user: User authenticated.
@@ -291,11 +293,33 @@ def update_distribution_file(
                 HTTP_404_NOT_FOUND
             )
 
-        # TODO: Save and update file identifier.
+        is_valid = VerifySimpleDistributionFile.handle(
+            file,
+            mg_found
+        )
+        if not is_valid:
+            return UJSONResponse(
+                MobilityGroupsMessages.file_invalid,
+                HTTP_400_BAD_REQUEST
+            )
+
+        data, is_invalid = SaveDistributionFile.handle(
+            file,
+            configuration,
+            mg_found.name
+        )
+        if is_invalid:
+            return UJSONResponse(
+                MobilityGroupsMessages.file_not_saved,
+                HTTP_400_BAD_REQUEST
+            )
+        mg_found.distribution.file_id = data.get('id')
+        mg_found.save().reload()
 
         return UJSONResponse(
             MobilityGroupsMessages.file_updated,
-            HTTP_200_OK
+            HTTP_200_OK,
+            BsonObject.dict(mg_found)
         )
 
     except Exception as error:
