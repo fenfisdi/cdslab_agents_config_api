@@ -20,6 +20,9 @@ class DistributionMessage:
     found: str = "Found distributions"
     not_found: str = "Distributions not found"
     not_exist: str = "Distribution does not exist"
+    invalid: str = "Invalid distribution file"
+    updated: str = "Updated distribution file"
+    can_not_save: str = "Can not save distribution file"
 
 
 @dataclass
@@ -55,9 +58,18 @@ class MobilityGroupsMessages:
     created: str = "Mobility group has been created"
     updated: str = "Mobility group updated"
     deleted: str = "Mobility group deleted"
-    file_updated: str = "Mobility group file updated"
-    file_invalid: str = "Mobility group file not valid"
-    file_not_saved: str = "Can not save distribution file"
+
+
+class SusceptibilityGroupMessages:
+    """
+    Messages used in endpoint responses for susceptibility groups
+    """
+    deleted: str = "Susceptibility group has been deleted"
+    found: str = "Susceptibility group found"
+    not_found: str = "Susceptibility group not found"
+    exist: str = "Susceptibility group exist"
+    created: str = "Susceptibility group has been created"
+    updated: str = "Susceptibility group updated"
 
 
 @dataclass
@@ -110,19 +122,6 @@ class NaturalHistoryMessage:
     exist: str = "Natural history exist"
     created: str = "Natural history has been created"
     updated: str = "Natural history updated"
-
-
-class SusceptibilityGroupMessages:
-    """
-    Messages used in endpoint responses for susceptibility groups
-    """
-    deleted: str = "Susceptibility group has been deleted"
-    found: str = "Susceptibility group found"
-    not_found: str = "Susceptibility group not found"
-    exist: str = "Susceptibility group exist"
-    created: str = "Susceptibility group has been created"
-    updated: str = "Susceptibility group updated"
-    empty: str = "Susceptibility groups not entered"
 
 
 @dataclass

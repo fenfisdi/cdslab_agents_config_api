@@ -1,7 +1,6 @@
-from typing import List
 from uuid import UUID, uuid1
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -18,82 +17,21 @@ from src.models.route_models import (
     NewSusceptibilityGroup,
     UpdateSusceptibilityGroup
 )
-from src.use_case import SecurityUseCase
+from src.use_case import SaveDistributionFile, SecurityUseCase, VerifySimpleDistributionFile
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
     ConfigurationMessage,
-    SusceptibilityGroupMessages
+    DistributionMessage, SusceptibilityGroupMessages
 )
 from src.utils.response import UJSONResponse
 
-susceptibility_groups_routes = APIRouter(tags=["Susceptibility Groups"])
-
-
-@susceptibility_groups_routes.post(
-    "/configuration/{conf_uuid}/susceptibility_groups"
+susceptibility_groups_routes = APIRouter(
+    prefix="/configuration/{conf_uuid}",
+    tags=["Susceptibility Groups"]
 )
-def create_list_susceptibility_group(
-    conf_uuid: UUID,
-    susceptibility_groups: List[NewSusceptibilityGroup],
-    user = Depends(SecurityUseCase.validate)
-):
-    """
-    Created susceptibility groups from a list.
-
-    \f
-    :param conf_uuid: Configuration identifier.
-    :param susceptibility_groups: Mobility Groups list to insert in db
-    :param user: User authenticated.
-    """
-    try:
-        configuration = ConfigurationInterface.find_one_by_id(
-            conf_uuid,
-            user
-        )
-
-        if not configuration:
-            return UJSONResponse(
-                ConfigurationMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-        if not susceptibility_groups:
-            return UJSONResponse(
-                SusceptibilityGroupMessages.empty,
-                HTTP_400_BAD_REQUEST
-            )
-
-        susceptibility_groups_found = SusceptibilityGroupInterface.find_by_conf(
-            configuration,
-        )
-        if susceptibility_groups_found:
-            return UJSONResponse(
-                SusceptibilityGroupMessages.exist,
-                HTTP_400_BAD_REQUEST
-            )
-
-        for susceptibility_group in susceptibility_groups:
-            SusceptibilityGroup(
-                **susceptibility_group.dict(),
-                identifier=uuid1(),
-                configuration=configuration
-            ).save()
-
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
-
-    return UJSONResponse(
-        SusceptibilityGroupMessages.created,
-        HTTP_201_CREATED
-    )
 
 
-@susceptibility_groups_routes.post(
-    "/configuration/{conf_uuid}/susceptibility_group"
-)
+@susceptibility_groups_routes.post("/susceptibility_group")
 def create_susceptibility_group(
     conf_uuid: UUID,
     susceptibility_group: NewSusceptibilityGroup,
@@ -102,6 +40,7 @@ def create_susceptibility_group(
     """
     Create susceptibility group from specific object.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param susceptibility_group: Susceptibility group information to create.
     :param user: User authenticated.
@@ -134,9 +73,7 @@ def create_susceptibility_group(
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
-@susceptibility_groups_routes.put(
-    "/configuration/{conf_uuid}/susceptibility_group/{uuid}"
-)
+@susceptibility_groups_routes.put("/susceptibility_group/{uuid}")
 def update_susceptibility_group(
     conf_uuid: UUID,
     uuid: UUID,
@@ -168,7 +105,7 @@ def update_susceptibility_group(
                 SusceptibilityGroupMessages.not_found,
                 HTTP_404_NOT_FOUND
             )
-        sg_found.update(**susceptibility_group.dict())
+        sg_found.update(**susceptibility_group.dict(exclude=None))
         sg_found.reload()
 
         return UJSONResponse(
@@ -181,9 +118,7 @@ def update_susceptibility_group(
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
-@susceptibility_groups_routes.get(
-    "/configuration/{conf_uuid}/susceptibility_group/{uuid}"
-)
+@susceptibility_groups_routes.get("/susceptibility_group/{uuid}")
 def find_susceptibility_group(
     conf_uuid: UUID,
     uuid: UUID,
@@ -227,9 +162,7 @@ def find_susceptibility_group(
         )
 
 
-@susceptibility_groups_routes.get(
-    "/configuration/{conf_uuid}/susceptibility_groups"
-)
+@susceptibility_groups_routes.get("/susceptibility_group")
 def list_susceptibility_groups(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
@@ -253,30 +186,23 @@ def list_susceptibility_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        susceptibility_groups = SusceptibilityGroupInterface.find_by_conf(
+        sg_found = SusceptibilityGroupInterface.find_by_conf(
             configuration
         )
-        if not susceptibility_groups:
-            return UJSONResponse(
-                SusceptibilityGroupMessages.not_found,
-                HTTP_404_NOT_FOUND
-            )
+
+        return UJSONResponse(
+            SusceptibilityGroupMessages.found,
+            HTTP_200_OK,
+            BsonObject.dict(sg_found)
+        )
     except Exception as error:
         return UJSONResponse(
             str(error),
             HTTP_400_BAD_REQUEST
         )
 
-    return UJSONResponse(
-        SusceptibilityGroupMessages.found,
-        HTTP_200_OK,
-        BsonObject.dict(susceptibility_groups)
-    )
 
-
-@susceptibility_groups_routes.delete(
-    "/configuration/{conf_uuid}/susceptibility_group/{uuid}"
-)
+@susceptibility_groups_routes.delete("/susceptibility_group/{uuid}")
 def delete_susceptibility_group(
     conf_uuid: UUID,
     uuid: UUID,
@@ -312,3 +238,62 @@ def delete_susceptibility_group(
             str(error),
             HTTP_400_BAD_REQUEST
         )
+
+
+@susceptibility_groups_routes.put("/susceptibility_group/{uuid}/file")
+def update_distribution_file(
+    conf_uuid: UUID,
+    uuid: UUID,
+    file: UploadFile = File(...),
+    user = Depends(SecurityUseCase.validate)
+):
+    try:
+        configuration = ConfigurationInterface.find_one_by_id(
+            conf_uuid,
+            user
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        sg_found = SusceptibilityGroupInterface.find_one(uuid)
+        if not sg_found:
+            return UJSONResponse(
+                SusceptibilityGroupMessages.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        is_valid = VerifySimpleDistributionFile.handle(
+            file,
+            sg_found
+        )
+        if not is_valid:
+            return UJSONResponse(
+                DistributionMessage.invalid,
+                HTTP_400_BAD_REQUEST
+            )
+
+        data, is_invalid = SaveDistributionFile.handle(
+            file,
+            configuration,
+            sg_found.name
+        )
+        if is_invalid:
+            return UJSONResponse(
+                DistributionMessage.can_not_save,
+                HTTP_400_BAD_REQUEST
+            )
+        sg_found.distribution.file_id = data.get('id')
+        sg_found.save().reload()
+
+        return UJSONResponse(
+            DistributionMessage.updated,
+            HTTP_200_OK,
+            BsonObject.dict(sg_found)
+        )
+
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)

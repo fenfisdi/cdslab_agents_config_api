@@ -16,7 +16,7 @@ from src.models.db import MobilityGroup
 from src.models.route_models import NewMobilityGroup
 from src.use_case import SaveDistributionFile, SecurityUseCase, VerifySimpleDistributionFile
 from src.utils.encoder import BsonObject
-from src.utils.messages import ConfigurationMessage, MobilityGroupsMessages
+from src.utils.messages import ConfigurationMessage, DistributionMessage, MobilityGroupsMessages
 from src.utils.response import UJSONResponse
 
 mobility_group_routes = APIRouter(
@@ -299,7 +299,7 @@ def update_distribution_file(
         )
         if not is_valid:
             return UJSONResponse(
-                MobilityGroupsMessages.file_invalid,
+                DistributionMessage.invalid,
                 HTTP_400_BAD_REQUEST
             )
 
@@ -310,20 +310,17 @@ def update_distribution_file(
         )
         if is_invalid:
             return UJSONResponse(
-                MobilityGroupsMessages.file_not_saved,
+                DistributionMessage.can_not_save,
                 HTTP_400_BAD_REQUEST
             )
         mg_found.distribution.file_id = data.get('id')
         mg_found.save().reload()
 
         return UJSONResponse(
-            MobilityGroupsMessages.file_updated,
+            DistributionMessage.updated,
             HTTP_200_OK,
             BsonObject.dict(mg_found)
         )
 
     except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
+        return UJSONResponse(str(error),HTTP_400_BAD_REQUEST)
