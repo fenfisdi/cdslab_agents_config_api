@@ -49,14 +49,15 @@ class MobilityGroupsMessages:
     """
     Messages used in endpoint responses for mobility groups
     """
-    found: str = "Mobility Groups found"
-    not_found: str = "Mobility Groups not found"
-    exist: str = "Mobility Groups exist"
-    created: str = "Mobility Groups has been created"
-    updated: str = "Mobility Groups updated"
-    deleted: str = "Mobility Groups deleted"
-    not_mobility_group_entered: str = "Mobility Groups not entered"
-    not_distribution_entered: str = "Distribution not entered"
+    found: str = "Mobility group found"
+    not_found: str = "Mobility group not found"
+    exist: str = "Mobility group exist"
+    created: str = "Mobility group has been created"
+    updated: str = "Mobility group updated"
+    deleted: str = "Mobility group deleted"
+    file_updated: str = "Mobility group file updated"
+    file_invalid: str = "Mobility group file not valid"
+    file_not_saved: str = "Can not save distribution file"
 
 
 @dataclass

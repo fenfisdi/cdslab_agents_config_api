@@ -8,12 +8,8 @@ from src.models.general import (
 
 
 class Distribution(BaseModel):
-    name: str = Field(None)
-    dist_type: DistributionType = Field(None)
-    constant: float = Field(None)
-    dist_name: str = Field(None)
-    filename: str = Field(None)
-    kwargs: dict = Field(None)
+    type: DistributionType = Field(...)
+    kwargs: dict = Field(...)
 
 
 class DiseaseDistribution(BaseModel):
