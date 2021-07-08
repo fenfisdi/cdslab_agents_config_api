@@ -56,6 +56,8 @@ class MobilityGroupsMessages:
     updated: str = "Mobility group updated"
     deleted: str = "Mobility group deleted"
     file_updated: str = "Mobility group file updated"
+    file_invalid: str = "Mobility group file not valid"
+    file_not_saved: str = "Can not save distribution file"
 
 
 @dataclass
