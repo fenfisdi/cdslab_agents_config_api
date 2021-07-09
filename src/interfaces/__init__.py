@@ -1,8 +1,8 @@
 from .age_group_interface import AgeGroupInterface
 from .configuration_interface import ConfigurationInterface
 from .disease_group_interface import (
-    DiseaseGroupsInterface,
-    DiseaseStatesInterface
+    DiseaseGroupInterface,
+    DiseaseStateInterface
 )
 from .distribution_interface import DistributionInterface
 from .immunization_group_interface import ImmunizationGroupInterface
@@ -18,8 +18,8 @@ from .vulnerability_group import VulnerabilityGroupInterface
 
 __all__ = [
     'DistributionInterface',
-    'DiseaseStatesInterface',
-    'DiseaseGroupsInterface',
+    'DiseaseStateInterface',
+    'DiseaseGroupInterface',
     'ConfigurationInterface',
     'AgeGroupInterface',
     'UserInterface',

@@ -1,10 +1,10 @@
 from uuid import UUID
 
-from src.models.db import Configuration, DiseaseGroups
+from src.models.db import Configuration, DiseaseGroup
 from src.models.db.master.disease_states import MasterDiseaseStates
 
 
-class DiseaseStatesInterface:
+class DiseaseStateInterface:
     """
     Interface to consult disease states in DB
     """
@@ -17,7 +17,7 @@ class DiseaseStatesInterface:
         return MasterDiseaseStates.objects().all()
 
     @staticmethod
-    def find_by_identifier(identifier: UUID) -> DiseaseGroups:
+    def find_by_identifier(identifier: UUID) -> DiseaseGroup:
         """
 
         :param identifier: Identifier to search the configuration
@@ -26,21 +26,21 @@ class DiseaseStatesInterface:
         filters = dict(
             identifier=identifier
         )
-        return DiseaseGroups.objects(**filters).first()
+        return DiseaseGroup.objects(**filters).first()
 
 
-class DiseaseGroupsInterface:
+class DiseaseGroupInterface:
 
     @staticmethod
     def find_all(configuration: Configuration):
         filters = dict(
             configuration=configuration,
         )
-        return DiseaseGroups.objects(**filters).all()
+        return DiseaseGroup.objects(**filters).all()
 
     @staticmethod
-    def find_one(identifier: UUID) -> DiseaseGroups:
+    def find_one(identifier: UUID) -> DiseaseGroup:
         filters = dict(
             identifier=identifier
         )
-        return DiseaseGroups.objects(**filters).first()
+        return DiseaseGroup.objects(**filters).first()

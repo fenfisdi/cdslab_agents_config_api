@@ -21,10 +21,11 @@ class DiseaseDistribution(EmbeddedDocument):
     distribution = EmbeddedDocumentField(Distribution)
 
 
-class DiseaseGroups(BaseDocument):
+class DiseaseGroup(BaseDocument):
     identifier = UUIDField(binary=False, unique=True, required=True)
     configuration = ReferenceField(Configuration, dbref=True, required=True)
     name = StringField()
+    is_death = BooleanField(default=False)
     can_infected = BooleanField(required=True)
     is_infected = BooleanField(required=True)
     can_spread = BooleanField(required=True)

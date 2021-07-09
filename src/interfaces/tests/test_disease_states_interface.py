@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from mongoengine import connect
 
-from src.models.db.disease_states import DiseaseGroups
+from src.models.db.disease_states import DiseaseGroup
 
 
 class DiseaseStatesTestCase(TestCase):
@@ -13,7 +13,7 @@ class DiseaseStatesTestCase(TestCase):
             alias="DiseaseStatesInterfaceTestCase"
         )
         
-        self.disease_states = DiseaseGroups(
+        self.disease_states = DiseaseGroup(
             name="Unit Test",
             can_get_infected=False,
             is_infected=False,

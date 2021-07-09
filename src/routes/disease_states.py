@@ -11,11 +11,11 @@ from starlette.status import (
 
 from src.interfaces import ConfigurationInterface
 from src.interfaces.disease_group_interface import (
-    DiseaseGroupsInterface
+    DiseaseGroupInterface
 )
-from src.models.db import DiseaseGroups
+from src.models.db import DiseaseGroup
 from src.models.route_models import NewDiseaseGroup
-from src.use_case import SecurityUseCase
+from src.use_case import SecurityUseCase, VerifyDefaultState
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
@@ -23,10 +23,13 @@ from src.utils import (
 )
 from src.utils.messages import DiseaseGroupMessage
 
-disease_states_routes = APIRouter(tags=["Disease States"])
+disease_states_routes = APIRouter(
+    prefix="/configuration/{conf_uuid}",
+    tags=["Disease States"]
+)
 
 
-@disease_states_routes.post('/configuration/{conf_uuid}/disease_states')
+@disease_states_routes.post('/disease_states')
 def create_disease_states(
     conf_uuid: UUID,
     disease_groups: List[NewDiseaseGroup],
@@ -51,7 +54,7 @@ def create_disease_states(
                 HTTP_404_NOT_FOUND
             )
 
-        dg_found = DiseaseGroupsInterface.find_all(configuration_found)
+        dg_found = DiseaseGroupInterface.find_all(configuration_found)
         if dg_found:
             return UJSONResponse(
                 DiseaseGroupMessage.exist,
@@ -65,7 +68,7 @@ def create_disease_states(
             )
 
         for disease_group in disease_groups:
-            DiseaseGroups(
+            DiseaseGroup(
                 **disease_group.dict(),
                 identifier=uuid1(),
                 configuration=configuration_found
@@ -83,8 +86,8 @@ def create_disease_states(
     )
 
 
-@disease_states_routes.get('/configuration/{conf_uuid}/disease_states')
-def find_disease_states(
+@disease_states_routes.get('/disease_state')
+def list_disease_states(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
@@ -104,13 +107,9 @@ def find_disease_states(
                 ConfigurationMessage.not_found,
                 HTTP_404_NOT_FOUND
             )
+        VerifyDefaultState.handle(configuration_found)
 
-        dg_found = DiseaseGroupsInterface.find_all(configuration_found)
-        if not dg_found:
-            return UJSONResponse(
-                DiseaseGroupMessage.not_found,
-                HTTP_400_BAD_REQUEST
-            )
+        dg_found = DiseaseGroupInterface.find_all(configuration_found)
         return UJSONResponse(
             DiseaseGroupMessage.found,
             HTTP_200_OK,
@@ -118,13 +117,10 @@ def find_disease_states(
         )
 
     except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
-@disease_states_routes.post('/configuration/{conf_uuid}/disease_state')
+@disease_states_routes.post('/disease_state')
 def create_disease_state(
     conf_uuid: UUID,
     disease_group: NewDiseaseGroup,
@@ -155,7 +151,7 @@ def create_disease_state(
                 HTTP_404_NOT_FOUND
             )
 
-        new_dg = DiseaseGroups(
+        new_dg = DiseaseGroup(
             **disease_group.dict(),
             identifier=uuid1(),
             configuration=configuration_found
@@ -175,12 +171,10 @@ def create_disease_state(
     )
 
 
-@disease_states_routes.put(
-    '/configuration/{conf_uuid}/disease_state/{dsg_uuid}'
-)
+@disease_states_routes.put('/disease_state/{uuid}')
 def update_disease_state(
     conf_uuid: UUID,
-    dsg_uuid: UUID,
+    uuid: UUID,
     disease_group: NewDiseaseGroup,
     user = Depends(SecurityUseCase.validate)
 ):
@@ -188,7 +182,7 @@ def update_disease_state(
     Update a disease state from specific configuration.
 
     :param conf_uuid: Identifier configuration
-    :param dsg_uuid: Identifier disease state
+    :param uuid: Identifier disease state
     :param disease_group: Disease groups list
     :param user: User logged
     """
@@ -209,7 +203,7 @@ def update_disease_state(
                 HTTP_404_NOT_FOUND
             )
 
-        dg_found = DiseaseGroupsInterface.find_one(dsg_uuid)
+        dg_found = DiseaseGroupInterface.find_one(uuid)
 
         if not dg_found:
             return UJSONResponse(
@@ -233,19 +227,17 @@ def update_disease_state(
     )
 
 
-@disease_states_routes.delete(
-    '/configuration/{conf_uuid}/disease_state/{dsg_uuid}'
-)
-def update_disease_state(
+@disease_states_routes.delete('/disease_state/{uuid}')
+def delete_disease_state(
     conf_uuid: UUID,
-    dsg_uuid: UUID,
+    uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
     """
     Delete a disease state from specific configuration.
 
     :param conf_uuid: Identifier configuration
-    :param dsg_uuid: Identifier disease state
+    :param uuid: Identifier disease state
     :param user: User logged
     """
     try:
@@ -259,7 +251,7 @@ def update_disease_state(
                 HTTP_404_NOT_FOUND
             )
 
-        dg_found = DiseaseGroupsInterface.find_one(dsg_uuid)
+        dg_found = DiseaseGroupInterface.find_one(uuid)
 
         if not dg_found:
             return UJSONResponse(
