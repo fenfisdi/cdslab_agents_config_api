@@ -11,6 +11,9 @@ class Distribution(BaseModel):
     type: DistributionType = Field(...)
     kwargs: dict = Field(...)
 
+    class Config:
+        use_enum_values = True
+
 
 class DiseaseDistribution(BaseModel):
     type: DiseaseDistributionType = Field(...)

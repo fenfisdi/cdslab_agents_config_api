@@ -1,8 +1,8 @@
 from mongoengine import (
     BooleanField,
+    DictField,
     EmbeddedDocument,
     EmbeddedDocumentField,
-    EmbeddedDocumentListField,
     EnumField,
     FloatField,
     ReferenceField,
@@ -24,12 +24,12 @@ class DiseaseDistribution(EmbeddedDocument):
 class DiseaseGroup(BaseDocument):
     identifier = UUIDField(binary=False, unique=True, required=True)
     configuration = ReferenceField(Configuration, dbref=True, required=True)
-    name = StringField()
+    name = StringField(required=True)
     is_death = BooleanField(default=False)
-    can_infected = BooleanField(required=True)
-    is_infected = BooleanField(required=True)
-    can_spread = BooleanField(required=True)
+    can_infected = BooleanField()
+    is_infected = BooleanField()
+    can_spread = BooleanField()
     spread_radius = FloatField()
     spread_radius_unit = EnumField(UnitLength)
     spread_probability = FloatField()
-    distributions = EmbeddedDocumentListField(DiseaseDistribution)
+    distributions = DictField(required=False)
