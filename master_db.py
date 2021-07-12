@@ -82,7 +82,7 @@ if __name__ == "__main__":
                 "default_value": 0,
             }
         ],
-        "weigths": [
+        "weights": [
             {
                 "parameter": "bandwidth",
                 "type": "float",

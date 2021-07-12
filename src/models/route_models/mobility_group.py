@@ -4,5 +4,5 @@ from .distribution import Distribution
 
 
 class NewMobilityGroup(BaseModel):
-    distribution: Distribution = Field(...)
+    distribution: Distribution = Field(None)
     name: str = Field(...)
