@@ -13,7 +13,7 @@ from src.interfaces import (
     MobilityGroupInterface
 )
 from src.models.db import MobilityGroup
-from src.models.route_models import NewMobilityGroup
+from src.models.route_models import NewMobilityGroup, UpdateMobilityGroup
 from src.use_case import SaveDistributionFile, SecurityUseCase, VerifyDistributionFile
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, DistributionMessage, MobilityGroupsMessages
@@ -161,7 +161,7 @@ def find_mobility_group(
 def update_mobility_group(
     conf_uuid: UUID,
     uuid: UUID,
-    mobility_group: NewMobilityGroup,
+    mobility_group: UpdateMobilityGroup,
     user = Depends(SecurityUseCase.validate)
 ):
     """
@@ -293,9 +293,9 @@ def update_distribution_file(
                 HTTP_404_NOT_FOUND
             )
 
-        is_valid = VerifyDistributionFile.simple(
+        is_valid = VerifyDistributionFile.handle(
             file,
-            mg_found
+            mg_found.distribution.type
         )
         if not is_valid:
             return UJSONResponse(

@@ -266,9 +266,9 @@ def update_distribution_file(
                 HTTP_404_NOT_FOUND
             )
 
-        is_valid = VerifyDistributionFile.simple(
+        is_valid = VerifyDistributionFile.handle(
             file,
-            sg_found
+            sg_found.distribution.type
         )
         if not is_valid:
             return UJSONResponse(
