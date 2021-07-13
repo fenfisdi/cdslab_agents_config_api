@@ -1,7 +1,7 @@
 from typing import List
 from uuid import UUID, uuid1
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -14,8 +14,9 @@ from src.interfaces.disease_group_interface import (
     DiseaseGroupInterface
 )
 from src.models.db import DiseaseGroup
-from src.models.route_models import NewDiseaseGroup
-from src.use_case import SecurityUseCase, VerifyDefaultState
+from src.models.general import DiseaseDistributionType
+from src.models.route_models import NewDiseaseGroup, UpdateDiseaseGroup
+from src.use_case import SecurityUseCase, VerifyDefaultState, VerifyDistributionFile
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
@@ -94,8 +95,9 @@ def list_disease_states(
     """
     list all disease states from specific configuration.
 
-    :param conf_uuid: Identifier configuration
-    :param user: User logged
+    \f
+    :param conf_uuid: Identifier configuration.
+    :param user: User authenticated
     """
     try:
         configuration_found = ConfigurationInterface.find_one_by_id(
@@ -129,9 +131,10 @@ def create_disease_state(
     """
     Save a disease state from specific configuration.
 
-    :param conf_uuid: Identifier configuration
-    :param disease_group: Disease groups list
-    :param user: User logged
+    \f
+    :param conf_uuid: Configuration identifier
+    :param disease_group: Disease state to create in db.
+    :param user: User authenticated.
     """
 
     try:
@@ -145,12 +148,6 @@ def create_disease_state(
                 HTTP_404_NOT_FOUND
             )
 
-        if not disease_group:
-            return UJSONResponse(
-                DiseaseGroupMessage.not_entered,
-                HTTP_404_NOT_FOUND
-            )
-
         new_dg = DiseaseGroup(
             **disease_group.dict(),
             identifier=uuid1(),
@@ -158,24 +155,21 @@ def create_disease_state(
         )
         new_dg.save().reload()
 
-    except Exception as error:
         return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
+            DiseaseGroupMessage.created,
+            HTTP_201_CREATED,
+            BsonObject.dict(new_dg)
         )
 
-    return UJSONResponse(
-        DiseaseGroupMessage.created,
-        HTTP_201_CREATED,
-        BsonObject.dict(new_dg)
-    )
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
 @disease_states_routes.put('/disease_state/{uuid}')
 def update_disease_state(
     conf_uuid: UUID,
     uuid: UUID,
-    disease_group: NewDiseaseGroup,
+    disease_group: UpdateDiseaseGroup,
     user = Depends(SecurityUseCase.validate)
 ):
     """
@@ -197,12 +191,6 @@ def update_disease_state(
                 HTTP_404_NOT_FOUND
             )
 
-        if not disease_group:
-            return UJSONResponse(
-                DiseaseGroupMessage.not_entered,
-                HTTP_404_NOT_FOUND
-            )
-
         dg_found = DiseaseGroupInterface.find_one(uuid)
 
         if not dg_found:
@@ -214,17 +202,14 @@ def update_disease_state(
         dg_found.update(**disease_group.dict(exclude_none=True))
         dg_found.save().reload()
 
-    except Exception as error:
         return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
+            DiseaseGroupMessage.updated,
+            HTTP_200_OK,
+            BsonObject.dict(dg_found)
         )
 
-    return UJSONResponse(
-        DiseaseGroupMessage.updated,
-        HTTP_200_OK,
-        BsonObject.dict(dg_found)
-    )
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
 @disease_states_routes.delete('/disease_state/{uuid}')
@@ -261,13 +246,49 @@ def delete_disease_state(
 
         dg_found.delete()
 
-    except Exception as error:
         return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
+            DiseaseGroupMessage.deleted,
+            HTTP_200_OK
         )
 
-    return UJSONResponse(
-        DiseaseGroupMessage.deleted,
-        HTTP_200_OK
-    )
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
+
+
+@disease_states_routes.put('/disease_state/{uuid}/file')
+def upload_distribution_file(
+    conf_uuid: UUID,
+    uuid: UUID,
+    distribution: DiseaseDistributionType,
+    file: UploadFile = File(...),
+    user = Depends(SecurityUseCase.validate)
+):
+    try:
+        configuration_found = ConfigurationInterface.find_one_by_id(
+            conf_uuid,
+            user
+        )
+        if not configuration_found:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        dg_found = DiseaseGroupInterface.find_one(uuid)
+
+        if not dg_found:
+            return UJSONResponse(
+                DiseaseGroupMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        if not dg_found.distributions:
+            return UJSONResponse(
+                DiseaseGroupMessage.missing_conf,
+                HTTP_400_BAD_REQUEST
+            )
+
+        VerifyDistributionFile.disease(file, dg_found)
+
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)

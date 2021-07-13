@@ -14,7 +14,7 @@ from src.interfaces import (
 )
 from src.models.db import MobilityGroup
 from src.models.route_models import NewMobilityGroup
-from src.use_case import SaveDistributionFile, SecurityUseCase, VerifySimpleDistributionFile
+from src.use_case import SaveDistributionFile, SecurityUseCase, VerifyDistributionFile
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage, DistributionMessage, MobilityGroupsMessages
 from src.utils.response import UJSONResponse
@@ -293,7 +293,7 @@ def update_distribution_file(
                 HTTP_404_NOT_FOUND
             )
 
-        is_valid = VerifySimpleDistributionFile.handle(
+        is_valid = VerifyDistributionFile.simple(
             file,
             mg_found
         )
