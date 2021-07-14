@@ -158,3 +158,4 @@ class DiseaseGroupMessage:
     deleted: str = "Disease groups has been deleted"
     not_entered: str = "Disease groups not entered to save"
     missing_conf: str = "Disease group distribution is empty"
+    invalid_distribution: str = "Disease group distribution not config"

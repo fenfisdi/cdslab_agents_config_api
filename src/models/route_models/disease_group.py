@@ -22,4 +22,3 @@ class UpdateDiseaseGroup(BaseModel):
 
 class NewDiseaseGroup(UpdateDiseaseGroup):
     name: str = Field(...)
-    # distributions: List[DiseaseDistribution] = Field(...)

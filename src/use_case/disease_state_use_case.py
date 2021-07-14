@@ -2,6 +2,7 @@ from uuid import uuid1
 
 from src.interfaces import DiseaseGroupInterface
 from src.models.db import Configuration, DiseaseGroup
+from src.models.general import DiseaseDistributionType
 
 
 class VerifyDefaultState:
@@ -21,3 +22,17 @@ class VerifyDefaultState:
                 is_infected=False,
                 can_spread=False
             ).save()
+
+
+class VerifyDiseaseStateDistribution:
+
+    @classmethod
+    def handle(
+        cls,
+        disease_group: DiseaseGroup,
+        distribution: DiseaseDistributionType
+    ):
+        distributions: dict = disease_group.distributions
+        if distributions and distributions.get(distribution.value):
+            return True
+        return False

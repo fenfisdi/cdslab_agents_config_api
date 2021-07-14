@@ -14,15 +14,21 @@ from src.interfaces.disease_group_interface import (
     DiseaseGroupInterface
 )
 from src.models.db import DiseaseGroup
-from src.models.general import DiseaseDistributionType
+from src.models.general import DiseaseDistributionType, DistributionType
 from src.models.route_models import NewDiseaseGroup, UpdateDiseaseGroup
-from src.use_case import SecurityUseCase, VerifyDefaultState, VerifyDistributionFile
+from src.use_case import (
+    SaveDistributionFile,
+    SecurityUseCase,
+    VerifyDefaultState,
+    VerifyDiseaseStateDistribution,
+    VerifyDistributionFile
+)
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
     UJSONResponse
 )
-from src.utils.messages import DiseaseGroupMessage
+from src.utils.messages import DiseaseGroupMessage, DistributionMessage
 
 disease_states_routes = APIRouter(
     prefix="/configuration/{conf_uuid}",
@@ -288,7 +294,33 @@ def upload_distribution_file(
                 HTTP_400_BAD_REQUEST
             )
 
-        VerifyDistributionFile.disease(file, dg_found)
+        if not VerifyDiseaseStateDistribution.handle(dg_found, distribution):
+            return UJSONResponse(
+                DiseaseGroupMessage.invalid_distribution,
+                HTTP_400_BAD_REQUEST
+            )
+
+        distribution_found = dg_found.distributions.get(distribution.value)
+        distribution_type = DistributionType[
+            distribution_found.get("type", "").upper()
+        ]
+
+        if not VerifyDistributionFile.handle(file, distribution_type):
+            return UJSONResponse(
+                DistributionMessage.invalid,
+                HTTP_400_BAD_REQUEST
+            )
+
+        data, is_invalid = SaveDistributionFile.handle(
+            file,
+            configuration_found,
+            dg_found.name
+        )
+        if is_invalid:
+            return UJSONResponse(
+                DistributionMessage.can_not_save,
+                HTTP_400_BAD_REQUEST
+            )
 
     except Exception as error:
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
