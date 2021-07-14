@@ -16,13 +16,7 @@ from src.interfaces.disease_group_interface import (
 from src.models.db import DiseaseGroup
 from src.models.general import DiseaseDistributionType, DistributionType
 from src.models.route_models import NewDiseaseGroup, UpdateDiseaseGroup
-from src.use_case import (
-    SaveDistributionFile,
-    SecurityUseCase,
-    VerifyDefaultState,
-    VerifyDiseaseStateDistribution,
-    VerifyDistributionFile
-)
+from src.use_case import (SaveDiseaseDistributionFile, SaveDistributionFile, SecurityUseCase, VerifyDefaultState, VerifyDiseaseStateDistribution, VerifyDistributionFile)
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
@@ -321,6 +315,18 @@ def upload_distribution_file(
                 DistributionMessage.can_not_save,
                 HTTP_400_BAD_REQUEST
             )
+
+        SaveDiseaseDistributionFile.handle(
+            dg_found,
+            distribution,
+            data.get("id")
+        )
+
+        return UJSONResponse(
+            DistributionMessage.updated,
+            HTTP_200_OK,
+            BsonObject.dict(dg_found)
+        )
 
     except Exception as error:
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)

@@ -3,7 +3,7 @@ from typing import Optional
 
 from fastapi import UploadFile
 
-from src.models.db import Configuration, DiseaseGroup
+from src.models.db import Configuration
 from src.models.general import DistributionType, TypeFile
 from src.services import FileAPI
 
@@ -28,18 +28,6 @@ class VerifyDistributionFile:
             return False
 
         return True
-
-    @classmethod
-    def disease(
-        cls,
-        file: UploadFile,
-        disease_state: DiseaseGroup
-    ):
-        disease_distribution = disease_state.distributions
-        regex_distributions = {
-            DistributionType.EMPIRICAL: cls.EMPIRICAL_REGEX,
-            DistributionType.WEIGHTS: cls.WEIGHT_REGEX,
-        }
 
 
 class SaveDistributionFile:

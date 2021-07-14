@@ -1,4 +1,5 @@
 from .disease_state_use_case import (
+    SaveDiseaseDistributionFile,
     VerifyDefaultState,
     VerifyDiseaseStateDistribution
 )
@@ -12,5 +13,6 @@ __all__ = [
     'VerifyDistributionFile',
     'VerifyDiseaseStateDistribution',
     'SaveDistributionFile',
-    'VerifyDefaultState'
+    'VerifyDefaultState',
+    'SaveDiseaseDistributionFile'
 ]

@@ -1,4 +1,5 @@
-from uuid import uuid1
+from typing import Union
+from uuid import UUID, uuid1
 
 from src.interfaces import DiseaseGroupInterface
 from src.models.db import Configuration, DiseaseGroup
@@ -36,3 +37,24 @@ class VerifyDiseaseStateDistribution:
         if distributions and distributions.get(distribution.value):
             return True
         return False
+
+
+class SaveDiseaseDistributionFile:
+
+    @classmethod
+    def handle(
+        cls,
+        disease_group: DiseaseGroup,
+        distribution: DiseaseDistributionType,
+        file_id: Union[UUID, str]
+    ):
+        distributions = disease_group.distributions
+        new_distributions = dict()
+        for k, v in distributions.items():
+            if k == distribution.value:
+                v.update({"file_id": file_id})
+
+            new_distributions.update({k: v})
+
+        disease_group.distributions = new_distributions
+        disease_group.save().reload()
