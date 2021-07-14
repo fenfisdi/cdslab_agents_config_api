@@ -17,7 +17,7 @@ from src.models.route_models import (
     NewSusceptibilityGroup,
     UpdateSusceptibilityGroup
 )
-from src.use_case import SaveDistributionFile, SecurityUseCase, VerifySimpleDistributionFile
+from src.use_case import SaveDistributionFile, SecurityUseCase, VerifyDistributionFile
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
     ConfigurationMessage,
@@ -266,9 +266,9 @@ def update_distribution_file(
                 HTTP_404_NOT_FOUND
             )
 
-        is_valid = VerifySimpleDistributionFile.handle(
+        is_valid = VerifyDistributionFile.handle(
             file,
-            sg_found
+            sg_found.distribution.type
         )
         if not is_valid:
             return UJSONResponse(

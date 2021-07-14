@@ -10,7 +10,7 @@ from starlette.status import (
 
 from src.interfaces import (
     ConfigurationInterface,
-    DiseaseGroupsInterface,
+    DiseaseGroupInterface,
     NaturalHistoryInterface,
     VulnerabilityGroupInterface
 )
@@ -61,7 +61,7 @@ def create_natural_history(
                 VulnerabilityGroupMessage.not_found,
                 HTTP_404_NOT_FOUND
             )
-        dg_found = DiseaseGroupsInterface.find_one(
+        dg_found = DiseaseGroupInterface.find_one(
             natural_history.disease_group
         )
         if not dg_found:

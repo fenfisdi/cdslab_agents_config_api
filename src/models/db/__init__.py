@@ -1,6 +1,6 @@
 from .age_group import AgeGroup
 from .configuration import Configuration
-from .disease_states import DiseaseGroups
+from .disease_states import DiseaseGroup
 from .distribution import Distribution
 from .immunization_group import ImmunizationGroup
 from .mobility_group import MobilityGroup
@@ -14,7 +14,7 @@ from .vulnerability_group import VulnerabilityGroup
 __all__ = [
     'AgeGroup',
     'Configuration',
-    'DiseaseGroups',
+    'DiseaseGroup',
     'Distribution',
     'ImmunizationGroup',
     'MobilityGroup',

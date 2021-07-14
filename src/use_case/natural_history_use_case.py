@@ -2,7 +2,7 @@ from uuid import UUID
 
 from src.interfaces import (
     ConfigurationInterface,
-    DiseaseStatesInterface,
+    DiseaseStateInterface,
     VulnerabilityGroupInterface
 )
 from src.utils import (
@@ -25,7 +25,7 @@ class NaturalHistoryUseCase:
         group_found = VulnerabilityGroupInterface.find_one_by_id(
             vulnerability_group
         )
-        states_found = DiseaseStatesInterface.find_by_identifier(
+        states_found = DiseaseStateInterface.find_by_identifier(
             disease_state
         )
 

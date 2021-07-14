@@ -9,7 +9,11 @@ from src.models.general import (
 
 class Distribution(BaseModel):
     type: DistributionType = Field(...)
-    kwargs: dict = Field(...)
+    numpy_type: str = Field(None)
+    kwargs: dict = Field(None)
+
+    class Config:
+        use_enum_values = True
 
 
 class DiseaseDistribution(BaseModel):
