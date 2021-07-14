@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, File, UploadFile
 from starlette.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
@@ -6,7 +6,8 @@ from starlette.status import (
 )
 
 from src.interfaces import DistributionInterface
-from src.models.general import DiseaseDistributionType
+from src.models.general import DiseaseDistributionType, DistributionType
+from src.use_case import VerifyDistributionFile
 from src.utils import BsonObject, DistributionMessage, UJSONResponse
 
 distributions_routes = APIRouter(tags=["Distributions"])
@@ -81,3 +82,13 @@ def list_disease_state_distribution():
         HTTP_200_OK,
         {state.name: state.value for state in DiseaseDistributionType}
     )
+
+
+@distributions_routes.post("/distributions/file")
+def verify_distribution_file(
+    distribution_type: DistributionType,
+    file: UploadFile = File(...)
+):
+    if not VerifyDistributionFile.handle(file, distribution_type):
+        return UJSONResponse(DistributionMessage.invalid, HTTP_400_BAD_REQUEST)
+    return UJSONResponse(DistributionMessage.valid, HTTP_400_BAD_REQUEST)

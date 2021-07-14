@@ -21,6 +21,7 @@ class DistributionMessage:
     not_found: str = "Distributions not found"
     not_exist: str = "Distribution does not exist"
     invalid: str = "Invalid distribution file"
+    valid: str = "Valid distribution file"
     updated: str = "Updated distribution file"
     can_not_save: str = "Can not save distribution file"
 
