@@ -1,6 +1,11 @@
 from uuid import UUID
 
-from src.models.db import Configuration, NaturalHistory
+from src.models.db import (
+    Configuration,
+    DiseaseGroup,
+    NaturalHistory,
+    VulnerabilityGroup
+)
 
 
 class NaturalHistoryInterface:
@@ -9,7 +14,18 @@ class NaturalHistoryInterface:
     """
 
     @staticmethod
-    def find_one(identifier: UUID):
+    def find_one(
+        vulnerability_group: VulnerabilityGroup,
+        disease_state: DiseaseGroup
+    ) -> NaturalHistory:
+        filters = dict(
+            vulnerability_group=vulnerability_group,
+            disease_group=disease_state
+        )
+        return NaturalHistory.objects(**filters).first()
+
+    @staticmethod
+    def find_one_by_id(identifier: UUID):
         """
         Get a natural history by identifier
 
