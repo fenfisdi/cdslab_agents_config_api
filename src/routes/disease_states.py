@@ -16,7 +16,15 @@ from src.interfaces.disease_group_interface import (
 from src.models.db import DiseaseGroup
 from src.models.general import DiseaseDistributionType, DistributionType
 from src.models.route_models import NewDiseaseGroup, UpdateDiseaseGroup
-from src.use_case import (SaveDiseaseDistributionFile, SaveDistributionFile, SecurityUseCase, VerifyDefaultState, VerifyDiseaseStateDistribution, VerifyDistributionFile)
+from src.use_case import (
+    SaveDiseaseDistributionFile,
+    SaveDistributionFile,
+    SecurityUseCase,
+    UpdateDistributionsInfo,
+    VerifyDefaultState,
+    VerifyDiseaseStateDistribution,
+    VerifyDistributionFile
+)
 from src.utils import (
     BsonObject,
     ConfigurationMessage,
@@ -199,7 +207,20 @@ def update_disease_state(
                 HTTP_404_NOT_FOUND
             )
 
-        dg_found.update(**disease_group.dict(exclude_none=True))
+        exclude_fields = {'distributions'}
+        dg_found.update(
+            **disease_group.dict(
+                exclude_none=True,
+                exclude=exclude_fields
+            )
+        )
+
+        distributions = disease_group.dict().get('distributions')
+        dg_found.distributions = UpdateDistributionsInfo.handle(
+            dg_found.distributions,
+            distributions
+        )
+
         dg_found.save().reload()
 
         return UJSONResponse(

@@ -56,5 +56,23 @@ class SaveDiseaseDistributionFile:
 
             new_distributions.update({k: v})
 
-        disease_group.distributions = new_distributions
+        disease_group.distributions.update(new_distributions)
         disease_group.save().reload()
+
+
+class UpdateDistributionsInfo:
+
+    @classmethod
+    def handle(cls, base_distribution: dict, distribution: dict) -> dict:
+        updated_distributions = dict()
+        for k, v in base_distribution.items():
+            temp_distribution = distribution.get(k)
+            if temp_distribution:
+                v.update(temp_distribution)
+            updated_distributions[k] = v
+
+        for k, v in distribution.items():
+            if k not in updated_distributions:
+                updated_distributions[k] = v
+
+        return updated_distributions
