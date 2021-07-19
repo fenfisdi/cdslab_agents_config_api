@@ -25,21 +25,26 @@ class NaturalHistoryInterface:
         return NaturalHistory.objects(**filters).first()
 
     @staticmethod
-    def find_one_by_id(identifier: UUID):
+    def find_one_by_id(
+        identifier: UUID,
+        configuration: Configuration
+    ) -> NaturalHistory:
         """
         Get a natural history by identifier
 
-        :param identifier: natural history id
+        :param identifier: natural history id.
+        :param configuration: Natural history configuration:
         """
 
         filters = dict(
-            identifier=identifier
+            identifier=identifier,
+            configuration=configuration
         )
 
         return NaturalHistory.objects(**filters).first()
 
     @staticmethod
-    def find_by_config(configuration: Configuration):
+    def find_all_by_config(configuration: Configuration):
         filters = dict(
             configuration=configuration
         )

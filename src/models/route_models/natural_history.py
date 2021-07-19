@@ -14,3 +14,6 @@ class UpdateNaturalHistory(BaseModel):
     avoidance_radius: float = Field(None)
     transition_by_contagion: bool = Field(None)
     avoidance_radius_unit: UnitLength = Field(None)
+
+    class Config:
+        use_enum_values = True

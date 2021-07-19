@@ -32,7 +32,7 @@ class VerifyDiseaseStateDistribution:
         cls,
         disease_group: DiseaseGroup,
         distribution: DiseaseDistributionType
-    ):
+    ) -> bool:
         distributions: dict = disease_group.distributions
         if distributions and distributions.get(distribution.value):
             return True

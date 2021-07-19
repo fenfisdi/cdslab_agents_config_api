@@ -1,6 +1,6 @@
 from uuid import UUID, uuid1
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 from starlette.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
@@ -14,14 +14,20 @@ from src.interfaces import (
     VulnerabilityGroupInterface
 )
 from src.models.db import NaturalHistory
+from src.models.general import DistributionType, NaturalDistributionType
 from src.models.route_models import UpdateNaturalHistory
-from src.use_case import SecurityUseCase
+from src.use_case import (
+    SaveDistributionFile,
+    SaveNaturalHistoryDistributionFile, SecurityUseCase,
+    VerifyDistributionFile,
+    VerifyNaturalHistoryDistribution
+)
 from src.utils import BsonObject, UJSONResponse
 from src.utils import NaturalHistoryMessage
 from src.utils.messages import (
     ConfigurationMessage,
     DiseaseGroupMessage,
-    VulnerabilityGroupMessage
+    DistributionMessage, VulnerabilityGroupMessage
 )
 
 natural_history_routes = APIRouter(
@@ -93,7 +99,11 @@ def update_natural_history(
                     exclude=exclude_fields
                 )
             )
-            nh_found.reload()
+            nh_found.distributions.update(
+                natural_history.dict().get('distributions')
+            )
+
+        nh_found.reload()
 
         return UJSONResponse(
             NaturalHistoryMessage.updated,
@@ -128,7 +138,7 @@ def list_natural_histories(
             HTTP_404_NOT_FOUND
         )
 
-    natural_history_found = NaturalHistoryInterface.find_by_config(
+    natural_history_found = NaturalHistoryInterface.find_all_by_config(
         config_found
     )
 
@@ -137,3 +147,70 @@ def list_natural_histories(
         HTTP_200_OK,
         BsonObject.dict(natural_history_found)
     )
+
+
+@natural_history_routes.put("/natural_history/{uuid}/file")
+def update_distribution_file(
+    conf_uuid: UUID,
+    uuid: UUID,
+    distribution: NaturalDistributionType,
+    file: UploadFile = File(...),
+    user = Depends(SecurityUseCase.validate)
+):
+    try:
+        config_found = ConfigurationInterface.find_one_by_id(
+            conf_uuid,
+            user
+        )
+        if not config_found:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        nh_found = NaturalHistoryInterface.find_one_by_id(uuid, config_found)
+        if not nh_found:
+            return UJSONResponse(NaturalHistoryMessage.not_found, HTTP_200_OK)
+
+        if not VerifyNaturalHistoryDistribution.handle(nh_found, distribution):
+            return UJSONResponse(
+                NaturalHistoryMessage.invalid_distribution,
+                HTTP_400_BAD_REQUEST
+            )
+
+        distribution_found = nh_found.distributions.get(distribution.value)
+        distribution_type = DistributionType[
+            distribution_found.get("type", "").upper()
+        ]
+
+        if not VerifyDistributionFile.handle(file, distribution_type):
+            return UJSONResponse(
+                DistributionMessage.invalid,
+                HTTP_400_BAD_REQUEST
+            )
+
+        data, is_invalid = SaveDistributionFile.handle(
+            file,
+            config_found,
+            nh_found.id
+        )
+        if is_invalid:
+            return UJSONResponse(
+                DistributionMessage.can_not_save,
+                HTTP_400_BAD_REQUEST
+            )
+
+        SaveNaturalHistoryDistributionFile.handle(
+            nh_found,
+            distribution,
+            data.get("id")
+        )
+
+        return UJSONResponse(
+            DistributionMessage.updated,
+            HTTP_200_OK,
+            BsonObject.dict(nh_found)
+        )
+
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
