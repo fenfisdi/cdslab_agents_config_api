@@ -28,6 +28,7 @@ class NaturalHistory(BaseDocument):
     vulnerability_group = ReferenceField(VulnerabilityGroup, dbref=True)
     disease_group = ReferenceField(DiseaseGroup, dbref=True)
     distributions = DictField()
+    transitions = DictField()
     avoidance_radius = FloatField()
     transition_by_contagion = BooleanField()
     avoidance_radius_unit = EnumField(UnitLength)

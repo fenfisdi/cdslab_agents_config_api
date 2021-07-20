@@ -8,7 +8,10 @@ from .file_use_case import SaveDistributionFile, VerifyDistributionFile
 from .natural_history_use_case import (
     NaturalHistoryUseCase,
     SaveNaturalHistoryDistributionFile,
-    VerifyNaturalHistoryDistribution
+    SaveNaturalHistoryTransitionFile,
+    VerifyNaturalHistoryDistribution,
+    VerifyNaturalHistoryTransition
+
 )
 from .security_use_case import SecurityUseCase
 
@@ -16,7 +19,9 @@ __all__ = [
     'SecurityUseCase',
     'NaturalHistoryUseCase',
     'VerifyNaturalHistoryDistribution',
+    'VerifyNaturalHistoryTransition',
     'SaveNaturalHistoryDistributionFile',
+    'SaveNaturalHistoryTransitionFile',
     'VerifyDistributionFile',
     'VerifyDiseaseStateDistribution',
     'SaveDistributionFile',

@@ -18,9 +18,12 @@ from src.models.general import DistributionType, NaturalDistributionType
 from src.models.route_models import UpdateNaturalHistory
 from src.use_case import (
     SaveDistributionFile,
-    SaveNaturalHistoryDistributionFile, SecurityUseCase,
+    SaveNaturalHistoryDistributionFile,
+    SaveNaturalHistoryTransitionFile,
+    SecurityUseCase,
     VerifyDistributionFile,
-    VerifyNaturalHistoryDistribution
+    VerifyNaturalHistoryDistribution,
+    VerifyNaturalHistoryTransition
 )
 from src.utils import BsonObject, UJSONResponse
 from src.utils import NaturalHistoryMessage
@@ -149,7 +152,7 @@ def list_natural_histories(
     )
 
 
-@natural_history_routes.put("/natural_history/{uuid}/file")
+@natural_history_routes.put("/natural_history/{uuid}/distribution/file")
 def update_distribution_file(
     conf_uuid: UUID,
     uuid: UUID,
@@ -203,6 +206,72 @@ def update_distribution_file(
         SaveNaturalHistoryDistributionFile.handle(
             nh_found,
             distribution,
+            data.get("id")
+        )
+
+        return UJSONResponse(
+            DistributionMessage.updated,
+            HTTP_200_OK,
+            BsonObject.dict(nh_found)
+        )
+
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
+
+
+@natural_history_routes.put("/natural_history/{uuid}/transition/file")
+def update_transition_file(
+    conf_uuid: UUID,
+    uuid: UUID,
+    state: str,
+    file: UploadFile = File(...),
+    user = Depends(SecurityUseCase.validate)
+):
+    try:
+        config_found = ConfigurationInterface.find_one_by_id(
+            conf_uuid,
+            user
+        )
+        if not config_found:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        nh_found = NaturalHistoryInterface.find_one_by_id(uuid, config_found)
+        if not nh_found:
+            return UJSONResponse(NaturalHistoryMessage.not_found, HTTP_200_OK)
+
+        if not VerifyNaturalHistoryTransition.handle(nh_found, state):
+            return UJSONResponse(
+                NaturalHistoryMessage.invalid_transition,
+                HTTP_400_BAD_REQUEST
+            )
+        distribution_found = nh_found.transitions.get(state)
+        distribution_type = DistributionType[
+            distribution_found.get("distribution", {}).get("type", "").upper()
+        ]
+
+        if not VerifyDistributionFile.handle(file, distribution_type):
+            return UJSONResponse(
+                DistributionMessage.invalid,
+                HTTP_400_BAD_REQUEST
+            )
+
+        data, is_invalid = SaveDistributionFile.handle(
+            file,
+            config_found,
+            f"{nh_found.id}"
+        )
+        if is_invalid:
+            return UJSONResponse(
+                DistributionMessage.can_not_save,
+                HTTP_400_BAD_REQUEST
+            )
+
+        SaveNaturalHistoryTransitionFile.handle(
+            nh_found,
+            state,
             data.get("id")
         )
 

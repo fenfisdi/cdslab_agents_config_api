@@ -60,6 +60,20 @@ class VerifyNaturalHistoryDistribution:
         return False
 
 
+class VerifyNaturalHistoryTransition:
+
+    @classmethod
+    def handle(
+        cls,
+        natural_history: NaturalHistory,
+        state: str
+    ):
+        transitions: dict = natural_history.transitions
+        if transitions and transitions.get(state):
+            return True
+        return False
+
+
 class SaveNaturalHistoryDistributionFile:
 
     @classmethod
@@ -78,4 +92,26 @@ class SaveNaturalHistoryDistributionFile:
             new_distributions.update({k: v})
 
         natural_history.distributions.update(new_distributions)
+        natural_history.save().reload()
+
+
+class SaveNaturalHistoryTransitionFile:
+
+    @classmethod
+    def handle(
+        cls,
+        natural_history: NaturalHistory,
+        state: str,
+        file_id: Union[UUID, str]
+    ) -> None:
+        transition = natural_history.transitions
+        new_transitions = dict()
+        for k, v in transition.items():
+            if k == state:
+                distribution = v.get("distribution")
+                distribution["file_id"] = file_id
+                v["distribution"] = distribution
+            new_transitions[k] = v
+
+        natural_history.transitions = new_transitions
         natural_history.save().reload()
