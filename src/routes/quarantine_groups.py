@@ -14,7 +14,11 @@ from src.interfaces import (
     QuarantineInterface
 )
 from src.models.db import Quarantine, QuarantineGroup
-from src.models.route_models import NewQuarantine, UpdateQuarantine, UpdateQuarantineGroup
+from src.models.route_models import (
+    NewQuarantine,
+    UpdateQuarantine,
+    UpdateQuarantineGroup
+)
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import (
@@ -140,7 +144,6 @@ def find_quarantine(
         )
 
     except Exception as error:
-
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
@@ -235,46 +238,6 @@ def list_quarantine_groups(
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
-@quarantine_group_routes.get("/quarantine")
-def find_quarantine(conf_uuid: UUID, user = Depends(SecurityUseCase.validate)):
-    """
-    Get all existing quarantine groups by configuration in db
-
-    \f
-    :param conf_uuid: Configuration identifier to search
-    :param user:
-    """
-    try:
-        configuration = ConfigurationInterface.find_one_by_id(
-            conf_uuid,
-            user
-        )
-
-        if not configuration:
-            return UJSONResponse(
-                ConfigurationMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-        quarantine_found = QuarantineInterface.find_one_by_configuration(
-            configuration
-        )
-        if not quarantine_found:
-            return UJSONResponse(
-                QuarantineMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-    except Exception as error:
-        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
-
-    return UJSONResponse(
-        QuarantineMessage.found,
-        HTTP_200_OK,
-        BsonObject.dict(quarantine_found)
-    )
-
-
 @quarantine_group_routes.put("/quarantine_group/{uuid}")
 def update_quarantine_groups(
     conf_uuid: UUID,
@@ -311,13 +274,15 @@ def update_quarantine_groups(
         )
         quarantine_group_found.reload()
 
+        return UJSONResponse(
+            QuarantineGroupMessages.updated,
+            HTTP_200_OK,
+            BsonObject.dict(quarantine_group_found)
+        )
+
     except Exception as error:
         return UJSONResponse(
             str(error),
             HTTP_400_BAD_REQUEST,
         )
-    return UJSONResponse(
-        QuarantineGroupMessage.updated,
-        HTTP_200_OK,
-        BsonObject.dict(quarantine_group_found)
-    )
+
