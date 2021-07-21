@@ -6,7 +6,7 @@ from src.models.db import Configuration, Quarantine, QuarantineGroup
 class QuarantineInterface:
 
     @staticmethod
-    def find_by_configuration(configuration: Configuration):
+    def find_one_by_configuration(configuration: Configuration) -> Quarantine:
         filters = dict(
             configuration=configuration,
         )
@@ -19,7 +19,7 @@ class QuarantineGroupInterface:
     """
 
     @staticmethod
-    def find_by_identifier(identifier: UUID) -> QuarantineGroup:
+    def find_one_by_identifier(identifier: UUID) -> QuarantineGroup:
         """
         Get a existing quarantine group in db
 
@@ -41,9 +41,9 @@ class QuarantineGroupInterface:
         return QuarantineGroup.objects(**filters).all()
 
     @staticmethod
-    def find_by_configuration(
+    def find_one_by_configuration(
         configuration: Configuration
-    ):
+    ) -> QuarantineGroup:
         """
         Get all existing quarantine groups by
         configuration in db
@@ -51,4 +51,4 @@ class QuarantineGroupInterface:
         filters = dict(
             configuration=configuration
         )
-        return QuarantineGroup.objects(**filters).one()
+        return QuarantineGroup.objects(**filters).first()

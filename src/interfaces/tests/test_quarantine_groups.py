@@ -1,9 +1,10 @@
 import uuid
+from unittest import TestCase
 
 from mongoengine import connect, disconnect
-from unittest import TestCase
-from src.models import QuarantineGroup
+
 from src.interfaces import QuarantineGroupInterface
+from src.models import QuarantineGroup
 
 
 class QuarantineGroupInterfaceTestCase(TestCase):
@@ -33,7 +34,7 @@ class QuarantineGroupInterfaceTestCase(TestCase):
 
     def test_find_one(self):
         quarantine_groups = \
-            QuarantineGroupInterface.find_by_identifier(self.identifier)
+            QuarantineGroupInterface.find_one_by_identifier(self.identifier)
 
         self.assertIsNotNone(quarantine_groups)
         self.assertEqual(
@@ -43,6 +44,6 @@ class QuarantineGroupInterfaceTestCase(TestCase):
 
     def test_find_by_configuration(self):
         age_groups = QuarantineGroupInterface. \
-            find_by_configuration(self.configuration_identifier)
+            find_one_by_configuration(self.configuration_identifier)
 
         self.assertIsNotNone(age_groups)

@@ -29,10 +29,15 @@ class CyclicRestriction(BaseModel):
 
 class NewQuarantine(BaseModel):
     quarantine_groups: List[QuarantineGroup] = Field(...)
-    has_cyclic_restrictions: bool = Field(False)
-    has_tracing_restrictions: bool = Field(False)
+    has_cyclic_restrictions: bool = Field(...)
+    has_tracing_restrictions: bool = Field(...)
     cyclic_restrictions: CyclicRestriction = Field(None)
     tracing_restrictions: TracingRestriction = Field(None)
+
+
+class UpdateQuarantine(NewQuarantine):
+    has_cyclic_restrictions: bool = Field(None)
+    has_tracing_restrictions: bool = Field(None)
 
 
 class UpdateQuarantineGroup(BaseModel):

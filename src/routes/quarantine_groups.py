@@ -24,10 +24,82 @@ from src.utils.messages import (
 )
 from src.utils.response import UJSONResponse
 
-quarantine_group_routes = APIRouter(tags=["Quarantine"])
+quarantine_group_routes = APIRouter(
+    prefix="/configuration/{conf_uuid}",
+    tags=["Quarantine"])
 
 
-@quarantine_group_routes.get("/configuration/{conf_uuid}/quarantine_group")
+@quarantine_group_routes.post("/quarantine")
+def create_quarantine(
+    conf_uuid: UUID,
+    quarantine: NewQuarantine,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Create quarantine groups to configuration.
+
+    \f
+    :param conf_uuid: Configuration identifier.
+    :param quarantine: List of quarantine groups to save in db.
+    :param user: User authenticated.
+    """
+    try:
+        configuration = ConfigurationInterface.find_one_by_id(
+            conf_uuid,
+            user
+        )
+
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        if not quarantine.quarantine_groups:
+            return UJSONResponse(
+                QuarantineGroupMessages.not_quarantine_groups_entered,
+                HTTP_400_BAD_REQUEST
+            )
+
+        quarantine_found = QuarantineInterface.find_one_by_configuration(
+            configuration
+        )
+        if not quarantine_found:
+            quarantine_found = Quarantine(
+                **quarantine.dict(exclude={'quarantine_groups'}),
+                identifier=uuid1(),
+                configuration=configuration
+            )
+            quarantine_found.save()
+
+        for quarantine_group in quarantine.quarantine_groups:
+            QuarantineGroup(
+                **quarantine_group.dict(),
+                identifier=uuid1(),
+                quarantine=quarantine_found
+            ).save()
+
+        new_quarantine_groups = QuarantineGroupInterface.find_all(
+            quarantine_found
+        )
+
+        new_quarantine_dict = BsonObject.dict(quarantine_found)
+        new_quarantine_dict['quarantine_groups'] = BsonObject.dict(
+            new_quarantine_groups
+        )
+
+        return UJSONResponse(
+            QuarantineGroupMessages.created,
+            HTTP_201_CREATED,
+            new_quarantine_dict
+
+        )
+
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
+
+
+@quarantine_group_routes.get("/quarantine_group")
 def list_quarantine_groups(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
@@ -47,7 +119,7 @@ def list_quarantine_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_found = QuarantineInterface.find_by_configuration(
+        quarantine_found = QuarantineInterface.find_one_by_configuration(
             configuration
         )
         if not quarantine_found:
@@ -76,7 +148,7 @@ def list_quarantine_groups(
     )
 
 
-@quarantine_group_routes.get("/configuration/{conf_uuid}/quarantine")
+@quarantine_group_routes.get("/quarantine")
 def find_quarantine(conf_uuid: UUID, user = Depends(SecurityUseCase.validate)):
     """
     Get all existing quarantine groups by configuration in db
@@ -98,7 +170,7 @@ def find_quarantine(conf_uuid: UUID, user = Depends(SecurityUseCase.validate)):
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_found = QuarantineInterface.find_by_configuration(
+        quarantine_found = QuarantineInterface.find_one_by_configuration(
             configuration
         )
         if not quarantine_found:
@@ -108,10 +180,7 @@ def find_quarantine(conf_uuid: UUID, user = Depends(SecurityUseCase.validate)):
             )
 
     except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
     return UJSONResponse(
         QuarantineMessage.found,
@@ -120,74 +189,8 @@ def find_quarantine(conf_uuid: UUID, user = Depends(SecurityUseCase.validate)):
     )
 
 
-@quarantine_group_routes.post("/configuration/{conf_uuid}/quarantine")
-def create_quarantine(
-    conf_uuid: UUID,
-    quarantine: NewQuarantine,
-    user = Depends(SecurityUseCase.validate)
-):
-    """
-    Create quarantine groups in db
-
-    :param conf_uuid: Configuration Identifier to search
-    :param quarantine: List of quarantine groups to save in db.
-    :param user:
-    """
-    try:
-        configuration = ConfigurationInterface.find_one_by_id(
-            conf_uuid,
-            user
-        )
-
-        if not configuration:
-            return UJSONResponse(
-                ConfigurationMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-        if not quarantine.quarantine_groups:
-            return UJSONResponse(
-                QuarantineGroupMessages.not_quarantine_groups_entered,
-                HTTP_400_BAD_REQUEST
-            )
-
-        quarantine_found = QuarantineInterface.find_by_configuration(
-            configuration
-        )
-        if quarantine_found:
-            return UJSONResponse(
-                QuarantineGroupMessages.exist,
-                HTTP_400_BAD_REQUEST
-            )
-
-        new_quarantine = Quarantine(
-            **quarantine.dict(exclude={'quarantine_groups'}),
-            identifier=uuid1(),
-            configuration=configuration
-        )
-        new_quarantine.save()
-
-        for quarantine_group in quarantine.quarantine_groups:
-            QuarantineGroup(
-                **quarantine_group.dict(),
-                identifier=uuid1(),
-                quarantine=new_quarantine
-            ).save()
-
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
-        )
-
-    return UJSONResponse(
-        QuarantineGroupMessages.created,
-        HTTP_201_CREATED
-    )
-
-
 @quarantine_group_routes.put(
-    "/configuration/{conf_uuid}/quarantine_group/{uuid}"
+    "/quarantine_group/{uuid}"
 )
 def update_quarantine_groups(
     conf_uuid: UUID,
@@ -206,7 +209,7 @@ def update_quarantine_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_found = QuarantineInterface.find_by_configuration(
+        quarantine_found = QuarantineInterface.find_one_by_configuration(
             configuration
         )
         if not quarantine_found:
@@ -215,7 +218,7 @@ def update_quarantine_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_group_found = QuarantineGroupInterface.find_by_identifier(
+        quarantine_group_found = QuarantineGroupInterface.find_one_by_identifier(
             uuid
         )
 
