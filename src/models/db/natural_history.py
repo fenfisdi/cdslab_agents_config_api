@@ -1,8 +1,8 @@
 from mongoengine import (
+    BooleanField,
     DictField,
     EmbeddedDocument,
     EmbeddedDocumentField,
-    EmbeddedDocumentListField,
     EnumField,
     FloatField,
     ReferenceField,
@@ -27,7 +27,8 @@ class NaturalHistory(BaseDocument):
     configuration = ReferenceField(Configuration, dbref=True)
     vulnerability_group = ReferenceField(VulnerabilityGroup, dbref=True)
     disease_group = ReferenceField(DiseaseGroup, dbref=True)
-    distribution = EmbeddedDocumentListField(NaturalDistribution)
-    avoidance_radius = FloatField()
-    avoidance_radius_unit = EnumField(UnitLength)
+    distributions = DictField()
     transitions = DictField()
+    avoidance_radius = FloatField()
+    transition_by_contagion = BooleanField()
+    avoidance_radius_unit = EnumField(UnitLength)

@@ -52,7 +52,7 @@ class FileAPI:
             parameters=parameters,
             files=files
         )
-        print(response.text)
+
         if not response.ok:
             return to_response(response), True
         return response.json(), False

@@ -4,7 +4,7 @@ from .disease_group import NewDiseaseGroup, UpdateDiseaseGroup
 from .distribution import Distribution
 from .immunization_group import NewImmunizationGroup
 from .mobility_group import NewMobilityGroup, UpdateMobilityGroup
-from .natural_history import NewNaturalHistory, UpdateNaturalHistory
+from .natural_history import UpdateNaturalHistory
 from .quarantine_group import NewQuarantine, UpdateQuarantineGroup
 from .susceptibility_group import (
     NewSusceptibilityGroup,
@@ -20,7 +20,6 @@ __all__ = [
     'NewImmunizationGroup',
     'NewMobilityGroup',
     'UpdateMobilityGroup',
-    'NewNaturalHistory',
     'UpdateNaturalHistory',
     'NewSusceptibilityGroup',
     'UpdateSusceptibilityGroup',

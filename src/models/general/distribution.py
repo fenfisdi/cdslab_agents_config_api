@@ -16,5 +16,5 @@ class DiseaseDistributionType(Enum):
 
 
 class NaturalDistributionType(Enum):
-    TIME: str = 'time_distribution'
-    ALERTNESS: str = 'alertness_distribution'
+    TIME: str = 'time'
+    ALERTNESS: str = 'alertness'

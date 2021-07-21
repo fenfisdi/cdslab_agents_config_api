@@ -123,6 +123,8 @@ class NaturalHistoryMessage:
     exist: str = "Natural history exist"
     created: str = "Natural history has been created"
     updated: str = "Natural history updated"
+    invalid_distribution: str = "Natural history distribution not config"
+    invalid_transition: str = "Natural history transition not config"
 
 
 @dataclass
