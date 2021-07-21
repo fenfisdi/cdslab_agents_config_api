@@ -77,6 +77,7 @@ class SusceptibilityGroupMessages:
 class QuarantineMessage:
     found: str = "Quarantine found"
     not_found: str = "Quarantine not found"
+    updated: str = "Quarantine updated"
 
 
 @dataclass

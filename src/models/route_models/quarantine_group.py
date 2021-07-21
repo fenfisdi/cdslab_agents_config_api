@@ -27,17 +27,15 @@ class CyclicRestriction(BaseModel):
     time_without_restrictions_units: UnitTime = Field(None)
 
 
-class NewQuarantine(BaseModel):
-    quarantine_groups: List[QuarantineGroup] = Field(...)
-    has_cyclic_restrictions: bool = Field(...)
-    has_tracing_restrictions: bool = Field(...)
+class UpdateQuarantine(BaseModel):
+    has_cyclic_restrictions: bool = Field(None)
+    has_tracing_restrictions: bool = Field(None)
     cyclic_restrictions: CyclicRestriction = Field(None)
     tracing_restrictions: TracingRestriction = Field(None)
 
 
-class UpdateQuarantine(NewQuarantine):
-    has_cyclic_restrictions: bool = Field(None)
-    has_tracing_restrictions: bool = Field(None)
+class NewQuarantine(UpdateQuarantine):
+    quarantine_groups: List[QuarantineGroup] = Field(...)
 
 
 class UpdateQuarantineGroup(BaseModel):
