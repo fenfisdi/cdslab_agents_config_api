@@ -6,6 +6,7 @@ class UnitsMessage:
     """
     Messages used in endpoint responses for units 
     """
+    tracing: str = "Quarantine tracing variables"
     distance: str = "Units distance"
     time: str = "Time units"
     distance_not_found = "Distance units not found"
