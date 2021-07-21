@@ -197,7 +197,11 @@ def list_quarantine_groups(
     user = Depends(SecurityUseCase.validate)
 ):
     """
-    Get all existing quarantine groups in db
+    Find all existing quarantine groups from quarantine.
+
+    \f
+    :param conf_uuid: Configuration identifier.
+    :param user: User authenticated.
     """
     try:
         configuration = ConfigurationInterface.find_one_by_id(
@@ -222,22 +226,13 @@ def list_quarantine_groups(
 
         qg_found = QuarantineGroupInterface.find_all(quarantine_found)
 
-        if not qg_found:
-            return UJSONResponse(
-                QuarantineGroupMessages.not_found,
-                HTTP_404_NOT_FOUND
-            )
-    except Exception as error:
         return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST
+            QuarantineGroupMessages.found,
+            HTTP_200_OK,
+            BsonObject.dict(qg_found)
         )
-
-    return UJSONResponse(
-        QuarantineGroupMessages.found,
-        HTTP_200_OK,
-        BsonObject.dict(qg_found)
-    )
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
 @quarantine_group_routes.get("/quarantine")
