@@ -115,3 +115,28 @@ class SaveNaturalHistoryTransitionFile:
 
         natural_history.transitions = new_transitions
         natural_history.save().reload()
+
+
+class UpdateNaturalHistoryTransitions:
+
+    @classmethod
+    def handle(
+        cls,
+        natural_history: NaturalHistory,
+        transitions: dict
+    ):
+        old_transitions = natural_history.transitions
+        new_transitions = dict()
+        for k, v in transitions.items():
+            if k in old_transitions.keys():
+                old_distribution = old_transitions.get(k, {}).get(
+                    "distribution"
+                )
+
+                distribution = v.get("distribution", {})
+                distribution.update(old_distribution)
+                v["distribution"] = distribution
+            new_transitions[k] = v
+
+        natural_history.transitions = new_transitions
+        natural_history.save().reload()

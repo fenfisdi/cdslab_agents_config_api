@@ -21,6 +21,7 @@ from src.use_case import (
     SaveNaturalHistoryDistributionFile,
     SaveNaturalHistoryTransitionFile,
     SecurityUseCase,
+    UpdateNaturalHistoryTransitions,
     VerifyDistributionFile,
     VerifyNaturalHistoryDistribution,
     VerifyNaturalHistoryTransition
@@ -97,11 +98,15 @@ def update_natural_history(
             nh_found.save()
 
         else:
-            nh_found.update(
-                **natural_history.dict(
-                    exclude=exclude_fields
-                )
+            exclude_fields.update({'transitions'})
+            natural_history_dict = natural_history.dict(exclude=exclude_fields)
+            nh_found.update(**natural_history_dict)
+
+            UpdateNaturalHistoryTransitions.handle(
+                nh_found,
+                natural_history.dict().get("transitions")
             )
+
             nh_found.distributions.update(
                 natural_history.dict().get('distributions')
             )

@@ -9,6 +9,7 @@ from .natural_history_use_case import (
     NaturalHistoryUseCase,
     SaveNaturalHistoryDistributionFile,
     SaveNaturalHistoryTransitionFile,
+    UpdateNaturalHistoryTransitions,
     VerifyNaturalHistoryDistribution,
     VerifyNaturalHistoryTransition
 
@@ -22,6 +23,7 @@ __all__ = [
     'VerifyNaturalHistoryTransition',
     'SaveNaturalHistoryDistributionFile',
     'SaveNaturalHistoryTransitionFile',
+    'UpdateNaturalHistoryTransitions',
     'VerifyDistributionFile',
     'VerifyDiseaseStateDistribution',
     'SaveDistributionFile',
