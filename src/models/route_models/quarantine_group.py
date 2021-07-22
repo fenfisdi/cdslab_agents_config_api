@@ -6,10 +6,6 @@ from pydantic import BaseModel, Field
 from src.models.general import RestrictionType, TracingType, UnitTime
 
 
-class QuarantineGroup(BaseModel):
-    name: str = Field(...)
-
-
 class TracingRestriction(BaseModel):
     start_percentage: float = Field(...)
     stop_mode: TracingType = Field(...)
@@ -27,12 +23,19 @@ class CyclicRestriction(BaseModel):
     time_without_restrictions_units: UnitTime = Field(None)
 
 
-class NewQuarantine(BaseModel):
-    quarantine_groups: List[QuarantineGroup] = Field(...)
-    has_cyclic_restrictions: bool = Field(False)
-    has_tracing_restrictions: bool = Field(False)
+class UpdateQuarantine(BaseModel):
+    has_cyclic_restrictions: bool = Field(None)
+    has_tracing_restrictions: bool = Field(None)
     cyclic_restrictions: CyclicRestriction = Field(None)
     tracing_restrictions: TracingRestriction = Field(None)
+
+
+class QuarantineGroup(BaseModel):
+    name: str = Field(...)
+
+
+class NewQuarantine(UpdateQuarantine):
+    quarantine_groups: List[QuarantineGroup] = Field(...)
 
 
 class UpdateQuarantineGroup(BaseModel):

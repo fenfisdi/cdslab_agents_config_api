@@ -6,6 +6,7 @@ class UnitsMessage:
     """
     Messages used in endpoint responses for units 
     """
+    tracing: str = "Quarantine tracing variables"
     distance: str = "Units distance"
     time: str = "Time units"
     distance_not_found = "Distance units not found"
@@ -77,6 +78,7 @@ class SusceptibilityGroupMessages:
 class QuarantineMessage:
     found: str = "Quarantine found"
     not_found: str = "Quarantine not found"
+    updated: str = "Quarantine updated"
 
 
 @dataclass
