@@ -76,6 +76,10 @@ def create_quarantine(
             )
             quarantine_found.save()
 
+        old_groups = QuarantineGroupInterface.find_all(quarantine_found)
+        if old_groups:
+            [group.delete() for group in old_groups]
+
         for quarantine_group in quarantine.quarantine_groups:
             QuarantineGroup(
                 **quarantine_group.dict(),
