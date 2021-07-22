@@ -16,8 +16,7 @@ from src.interfaces import (
 from src.models.db import Quarantine, QuarantineGroup
 from src.models.route_models import (
     NewQuarantine,
-    UpdateQuarantine,
-    UpdateQuarantineGroup
+    UpdateQuarantine
 )
 from src.use_case import SecurityUseCase
 from src.utils.encoder import BsonObject
@@ -236,53 +235,3 @@ def list_quarantine_groups(
         )
     except Exception as error:
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
-
-
-@quarantine_group_routes.put("/quarantine_group/{uuid}")
-def update_quarantine_groups(
-    conf_uuid: UUID,
-    uuid: UUID,
-    quarantine_group: UpdateQuarantineGroup,
-    user = Depends(SecurityUseCase.validate)
-):
-    try:
-        configuration = ConfigurationInterface.find_one_by_id(
-            conf_uuid,
-            user
-        )
-        if not configuration:
-            return UJSONResponse(
-                ConfigurationMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-        quarantine_found = QuarantineInterface.find_one_by_configuration(
-            configuration
-        )
-        if not quarantine_found:
-            return UJSONResponse(
-                ConfigurationMessage.not_found,
-                HTTP_404_NOT_FOUND
-            )
-
-        quarantine_group_found = QuarantineGroupInterface.find_one_by_identifier(
-            uuid
-        )
-
-        quarantine_group_found.update(
-            **quarantine_group.dict()
-        )
-        quarantine_group_found.reload()
-
-        return UJSONResponse(
-            QuarantineGroupMessages.updated,
-            HTTP_200_OK,
-            BsonObject.dict(quarantine_group_found)
-        )
-
-    except Exception as error:
-        return UJSONResponse(
-            str(error),
-            HTTP_400_BAD_REQUEST,
-        )
-
