@@ -30,6 +30,9 @@ class TracingRestriction(BaseModel):
     stop_length_units: UnitTime = Field(None)
     variables: Dict[UUID, bool] = Field(None)
 
+    class Config:
+        use_enum_values = True
+
 
 class CyclicRestriction(BaseModel):
     grace_time: datetime = Field(...)
@@ -49,6 +52,9 @@ class UpdateQuarantine(BaseModel):
     has_tracing_restrictions: bool = Field(None)
     cyclic_restrictions: CyclicRestriction = Field(None)
     tracing_restrictions: Tracing = Field(None)
+
+    class Config:
+        use_enum_values = True
 
 
 class QuarantineGroup(BaseModel):
