@@ -5,6 +5,7 @@ from .distribution import Distribution
 from .immunization_group import ImmunizationGroup
 from .mobility_group import MobilityGroup
 from .natural_history import NaturalHistory
+from .population import Population
 from .quarantine import Quarantine, QuarantineGroup
 from .simulation import Simulation
 from .susceptibility_group import SusceptibilityGroup
@@ -19,6 +20,7 @@ __all__ = [
     'ImmunizationGroup',
     'MobilityGroup',
     'NaturalHistory',
+    'Population',
     'Simulation',
     'SusceptibilityGroup',
     'User',

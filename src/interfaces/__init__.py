@@ -8,6 +8,7 @@ from .distribution_interface import DistributionInterface
 from .immunization_group_interface import ImmunizationGroupInterface
 from .mobility_groups_interface import MobilityGroupInterface
 from .natural_history_interface import NaturalHistoryInterface
+from .population_interface import PopulationInterface
 from .quarantine_interface import (
     QuarantineGroupInterface,
     QuarantineInterface
@@ -30,5 +31,6 @@ __all__ = [
     'ImmunizationGroupInterface',
     'NaturalHistoryInterface',
     "QuarantineGroupInterface",
-    'QuarantineInterface'
+    'QuarantineInterface',
+    'PopulationInterface'
 ]
