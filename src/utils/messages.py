@@ -164,3 +164,10 @@ class DiseaseGroupMessage:
     not_entered: str = "Disease groups not entered to save"
     missing_conf: str = "Disease group distribution is empty"
     invalid_distribution: str = "Disease group distribution not config"
+
+
+@dataclass
+class PopulationMessage:
+    not_found: str = "Population configuration not found"
+    found: str = "Population variables found"
+    updated: str = "Population updated"
