@@ -186,7 +186,7 @@ def list_susceptibility_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        sg_found = SusceptibilityGroupInterface.find_by_conf(
+        sg_found = SusceptibilityGroupInterface.find_all_by_conf(
             configuration
         )
 

@@ -6,6 +6,7 @@ from .distribution import (
 from .file import TypeFile
 from .quarantine import RestrictionType, TracingType, TracingVariables
 from .units import UnitLength, UnitTime
+from .variables import Groups
 
 __all__ = [
     'UnitLength',
@@ -16,5 +17,6 @@ __all__ = [
     'RestrictionType',
     'TracingType',
     'TracingVariables',
-    'TypeFile'
+    'TypeFile',
+    'Groups'
 ]

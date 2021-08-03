@@ -14,6 +14,13 @@ from .natural_history_use_case import (
     VerifyNaturalHistoryTransition
 
 )
+from .population_use_case import (
+    DeletePopulationValues,
+    FindAllowedVariables,
+    FindVariableResults,
+    UpdatePopulationValues,
+    ValidatePopulationDefault
+)
 from .security_use_case import SecurityUseCase
 
 __all__ = [
@@ -29,5 +36,10 @@ __all__ = [
     'SaveDistributionFile',
     'VerifyDefaultState',
     'SaveDiseaseDistributionFile',
-    'UpdateDistributionsInfo'
+    'UpdateDistributionsInfo',
+    'ValidatePopulationDefault',
+    'FindAllowedVariables',
+    'UpdatePopulationValues',
+    'DeletePopulationValues',
+    'FindVariableResults'
 ]

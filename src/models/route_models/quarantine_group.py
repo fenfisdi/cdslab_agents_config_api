@@ -21,6 +21,9 @@ class QuarantineVariable(BaseModel):
     unrestricted_time: int = Field(None)
     unrestricted_time_units: UnitTime = Field(None)
 
+    class Config:
+        use_enum_values = True
+
 
 class TracingRestriction(BaseModel):
     start_percentage: float = Field(...)
@@ -41,7 +44,7 @@ class CyclicRestriction(BaseModel):
     restriction_mode: RestrictionType = Field(...)
     time_without_restrictions: int = Field(None)
     time_without_restrictions_units: UnitTime = Field(None)
-    variables: Dict[UUID, QuarantineVariable] = Field(None)
+    variables: Dict[str, QuarantineVariable] = Field(None)
 
 
 Tracing = Dict[TracingVariables, TracingRestriction]

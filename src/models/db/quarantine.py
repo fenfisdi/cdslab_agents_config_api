@@ -23,6 +23,7 @@ class CyclicRestriction(EmbeddedDocument):
     restriction_mode = EnumField(RestrictionType)
     time_without_restrictions = IntField()
     time_without_restrictions_units = EnumField(UnitTime)
+    variables = DictField()
 
 
 class Quarantine(BaseDocument):

@@ -5,6 +5,7 @@ from .distributions import distributions_routes
 from .immunization_groups import immunization_routes
 from .mobility_groups import mobility_group_routes
 from .natural_history import natural_history_routes
+from .population import population_routes
 from .quarantine_groups import quarantine_group_routes
 from .susceptibility_groups import susceptibility_groups_routes
 from .units import units_routes
@@ -23,4 +24,5 @@ __all__ = [
     "immunization_routes",
     "vulnerability_group_routes",
     "quarantine_group_routes",
+    "population_routes",
 ]
