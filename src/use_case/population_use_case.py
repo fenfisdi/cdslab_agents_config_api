@@ -1,10 +1,19 @@
 from typing import List, Set
 from uuid import uuid1
 
-from src.interfaces import PopulationInterface
+from src.interfaces import (
+    AgeGroupInterface,
+    DiseaseGroupInterface,
+    MobilityGroupInterface,
+    PopulationInterface,
+    QuarantineGroupInterface,
+    SusceptibilityGroupInterface,
+    VulnerabilityGroupInterface
+)
 from src.models.db import Configuration, Population
 from src.models.general import Groups
 from src.models.route_models import UpdateVariable
+from src.utils import BsonObject
 
 
 class ValidatePopulationDefault:
@@ -35,6 +44,8 @@ class FindAllowedVariables:
             if unit.value in current_values.keys()
         ]
         values.insert(0, Groups.AGE.value)
+        if not variable:
+            variable = {}
         for i in variable:
             values.remove(i)
         return values
@@ -54,7 +65,8 @@ class UpdatePopulationValues:
         allowed_configuration.append(variables.variable)
 
         allowed_variables = population.allowed_variables
-        allowed_variables.remove(variables.variable)
+        if variables.variable in allowed_variables:
+            allowed_variables.remove(variables.variable)
 
         population.update(
             values=current_values,
@@ -62,3 +74,32 @@ class UpdatePopulationValues:
             allowed_variables=allowed_variables
         )
         population.reload()
+
+
+class DeletePopulationValues:
+
+    @classmethod
+    def handle(cls, population: Population, variable: Groups):
+        population_values = population.values
+        if variable.value in population_values.keys():
+            del population_values[variable.value]
+
+        population.update(values=population_values)
+
+
+class FindVariableResults:
+
+    @classmethod
+    def handle(cls, configuration: Configuration, variable: Groups) -> dict:
+        interface_dict = {
+            Groups.AGE: AgeGroupInterface,
+            Groups.MOBILITY: MobilityGroupInterface,
+            Groups.SUSCEPTIBILITY: SusceptibilityGroupInterface,
+            Groups.VULNERABILITY: VulnerabilityGroupInterface,
+            Groups.DISEASE: DiseaseGroupInterface,
+            Groups.QUARANTINE: QuarantineGroupInterface,
+        }
+        interface = interface_dict.get(variable)
+        if interface:
+            return BsonObject.dict(interface.find_all_by_conf(configuration))
+        return dict()

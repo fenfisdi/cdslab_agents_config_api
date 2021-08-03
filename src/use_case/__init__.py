@@ -17,6 +17,7 @@ from .natural_history_use_case import (
 from .population_use_case import (
     DeletePopulationValues,
     FindAllowedVariables,
+    FindVariableResults,
     UpdatePopulationValues,
     ValidatePopulationDefault
 )
@@ -39,5 +40,6 @@ __all__ = [
     'ValidatePopulationDefault',
     'FindAllowedVariables',
     'UpdatePopulationValues',
-    'DeletePopulationValues'
+    'DeletePopulationValues',
+    'FindVariableResults'
 ]

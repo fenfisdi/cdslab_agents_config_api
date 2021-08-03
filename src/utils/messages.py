@@ -171,3 +171,4 @@ class PopulationMessage:
     not_found: str = "Population configuration not found"
     found: str = "Population variables found"
     updated: str = "Population updated"
+    values_found: str = "Population variables found"
