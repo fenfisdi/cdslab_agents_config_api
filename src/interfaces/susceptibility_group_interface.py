@@ -28,7 +28,7 @@ class SusceptibilityGroupInterface:
         return SusceptibilityGroup.objects(**filters).first()
 
     @staticmethod
-    def find_by_conf(configuration: Configuration) -> SusceptibilityGroup:
+    def find_all_by_conf(configuration: Configuration) -> SusceptibilityGroup:
         filters = dict(
             configuration=configuration,
         )

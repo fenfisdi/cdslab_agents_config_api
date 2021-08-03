@@ -46,7 +46,7 @@ class SusceptibilityGroupInterfaceTestCase(TestCase):
         )
 
     def test_find_by_configuration(self):
-        age_groups = SusceptibilityGroupInterface.find_by_conf(
+        age_groups = SusceptibilityGroupInterface.find_all_by_conf(
             self.configuration_identifier
         )
 

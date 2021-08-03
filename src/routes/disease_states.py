@@ -63,7 +63,7 @@ def create_disease_states(
                 HTTP_404_NOT_FOUND
             )
 
-        dg_found = DiseaseGroupInterface.find_all(configuration_found)
+        dg_found = DiseaseGroupInterface.find_all_by_conf(configuration_found)
         if dg_found:
             return UJSONResponse(
                 DiseaseGroupMessage.exist,
@@ -119,7 +119,7 @@ def list_disease_states(
             )
         VerifyDefaultState.handle(configuration_found)
 
-        dg_found = DiseaseGroupInterface.find_all(configuration_found)
+        dg_found = DiseaseGroupInterface.find_all_by_conf(configuration_found)
         return UJSONResponse(
             DiseaseGroupMessage.found,
             HTTP_200_OK,

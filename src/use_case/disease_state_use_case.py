@@ -10,7 +10,7 @@ class VerifyDefaultState:
 
     @classmethod
     def handle(cls, configuration: Configuration) -> None:
-        states = DiseaseGroupInterface.find_all(configuration)
+        states = DiseaseGroupInterface.find_all_by_conf(configuration)
 
         death_state = next((state for state in states if state.is_death), None)
         if not death_state:

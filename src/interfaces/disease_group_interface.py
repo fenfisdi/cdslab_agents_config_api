@@ -32,7 +32,7 @@ class DiseaseStateInterface:
 class DiseaseGroupInterface:
 
     @staticmethod
-    def find_all(configuration: Configuration):
+    def find_all_by_conf(configuration: Configuration):
         filters = dict(
             configuration=configuration,
         )

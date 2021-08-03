@@ -52,3 +52,15 @@ class QuarantineGroupInterface:
             configuration=configuration
         )
         return QuarantineGroup.objects(**filters).first()
+
+    @staticmethod
+    def find_all_by_conf(configuration: Configuration):
+        filters = dict(
+            configuration=configuration,
+        )
+        quarantine: Quarantine = Quarantine.objects(**filters).first()
+        quarantine_filters = dict(
+            quarantine=quarantine
+        )
+
+        return QuarantineGroup.objects(**quarantine_filters).all()
