@@ -185,7 +185,9 @@ def update_quarantine(
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_found.update(**quarantine.dict(exclude_none=True))
+        data = quarantine.dict(exclude_none=True)
+        if data:
+            quarantine_found.update(**data)
         quarantine_found.reload()
 
         return UJSONResponse(
