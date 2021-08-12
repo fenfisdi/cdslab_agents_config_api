@@ -43,12 +43,16 @@ class FindAllowedVariables:
             unit.value for unit in Groups
             if unit.value in current_values.keys()
         ]
+        # Add default value to the list
         values.insert(0, Groups.AGE.value)
+
         if not variable:
             variable = {}
-        for i in variable:
-            values.remove(i)
-        return values
+        allowed_variables = []
+        for i in values:
+            if Groups(i) not in variable:
+                allowed_variables.append(i)
+        return allowed_variables
 
 
 class UpdatePopulationValues:
