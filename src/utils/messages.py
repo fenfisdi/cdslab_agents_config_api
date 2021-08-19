@@ -172,3 +172,9 @@ class PopulationMessage:
     found: str = "Population variables found"
     updated: str = "Population updated"
     values_found: str = "Population variables found"
+
+
+@dataclass
+class ExecutionMessage:
+    on_queue: str = "Simulation will be executed"
+    invalid: str = "Simulation can not execute"

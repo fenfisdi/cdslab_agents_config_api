@@ -65,7 +65,7 @@ def create_quarantine(
                 HTTP_400_BAD_REQUEST
             )
 
-        quarantine_found = QuarantineInterface.find_one_by_configuration(
+        quarantine_found = QuarantineInterface.find_one_by_conf(
             configuration
         )
         if not quarantine_found:
@@ -131,7 +131,7 @@ def find_quarantine(
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_found = QuarantineInterface.find_one_by_configuration(
+        quarantine_found = QuarantineInterface.find_one_by_conf(
             configuration
         )
         if not quarantine_found:
@@ -176,7 +176,7 @@ def update_quarantine(
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_found = QuarantineInterface.find_one_by_configuration(
+        quarantine_found = QuarantineInterface.find_one_by_conf(
             configuration
         )
         if not quarantine_found:
@@ -223,7 +223,7 @@ def list_quarantine_groups(
                 HTTP_404_NOT_FOUND
             )
 
-        quarantine_found = QuarantineInterface.find_one_by_configuration(
+        quarantine_found = QuarantineInterface.find_one_by_conf(
             configuration
         )
         if not quarantine_found:

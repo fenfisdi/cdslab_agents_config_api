@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class DateTime:
@@ -9,3 +9,7 @@ class DateTime:
         Function that calculate the current date time
         """
         return datetime.utcnow()
+
+    @classmethod
+    def expiration_date(cls, minutes: int = 0, hours: int = 0) -> datetime:
+        return cls.current_datetime() + timedelta(minutes=minutes, hours=hours)
