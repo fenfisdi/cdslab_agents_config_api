@@ -4,6 +4,11 @@ from .disease_state_use_case import (
     VerifyDefaultState,
     VerifyDiseaseStateDistribution
 )
+from .execution_use_case import (
+    FindAgentInformation,
+    FindMachineInformation,
+    SendAllInformation
+)
 from .file_use_case import SaveDistributionFile, VerifyDistributionFile
 from .natural_history_use_case import (
     NaturalHistoryUseCase,
@@ -41,5 +46,8 @@ __all__ = [
     'FindAllowedVariables',
     'UpdatePopulationValues',
     'DeletePopulationValues',
-    'FindVariableResults'
+    'FindVariableResults',
+    'FindAgentInformation',
+    'FindMachineInformation',
+    'SendAllInformation',
 ]
