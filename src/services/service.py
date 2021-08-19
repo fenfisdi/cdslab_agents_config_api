@@ -25,6 +25,7 @@ class APIService:
         json: dict = None,
         data: Any = None,
         parameters: dict = None,
+        headers: dict = None,
         files: Any = None
     ) -> Response:
         request = Request(
@@ -33,7 +34,8 @@ class APIService:
             params=parameters,
             json=json,
             data=data,
-            files=files
+            files=files,
+            headers=headers
         ).prepare()
         return self.session.send(request)
 
