@@ -8,6 +8,7 @@ from jose import JWTError, jwt
 from src.interfaces import UserInterface
 from src.models.db import User
 from src.services import UserAPI
+from src.utils.date_time import DateTime
 from src.utils.messages import SecurityMessage
 
 
@@ -32,6 +33,21 @@ class SecurityUseCase:
             user.save()
 
         return user
+
+    @classmethod
+    def create_token(cls, user: User) -> str:
+        data = {
+            'email': user.email,
+            'exp': DateTime.expiration_date(hours=12)
+        }
+        try:
+            return jwt.encode(
+                data,
+                environ.get('SECRET_KEY'),
+                environ.get('ALGORITHM')
+            )
+        except Exception as error:
+            raise error
 
     @classmethod
     def _validate_token(cls, token: str) -> Optional[dict]:

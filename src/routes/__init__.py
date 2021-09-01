@@ -2,6 +2,7 @@ from .age_groups import age_group_routes
 from .configuration import configuration_routes
 from .disease_states import disease_states_routes
 from .distributions import distributions_routes
+from .execution import execution_routes
 from .immunization_groups import immunization_routes
 from .mobility_groups import mobility_group_routes
 from .natural_history import natural_history_routes
@@ -25,4 +26,5 @@ __all__ = [
     "vulnerability_group_routes",
     "quarantine_group_routes",
     "population_routes",
+    "execution_routes",
 ]

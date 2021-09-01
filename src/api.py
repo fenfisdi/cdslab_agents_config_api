@@ -11,6 +11,7 @@ from src.routes import (
     configuration_routes,
     disease_states_routes,
     distributions_routes,
+    execution_routes,
     immunization_routes,
     mobility_group_routes,
     natural_history_routes,
@@ -49,3 +50,4 @@ app.include_router(disease_states_routes)
 app.include_router(natural_history_routes)
 app.include_router(quarantine_group_routes)
 app.include_router(population_routes)
+app.include_router(execution_routes)
