@@ -20,8 +20,9 @@ from .security_use_case import SecurityUseCase
 class FindAgentInformation:
 
     @classmethod
-    def handle(cls, configuration: Configuration, user: User) -> dict:
+    def handle(cls, configuration: Configuration) -> dict:
         configuration_dict = dict(
+            configuration=cls._get_configuration(configuration),
             age_groups=cls._get_age_groups(configuration),
             mobility_groups=cls._get_mobility_groups(configuration),
             susceptibility_groups=cls._get_susceptibility_groups(configuration),
@@ -31,7 +32,6 @@ class FindAgentInformation:
             quarantine=cls._get_quarantine(configuration),
             quarantine_groups=cls._get_quarantine_groups(configuration)
         )
-
         return configuration_dict
 
     @classmethod
@@ -93,6 +93,10 @@ class FindAgentInformation:
             configuration
         )
         return BsonObject.dict(quarantine_group)
+
+    @classmethod
+    def _get_configuration(cls, configuration: Configuration) -> dict:
+        return BsonObject.dict(configuration)
 
 
 class FindMachineInformation:

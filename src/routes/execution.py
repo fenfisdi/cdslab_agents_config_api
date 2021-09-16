@@ -38,7 +38,7 @@ def execute_simulation(
                 ConfigurationMessage.not_found,
                 HTTP_404_NOT_FOUND
             )
-        simulation_data = FindAgentInformation.handle(configuration_found, user)
+        simulation_data = FindAgentInformation.handle(configuration_found)
         machine_data = FindMachineInformation.handle(user)
 
         is_invalid = SendAllInformation.handle(
