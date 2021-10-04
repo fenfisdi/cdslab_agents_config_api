@@ -1,3 +1,4 @@
+from typing import Optional
 from uuid import UUID
 
 from src.models.db import Configuration, User
@@ -22,7 +23,7 @@ class ConfigurationInterface:
         return Configuration.objects(**filters).all()
 
     @staticmethod
-    def find_one_by_id(identifier: UUID, user: User) -> Configuration:
+    def find_one_by_id(identifier: UUID, user: User) -> Optional[Configuration]:
         """
         Find configuration by identifier and user
 
@@ -37,7 +38,7 @@ class ConfigurationInterface:
         return Configuration.objects(**filters).first()
 
     @staticmethod
-    def find_one_by_name(name: str, user: User) -> Configuration:
+    def find_one_by_name(name: str, user: User) -> Optional[Configuration]:
         """
         Find configuration by name, and user
 
@@ -48,5 +49,16 @@ class ConfigurationInterface:
             name=name,
             user=user,
             is_deleted=False,
+        )
+        return Configuration.objects(**filters).first()
+
+
+class ConfigurationRootInterface:
+
+    @classmethod
+    def find_one_by_id(cls, identifier: UUID) -> Optional[Configuration]:
+        filters = dict(
+            identifier=identifier,
+            is_deleted=False
         )
         return Configuration.objects(**filters).first()
