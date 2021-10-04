@@ -11,9 +11,15 @@ from mongoengine import (
     UUIDField
 )
 
-from src.models.general import UnitLength, UnitTime
+from src.models.general import ExecutionStatus, UnitLength, UnitTime
 from .base import BaseDocument
 from .user import User
+
+
+class Execution(EmbeddedDocument):
+    status = EnumField(ExecutionStatus, null=False, required=True)
+    start_date = DateTimeField(null=True)
+    finish_date = DateTimeField(null=True)
 
 
 class IntervalDate(EmbeddedDocument):
@@ -33,4 +39,5 @@ class Configuration(BaseDocument):
     is_deleted = BooleanField(default=False)
     hospital_capacity = IntField()
     icu_capacity = IntField()
+    execution = EmbeddedDocumentField(Execution, required=False, null=True)
     user = ReferenceField(User, dbref=True, required=True)

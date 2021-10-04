@@ -3,6 +3,7 @@ from .distribution import (
     DistributionType,
     NaturalDistributionType
 )
+from .execution import ExecutionStatus
 from .file import TypeFile
 from .quarantine import RestrictionType, TracingType, TracingVariables
 from .units import UnitLength, UnitTime
@@ -18,5 +19,6 @@ __all__ = [
     'TracingType',
     'TracingVariables',
     'TypeFile',
-    'Groups'
+    'Groups',
+    'ExecutionStatus'
 ]

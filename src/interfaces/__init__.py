@@ -1,5 +1,8 @@
 from .age_group_interface import AgeGroupInterface
-from .configuration_interface import ConfigurationInterface
+from .configuration_interface import (
+    ConfigurationInterface,
+    ConfigurationRootInterface
+)
 from .disease_group_interface import (
     DiseaseGroupInterface,
     DiseaseStateInterface
@@ -32,5 +35,6 @@ __all__ = [
     'NaturalHistoryInterface',
     "QuarantineGroupInterface",
     'QuarantineInterface',
-    'PopulationInterface'
+    'PopulationInterface',
+    'ConfigurationRootInterface'
 ]

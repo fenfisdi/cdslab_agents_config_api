@@ -7,14 +7,15 @@ from starlette.status import (
     HTTP_404_NOT_FOUND
 )
 
-from src.interfaces import ConfigurationInterface
+from src.interfaces import ConfigurationInterface, ConfigurationRootInterface
+from src.models.general import ExecutionStatus
 from src.use_case import (
     FindAgentInformation,
     FindMachineInformation,
     SecurityUseCase,
     SendAllInformation
 )
-from src.utils import ConfigurationMessage, UJSONResponse
+from src.utils import ConfigurationMessage, DateTime, UJSONResponse
 from src.utils.messages import ExecutionMessage
 
 execution_routes = APIRouter(
@@ -50,6 +51,31 @@ def execute_simulation(
         if is_invalid:
             return UJSONResponse(ExecutionMessage.invalid, HTTP_400_BAD_REQUEST)
         return UJSONResponse(ExecutionMessage.on_queue, HTTP_200_OK)
+
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
+
+
+@execution_routes.post("/finish")
+def execute_simulation(
+    conf_uuid: UUID,
+):
+    try:
+        configuration = ConfigurationRootInterface.find_one_by_id(conf_uuid)
+        if not configuration:
+            return UJSONResponse(
+                ConfigurationMessage.not_found,
+                HTTP_404_NOT_FOUND
+            )
+
+        configuration.update(
+            execution=dict(
+                status=ExecutionStatus.EXECUTED,
+                finish_date=DateTime.current_datetime(),
+            )
+        )
+
+        return UJSONResponse(ConfigurationMessage.updated, HTTP_200_OK)
 
     except Exception as error:
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
