@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from starlette.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
@@ -20,7 +20,7 @@ from src.utils.messages import ExecutionMessage
 
 execution_routes = APIRouter(
     prefix="/configuration/{conf_uuid}",
-    tags=["Disease States"]
+    tags=["Execution"]
 )
 
 
@@ -57,8 +57,9 @@ def execute_simulation(
 
 
 @execution_routes.post("/finish")
-def execute_simulation(
+def update_simulation_status(
     conf_uuid: UUID,
+    status: ExecutionStatus = Query(...),
 ):
     try:
         configuration = ConfigurationRootInterface.find_one_by_id(conf_uuid)
@@ -67,10 +68,9 @@ def execute_simulation(
                 ConfigurationMessage.not_found,
                 HTTP_404_NOT_FOUND
             )
-
         configuration.update(
             execution=dict(
-                status=ExecutionStatus.EXECUTED,
+                status=status,
                 finish_date=DateTime.current_datetime(),
             )
         )
