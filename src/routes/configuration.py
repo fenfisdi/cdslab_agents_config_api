@@ -12,7 +12,7 @@ from src.interfaces import ConfigurationInterface
 from src.models.db import Configuration
 from src.models.route_models import NewConfiguration, UpdateConfiguration
 from src.services import FileAPI
-from src.use_case import SecurityUseCase
+from src.use_case import FindAgentInformation, SecurityUseCase
 from src.utils.encoder import BsonObject
 from src.utils.messages import ConfigurationMessage
 from src.utils.response import UJSONResponse
@@ -181,3 +181,28 @@ def delete_configuration(
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
     return UJSONResponse(ConfigurationMessage.deleted, HTTP_200_OK)
+
+
+@configuration_routes.get("/configuration/{uuid}/summary")
+def get_summary_configuration(
+    uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
+    """
+    Find all configuration simulation and all its data.
+
+    \f
+    :param uuid:
+    :param user:
+    """
+    configuration_found = ConfigurationInterface.find_one_by_id(uuid, user)
+    if not configuration_found:
+        return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    simulation_data = FindAgentInformation.handle(configuration_found)
+
+    return UJSONResponse(
+        ConfigurationMessage.found,
+        HTTP_200_OK,
+        simulation_data
+    )
