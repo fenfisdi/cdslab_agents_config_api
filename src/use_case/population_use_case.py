@@ -107,3 +107,12 @@ class FindVariableResults:
         if interface:
             return BsonObject.dict(interface.find_all_by_conf(configuration))
         return dict()
+
+
+class FindVariablesConfigured:
+
+    @classmethod
+    def handle(cls, population: Population) -> list:
+        variables_configured = list(set(population.allowed_configuration))
+        variables_configured.remove("age")
+        return variables_configured

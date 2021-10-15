@@ -2,7 +2,11 @@ from typing import Set
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query
-from starlette.status import HTTP_200_OK, HTTP_404_NOT_FOUND
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND
+)
 
 from src.interfaces import ConfigurationInterface, PopulationInterface
 from src.models.general import Groups
@@ -11,7 +15,7 @@ from src.use_case import (
     DeletePopulationValues,
     FindAllowedVariables,
     FindVariableResults,
-    SecurityUseCase,
+    FindVariablesConfigured, SecurityUseCase,
     UpdatePopulationValues,
     ValidatePopulationDefault
 )
@@ -149,3 +153,23 @@ def list_allowed_values(
 
     values = FindVariableResults.handle(conf_found, variable)
     return UJSONResponse(PopulationMessage.values_found, HTTP_200_OK, values)
+
+
+@population_routes.get("/population/configured")
+def list_groups_configured(
+    conf_uuid: UUID,
+    user = Depends(SecurityUseCase.validate)
+):
+    conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
+    if not conf_found:
+        return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    population = PopulationInterface.find_one_by_conf(conf_found)
+    if not population:
+        return UJSONResponse(PopulationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    try:
+        data = FindVariablesConfigured.handle(population)
+        return UJSONResponse(PopulationMessage.values_found, HTTP_200_OK, data)
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)

@@ -23,6 +23,7 @@ from .population_use_case import (
     DeletePopulationValues,
     FindAllowedVariables,
     FindVariableResults,
+    FindVariablesConfigured,
     UpdatePopulationValues,
     ValidatePopulationDefault
 )
@@ -50,4 +51,5 @@ __all__ = [
     'FindAgentInformation',
     'FindMachineInformation',
     'SendAllInformation',
+    'FindVariablesConfigured'
 ]
