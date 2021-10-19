@@ -19,7 +19,13 @@ from src.utils import BsonObject
 class ValidatePopulationDefault:
 
     @classmethod
-    def handle(cls, configuration: Configuration):
+    def handle(cls, configuration: Configuration) -> None:
+        """
+        Validate if exist a population in a configuration, if it didn't exist it
+        will create a population for a configuration.
+
+        :param configuration: Configuration associated to the population.
+        """
         population = PopulationInterface.find_one_by_conf(configuration)
         if not population:
             population = Population(
@@ -38,6 +44,13 @@ class FindAllowedVariables:
 
     @classmethod
     def handle(cls, population: Population, variable: Set[Groups]) -> List:
+        """
+        Find all allowed variables to update in a population and return its
+        values.
+
+        :param population:
+        :param variable:
+        """
         current_values = population.values
         values = [
             unit.value for unit in Groups
@@ -59,6 +72,12 @@ class UpdatePopulationValues:
 
     @classmethod
     def handle(cls, population: Population, variables: UpdateVariable):
+        """
+        Update population variable according to variable input.
+
+        :param population: Population specification to update information.
+        :param variables: Input information to update.
+        """
         variables_dict = variables.dict()
         current_values = population.values
         current_values.update(
@@ -84,6 +103,13 @@ class DeletePopulationValues:
 
     @classmethod
     def handle(cls, population: Population, variable: Groups):
+        """
+        Delete population values from specific configuration and delete its
+        chain
+
+        :param population: population to modify values.
+        :param variable: variable to delete information in the values.
+        """
         population_values = population.values
         if variable.value in population_values.keys():
             del population_values[variable.value]
@@ -95,6 +121,14 @@ class FindVariableResults:
 
     @classmethod
     def handle(cls, configuration: Configuration, variable: Groups) -> dict:
+        """
+        Find specific configuration from simulation according to specific
+        variable, return all data from each interface.
+
+        :param configuration: configuration associated to find variable in the
+        interface
+        :param variable: type of variable to find
+        """
         interface_dict = {
             Groups.AGE: AgeGroupInterface,
             Groups.MOBILITY: MobilityGroupInterface,
@@ -113,6 +147,12 @@ class FindVariablesConfigured:
 
     @classmethod
     def handle(cls, population: Population) -> list:
+        """
+        Find all variables configured in population configuration, except age
+        configuration and return an array variables.
+
+        :param population: population configuration to find variables.
+        """
         variables_configured = list(set(population.allowed_configuration))
         variables_configured.remove("age")
         return variables_configured
