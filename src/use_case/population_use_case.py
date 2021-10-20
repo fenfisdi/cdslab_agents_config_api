@@ -184,7 +184,6 @@ class FindPopulationData:
         Find values saved for each variable population configured with its
         values and chain.
 
-
         :param population: Reference to find population values.
         :param variable: value to find current values in a population.
         :return: dictionary with values for each variable.
@@ -192,7 +191,27 @@ class FindPopulationData:
         is_allowed = variable.value not in population.allowed_configuration
         if variable == Groups.AGE or is_allowed:
             return {}
+        chain = population.extra_data.chains.get(variable.value)
+        values = population.values.get(variable.value)
+
+        return cls._map_values(chain, values)
+
+    @classmethod
+    def _map_values(cls, chain: List[str], values: dict) -> dict:
         return {
-            'chain': population.extra_data.chains.get(variable.value),
-            'values': population.values.get(variable.value)
+            'chain': chain,
+            'values': cls._rec_data(values)
         }
+
+    @classmethod
+    def _rec_data(cls, values: dict) -> List:
+        list_values = []
+        for k, v in values.items():
+            if isinstance(v, dict):
+                list_values.append(
+                    {'name': k, 'value': None, 'children': cls._rec_data(v)}
+                )
+            else:
+                list_values.append({'name': k, 'value': v})
+        return list_values
+
