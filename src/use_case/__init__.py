@@ -22,6 +22,7 @@ from .natural_history_use_case import (
 from .population_use_case import (
     DeletePopulationValues,
     FindAllowedVariables,
+    FindPopulationData,
     FindVariableResults,
     FindVariablesConfigured,
     UpdatePopulationValues,
@@ -51,5 +52,6 @@ __all__ = [
     'FindAgentInformation',
     'FindMachineInformation',
     'SendAllInformation',
-    'FindVariablesConfigured'
+    'FindVariablesConfigured',
+    'FindPopulationData'
 ]

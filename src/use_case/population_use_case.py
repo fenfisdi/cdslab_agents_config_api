@@ -35,7 +35,8 @@ class ValidatePopulationDefault:
                 allowed_variables={
                     unit.value for unit in Groups if
                     unit != Groups.AGE
-                }
+                },
+                extra_data={}
             )
         population.save()
 
@@ -85,16 +86,22 @@ class UpdatePopulationValues:
         )
 
         allowed_configuration = population.allowed_configuration
-        allowed_configuration.append(variables.variable)
+        if variables.variable not in allowed_configuration:
+            allowed_configuration.append(variables.variable)
 
         allowed_variables = population.allowed_variables
         if variables.variable in allowed_variables:
             allowed_variables.remove(variables.variable)
 
+        extra_data = population.extra_data
+        if variables.variable not in extra_data.chains:
+            extra_data.chains.update({variables.variable: variables.chain})
+
         population.update(
             values=current_values,
             allowed_configuration=allowed_configuration,
-            allowed_variables=allowed_variables
+            allowed_variables=allowed_variables,
+            extra_data=extra_data
         )
         population.reload()
 
@@ -114,7 +121,18 @@ class DeletePopulationValues:
         if variable.value in population_values.keys():
             del population_values[variable.value]
 
-        population.update(values=population_values)
+        configuration = population.allowed_configuration
+        variables = population.allowed_variables
+        if variable.value not in variables:
+            variables.append(variable.value)
+        if variable.value in configuration:
+            configuration.remove(variable.value)
+
+        population.update(
+            values=population_values,
+            allowed_configuration=configuration,
+            allowed_variables=variables
+        )
 
 
 class FindVariableResults:
@@ -156,3 +174,16 @@ class FindVariablesConfigured:
         variables_configured = list(set(population.allowed_configuration))
         variables_configured.remove("age")
         return variables_configured
+
+
+class FindPopulationData:
+
+    @classmethod
+    def handle(cls, population: Population, variable: Groups) -> dict:
+        is_allowed = variable.value not in population.allowed_configuration
+        if variable == Groups.AGE or is_allowed:
+            return {}
+        return {
+            'chain': population.extra_data.chains.get(variable.value),
+            'values': population.values.get(variable.value)
+        }
