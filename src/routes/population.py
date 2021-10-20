@@ -171,6 +171,13 @@ def list_groups_configured(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
+    """
+    List all groups configured in population.
+
+    \f
+    :param conf_uuid: Configuration identifier.
+    :param user: User authenticated.
+    """
     conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
     if not conf_found:
         return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
@@ -188,12 +195,21 @@ def list_groups_configured(
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
 
 
-@population_routes.get("/population/saved_values")
+@population_routes.get("/population/saved")
 def find_saved_values(
     conf_uuid: UUID,
     variable: Groups = Query(...),
     user = Depends(SecurityUseCase.validate)
 ):
+    """
+    Find current values in a specific population according to the variable
+    configured.
+
+    \f
+    :param conf_uuid: Configuration identifier.
+    :param variable: Variable configured to find information.
+    :param user: User authenticated.
+    """
     conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
     if not conf_found:
         return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)

@@ -49,8 +49,8 @@ class FindAllowedVariables:
         Find all allowed variables to update in a population and return its
         values.
 
-        :param population:
-        :param variable:
+        :param population: Population specification to update information.
+        :param variable: Input information to find
         """
         current_values = population.values
         values = [
@@ -180,6 +180,15 @@ class FindPopulationData:
 
     @classmethod
     def handle(cls, population: Population, variable: Groups) -> dict:
+        """
+        Find values saved for each variable population configured with its
+        values and chain.
+
+
+        :param population: Reference to find population values.
+        :param variable: value to find current values in a population.
+        :return: dictionary with values for each variable.
+        """
         is_allowed = variable.value not in population.allowed_configuration
         if variable == Groups.AGE or is_allowed:
             return {}
