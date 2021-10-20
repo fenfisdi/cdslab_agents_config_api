@@ -208,7 +208,7 @@ def find_saved_values(
     \f
     :param conf_uuid: Configuration identifier.
     :param variable: Variable configured to find information.
-    :param user: User authenticated.
+    :param user: User authenticated by token.
     """
     conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
     if not conf_found:

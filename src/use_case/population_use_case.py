@@ -128,10 +128,15 @@ class DeletePopulationValues:
         if variable.value in configuration:
             configuration.remove(variable.value)
 
+        extra_data = population.extra_data
+        if variable.value in extra_data.chains:
+            del extra_data.chains[variable.value]
+
         population.update(
             values=population_values,
             allowed_configuration=configuration,
-            allowed_variables=variables
+            allowed_variables=variables,
+            extra_data=extra_data
         )
 
 
