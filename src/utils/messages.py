@@ -168,6 +168,8 @@ class DiseaseGroupMessage:
 
 @dataclass
 class PopulationMessage:
+    age_exception: str = "Age configuration can not be eliminated"
+    not_deleted: str = "Population can not be eliminated"
     deleted: str = "Population variables deleted"
     not_found: str = "Population configuration not found"
     found: str = "Population variables found"

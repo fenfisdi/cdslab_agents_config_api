@@ -109,7 +109,7 @@ class UpdatePopulationValues:
 class DeletePopulationValues:
 
     @classmethod
-    def handle(cls, population: Population, variable: Groups):
+    def handle(cls, population: Population, variable: Groups) -> bool:
         """
         Delete population values from specific configuration and delete its
         chain
@@ -117,6 +117,8 @@ class DeletePopulationValues:
         :param population: population to modify values.
         :param variable: variable to delete information in the values.
         """
+        if not cls._validate_chain(population, variable):
+            return False
         population_values = population.values
         if variable.value in population_values.keys():
             del population_values[variable.value]
@@ -138,6 +140,19 @@ class DeletePopulationValues:
             allowed_variables=variables,
             extra_data=extra_data
         )
+
+        return True
+
+    @classmethod
+    def _validate_chain(cls, population: Population, variable: Groups) -> bool:
+        chains = population.extra_data.chains
+        variable_chain = chains.get(variable.value)
+
+        all_values = []
+        [all_values.extend(value) for value in population.extra_data.chains.values()]
+        if variable.value in list(set(all_values)):
+            return False
+        return True
 
 
 class FindVariableResults:
