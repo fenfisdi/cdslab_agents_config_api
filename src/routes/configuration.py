@@ -192,8 +192,8 @@ def get_summary_configuration(
     Find all configuration simulation and all its data.
 
     \f
-    :param uuid:
-    :param user:
+    :param uuid: Identifier of simulation.
+    :param user: User authenticated by token.
     """
     configuration_found = ConfigurationInterface.find_one_by_id(uuid, user)
     if not configuration_found:

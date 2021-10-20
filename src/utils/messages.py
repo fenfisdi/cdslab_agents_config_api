@@ -168,6 +168,7 @@ class DiseaseGroupMessage:
 
 @dataclass
 class PopulationMessage:
+    deleted: str = "Population variables deleted"
     not_found: str = "Population configuration not found"
     found: str = "Population variables found"
     updated: str = "Population updated"
