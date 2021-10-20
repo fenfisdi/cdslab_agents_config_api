@@ -14,8 +14,10 @@ from src.models.route_models import UpdateVariable
 from src.use_case import (
     DeletePopulationValues,
     FindAllowedVariables,
+    FindPopulationData,
     FindVariableResults,
-    FindVariablesConfigured, SecurityUseCase,
+    FindVariablesConfigured,
+    SecurityUseCase,
     UpdatePopulationValues,
     ValidatePopulationDefault
 )
@@ -36,6 +38,7 @@ def list_allowed_variables(
     """
     List allowed variables to config inside population configuration.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param user: User authenticated.
     """
@@ -65,6 +68,7 @@ def create_population_configuration(
     """
     Create specific configuration inside population according to a variable.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param variable_information:
     :param user: User authenticated.
@@ -72,6 +76,8 @@ def create_population_configuration(
     conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
     if not conf_found:
         return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    ValidatePopulationDefault.handle(conf_found)
 
     population = PopulationInterface.find_one_by_conf(conf_found)
 
@@ -93,6 +99,7 @@ def delete_population_configuration(
     """
     Delete specific group in each configuration population.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param variable:
     :param user: User authenticated.
@@ -106,6 +113,8 @@ def delete_population_configuration(
 
     DeletePopulationValues.handle(population, variable)
 
+    return UJSONResponse(PopulationMessage.deleted, HTTP_200_OK)
+
 
 @population_routes.get("/population/group")
 def list_allowed_groups(
@@ -116,6 +125,7 @@ def list_allowed_groups(
     """
     List all allowed groups to configuration.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param variable:
     :param user: User authenticated.
@@ -143,6 +153,7 @@ def list_allowed_values(
     """
     List all allowed values for each group.
 
+    \f
     :param conf_uuid: Configuration identifier.
     :param variable:
     :param user: User authenticated.
@@ -164,12 +175,35 @@ def list_groups_configured(
     if not conf_found:
         return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
 
+    ValidatePopulationDefault.handle(conf_found)
+
     population = PopulationInterface.find_one_by_conf(conf_found)
     if not population:
         return UJSONResponse(PopulationMessage.not_found, HTTP_404_NOT_FOUND)
 
     try:
         data = FindVariablesConfigured.handle(population)
+        return UJSONResponse(PopulationMessage.values_found, HTTP_200_OK, data)
+    except Exception as error:
+        return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
+
+
+@population_routes.get("/population/saved_values")
+def find_saved_values(
+    conf_uuid: UUID,
+    variable: Groups = Query(...),
+    user = Depends(SecurityUseCase.validate)
+):
+    conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
+    if not conf_found:
+        return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    population = PopulationInterface.find_one_by_conf(conf_found)
+    if not population:
+        return UJSONResponse(PopulationMessage.not_found, HTTP_404_NOT_FOUND)
+
+    try:
+        data = FindPopulationData.handle(population, variable)
         return UJSONResponse(PopulationMessage.values_found, HTTP_200_OK, data)
     except Exception as error:
         return UJSONResponse(str(error), HTTP_400_BAD_REQUEST)
