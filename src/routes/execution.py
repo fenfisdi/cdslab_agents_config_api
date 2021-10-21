@@ -29,6 +29,14 @@ def execute_simulation(
     conf_uuid: UUID,
     user = Depends(SecurityUseCase.validate)
 ):
+    """
+    Find a specific configuration and execute the simulation according to its
+    specifications.
+
+    \f
+    :param conf_uuid: Configuration identifier.
+    :param user: User authenticated by token.
+    """
     try:
         configuration_found = ConfigurationInterface.find_one_by_id(
             conf_uuid,

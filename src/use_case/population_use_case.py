@@ -109,7 +109,7 @@ class UpdatePopulationValues:
 class DeletePopulationValues:
 
     @classmethod
-    def handle(cls, population: Population, variable: Groups):
+    def handle(cls, population: Population, variable: Groups) -> bool:
         """
         Delete population values from specific configuration and delete its
         chain
@@ -117,6 +117,8 @@ class DeletePopulationValues:
         :param population: population to modify values.
         :param variable: variable to delete information in the values.
         """
+        if not cls._validate_chain(population, variable):
+            return False
         population_values = population.values
         if variable.value in population_values.keys():
             del population_values[variable.value]
@@ -128,11 +130,29 @@ class DeletePopulationValues:
         if variable.value in configuration:
             configuration.remove(variable.value)
 
+        extra_data = population.extra_data
+        if variable.value in extra_data.chains:
+            del extra_data.chains[variable.value]
+
         population.update(
             values=population_values,
             allowed_configuration=configuration,
-            allowed_variables=variables
+            allowed_variables=variables,
+            extra_data=extra_data
         )
+
+        return True
+
+    @classmethod
+    def _validate_chain(cls, population: Population, variable: Groups) -> bool:
+        chains = population.extra_data.chains
+        variable_chain = chains.get(variable.value)
+
+        all_values = []
+        [all_values.extend(value) for value in population.extra_data.chains.values()]
+        if variable.value in list(set(all_values)):
+            return False
+        return True
 
 
 class FindVariableResults:
@@ -184,7 +204,6 @@ class FindPopulationData:
         Find values saved for each variable population configured with its
         values and chain.
 
-
         :param population: Reference to find population values.
         :param variable: value to find current values in a population.
         :return: dictionary with values for each variable.
@@ -192,7 +211,27 @@ class FindPopulationData:
         is_allowed = variable.value not in population.allowed_configuration
         if variable == Groups.AGE or is_allowed:
             return {}
+        chain = population.extra_data.chains.get(variable.value)
+        values = population.values.get(variable.value)
+
+        return cls._map_values(chain, values)
+
+    @classmethod
+    def _map_values(cls, chain: List[str], values: dict) -> dict:
         return {
-            'chain': population.extra_data.chains.get(variable.value),
-            'values': population.values.get(variable.value)
+            'chain': chain,
+            'values': cls._rec_data(values)
         }
+
+    @classmethod
+    def _rec_data(cls, values: dict) -> List:
+        list_values = []
+        for k, v in values.items():
+            if isinstance(v, dict):
+                list_values.append(
+                    {'name': k, 'value': None, 'children': cls._rec_data(v)}
+                )
+            else:
+                list_values.append({'name': k, 'value': v})
+        return list_values
+

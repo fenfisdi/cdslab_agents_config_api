@@ -104,6 +104,11 @@ def delete_population_configuration(
     :param variable:
     :param user: User authenticated.
     """
+    if variable.value is variable.AGE.value:
+        return UJSONResponse(
+            PopulationMessage.age_exception,
+            HTTP_400_BAD_REQUEST
+        )
     conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
     if not conf_found:
         return UJSONResponse(ConfigurationMessage.not_found, HTTP_404_NOT_FOUND)
@@ -111,7 +116,9 @@ def delete_population_configuration(
     ValidatePopulationDefault.handle(conf_found)
     population = PopulationInterface.find_one_by_conf(conf_found)
 
-    DeletePopulationValues.handle(population, variable)
+    is_deleted = DeletePopulationValues.handle(population, variable)
+    if not is_deleted:
+        return UJSONResponse(PopulationMessage.not_deleted, HTTP_400_BAD_REQUEST)
 
     return UJSONResponse(PopulationMessage.deleted, HTTP_200_OK)
 
@@ -208,7 +215,7 @@ def find_saved_values(
     \f
     :param conf_uuid: Configuration identifier.
     :param variable: Variable configured to find information.
-    :param user: User authenticated.
+    :param user: User authenticated by token.
     """
     conf_found = ConfigurationInterface.find_one_by_id(conf_uuid, user)
     if not conf_found:
