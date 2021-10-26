@@ -21,16 +21,23 @@ class SecurityUseCase:
         email = token_data.get('email')
 
         user = UserInterface.find_one(email)
+        response, is_invalid = UserAPI.find_user(email)
+        if is_invalid:
+            raise HTTPException(401, SecurityMessage.invalid_token)
+        user_data = response.get('data')
         if not user:
-            response, is_invalid = UserAPI.find_user(email)
-            if is_invalid:
-                raise HTTPException(401, SecurityMessage.invalid_token)
-            user_data = response.get('data')
             user = User(
                 name=user_data.get('name'),
-                email=user_data.get('email')
+                email=user_data.get('email'),
+                role=user_data.get('role')
             )
             user.save()
+        else:
+            user.update(
+                name=user_data.get('name'),
+                role=user_data.get('role')
+            )
+            user.reload()
 
         return user
 
