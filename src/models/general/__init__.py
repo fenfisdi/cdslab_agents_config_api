@@ -7,6 +7,7 @@ from .execution import ExecutionStatus
 from .file import TypeFile
 from .quarantine import RestrictionType, TracingType, TracingVariables
 from .units import UnitLength, UnitTime
+from .user import UserRole
 from .variables import Groups
 
 __all__ = [
@@ -20,5 +21,6 @@ __all__ = [
     'TracingVariables',
     'TypeFile',
     'Groups',
-    'ExecutionStatus'
+    'ExecutionStatus',
+    'UserRole'
 ]

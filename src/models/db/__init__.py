@@ -2,6 +2,7 @@ from .age_group import AgeGroup
 from .configuration import Configuration
 from .disease_states import DiseaseGroup
 from .distribution import Distribution
+from .execution import RoleMachine
 from .immunization_group import ImmunizationGroup
 from .mobility_group import MobilityGroup
 from .natural_history import NaturalHistory
@@ -26,5 +27,6 @@ __all__ = [
     'User',
     'VulnerabilityGroup',
     'Quarantine',
-    'QuarantineGroup'
+    'QuarantineGroup',
+    'RoleMachine'
 ]

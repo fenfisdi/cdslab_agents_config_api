@@ -3,8 +3,46 @@ from uuid import uuid1
 
 from mongoengine import connect
 
+from src.models.db import RoleMachine
 from src.models.db.master.distribution import MasterDistribution
 from src.models.db.master.quarantine_restriction import QuarantineRestriction
+from src.models.general import UserRole
+
+
+def create_role_machines() -> None:
+    try:
+        # Create User default configuration
+        RoleMachine(
+            role=UserRole.USER,
+            max_machine=5,
+            default_memory=2046,
+            default_cpu=2,
+        ).save()
+    except Exception as error:
+        print(error)
+
+    try:
+        # Create Admin default configuration
+        RoleMachine(
+            role=UserRole.ADMIN,
+            max_machine=10,
+            default_memory=2046,
+            default_cpu=2,
+        ).save()
+    except Exception as error:
+        print(error)
+
+    try:
+        # Create Root default configuration
+        RoleMachine(
+            role=UserRole.ROOT,
+            max_machine=10,
+            default_memory=2046,
+            default_cpu=2,
+        ).save()
+    except Exception as error:
+        print(error)
+
 
 if __name__ == "__main__":
     mongo_uri = environ.get("MONGO_URI")
@@ -292,3 +330,5 @@ if __name__ == "__main__":
         except Exception as error:
             message = f"An error has been while insert {quarantine_restriction}"
             raise RuntimeError(message)
+
+    create_role_machines()
