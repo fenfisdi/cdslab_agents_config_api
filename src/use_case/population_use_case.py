@@ -94,8 +94,7 @@ class UpdatePopulationValues:
             allowed_variables.remove(variables.variable)
 
         extra_data = population.extra_data
-        if variables.variable not in extra_data.chains:
-            extra_data.chains.update({variables.variable: variables.chain})
+        extra_data.chains.update({variables.variable: variables.chain})
 
         population.update(
             values=current_values,

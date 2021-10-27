@@ -8,6 +8,7 @@ from .disease_group_interface import (
     DiseaseStateInterface
 )
 from .distribution_interface import DistributionInterface
+from .execution_interface import RoleMachineInterface
 from .immunization_group_interface import ImmunizationGroupInterface
 from .mobility_groups_interface import MobilityGroupInterface
 from .natural_history_interface import NaturalHistoryInterface
@@ -36,5 +37,6 @@ __all__ = [
     "QuarantineGroupInterface",
     'QuarantineInterface',
     'PopulationInterface',
-    'ConfigurationRootInterface'
+    'ConfigurationRootInterface',
+    'RoleMachineInterface'
 ]

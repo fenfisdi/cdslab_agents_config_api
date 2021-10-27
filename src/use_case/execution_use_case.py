@@ -8,6 +8,7 @@ from src.interfaces import (
     NaturalHistoryInterface,
     QuarantineGroupInterface,
     QuarantineInterface,
+    RoleMachineInterface,
     SusceptibilityGroupInterface,
     VulnerabilityGroupInterface
 )
@@ -102,16 +103,17 @@ class FindAgentInformation:
 class FindMachineInformation:
 
     @classmethod
-    def handle(cls, user: User) -> dict:
+    def handle(cls, user: User, simulation_data: dict) -> dict:
+        # TODO: simulation_data to use in machine creation
+        role_machine = RoleMachineInterface.find_role_machine(user.role)
+        if not role_machine:
+            raise Exception("Can not get machine specifications")
 
         data = {
-            'cpu': 2,
-            'memory': 2048,
-            'instances': 5,
+            'cpu': role_machine.default_cpu,
+            'memory': role_machine.default_memory,
+            'instances': role_machine.max_machine,
         }
-
-        if user.role and user.role.value == 'admin':
-            data['instances'] = 10
 
         return data
 
