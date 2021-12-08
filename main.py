@@ -1,3 +1,3 @@
-from src import app
+from src.api import app
 
 __all__ = ['app']
